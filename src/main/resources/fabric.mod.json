@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "seam",
+  "version": "${version}",
+
+  "name": "Seam",
+  "description": "Fabric Essentials, implemented seamlessly. ;)",
+  "authors": [
+    "Novoro",
+    "Neovitalism"
+  ],
+  "contact": {
+    "homepage": "https://github.com/AleGuzAva/Seam"
+  },
+
+  "license": "GPLv3",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.novoro.seam.Seam"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21"
+  },
+
+  "mixins": [
+    "seam.mixins.json"
+  ],
+
+  "suggests": {
+    "luckperms": ">=5.4.139"
+  }
+}
