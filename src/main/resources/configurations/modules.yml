@@ -1,0 +1,48 @@
+# In this config, you can disable modules and commands in Seam individually.
+# This config is only read on startup, therefore any changes to this config require a restart.
+
+# Modules are settings that have additional logic. Disabling a module disables all associated logic and related commands.
+Modules:
+  afk: true
+  back: true
+  homes: true
+  spawn: true
+  warps: true
+
+# You can stop individual commands and command groups from being registered below.
+Commands:
+  ascend: true
+  biomertp: true
+  clearinventory: true
+  hat: true
+  descend: true
+  disposal: true
+  enchant: true
+  enchantmenttable: true
+  feed: true
+  fly: true
+  gamemode: true # Contains /gma, /gmc, /gms, /gmsp
+  godmode: true
+  heal: true
+  ignore: true # ToDo: move into chat module?
+  itemeditor: true
+  mail: false
+  message: true # Contains /msg, /reply, /socialspy # ToDo: move into chat module?
+  near: true
+  nightvision: true
+  playtime: true
+  repair: true
+  rtp: true
+  seen: true
+  smite: true
+  speed: true
+  text-commands: true
+  time: true
+  tp: true # contains /tphere, /tpoffline
+  tpa: true # Contains /tpa, /tpahere, /tpaccept, /tpdeny, /tpacancel
+  top: true
+  unalive: true
+  workstations: true # Contains anvil, cartography, enderchest, grindstone, loom, smithing, stonecutter, and workbench # ToDo: split these
+
+# Do not touch this. This is solely for future config updates.
+Config-Version: 1.0
