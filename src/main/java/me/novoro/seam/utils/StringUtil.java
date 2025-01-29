@@ -2,14 +2,15 @@ package me.novoro.seam.utils;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class StringUtil {
-    private static final Pattern LOWERCASE_PATTERN = Pattern.compile("(^| )([a-z])");
-
+    /**
+     * Replaces placeholders in a string with those occupied by the replacements map.
+     * {@link StringUtil#n(String)} and {@link StringUtil#s(String)} are fired after replacing all other placeholders.
+     * @param input The string to be parsed.
+     * @param replacements The placeholders to parse.
+     */
     public static String replaceReplacements(String input, @Nullable Map<String, String> replacements) {
         if (input == null) return null;
         if (replacements != null) {
@@ -22,21 +23,41 @@ public final class StringUtil {
         return input;
     }
 
+    /**
+     * Replaces {n} in a string based on what character follows it after a space.
+     * I.E. "A{n} Pokémon" would turn to "A Pokémon" and "A{n} Apple" would turn to "An Apple".
+     * @param string The string to be parsed.
+     */
     public static String n(String string) {
         return string.replaceAll("\\{n} (&#?[a-fA-F0-9]+)?([aeiouAEIOU])", "n $1$2")
                 .replace("{n}", "");
     }
 
+    /**
+     * Replaces {s} in a string based on what character is before it. Used for possession of objects.
+     * I.E. "Novoro{s} Pokémon" would turn to "Novoro's Pokémon" and "James{s} Pokémon" would turn to "James' Pokémon".
+     * @param string The string to be parsed.
+     */
     public static String s(String string) {
         return string.replaceAll("([sS])\\{s}", "$1'").replace("{s}", "'s");
     }
 
+    /**
+     * Used to see if a string starts with another string while ignoring case.
+     * @param arg The input.
+     * @param completion The string to check if it begins with arg.
+     */
     public static boolean startsWith(String arg, String completion) {
         if (arg.length() > completion.length()) return false;
         String argEquiv = completion.substring(0, arg.length());
         return arg.equalsIgnoreCase(argEquiv);
     }
 
+    /**
+     * Takes a string and parses placeholders, then attempts to turn that string into a double or integer.
+     * If it's not a double or integer, this just returns a string that has parsed the replacements.
+     * Mainly used to replace objects for custom NBT data on items.
+     */
     public static Object replaceObject(String input, Map<String, String> replacements) {
         String parsed = StringUtil.replaceReplacements(input, replacements);
         try {
@@ -49,14 +70,5 @@ public final class StringUtil {
         } catch (NumberFormatException e) {
             return parsed;
         }
-    }
-
-    public static String capitalizeWords(String input) {
-        Matcher matcher = StringUtil.LOWERCASE_PATTERN.matcher(input);
-        while (matcher.find()) {
-            input = input.replaceFirst(matcher.group(), matcher.group().toUpperCase(Locale.ENGLISH));
-            matcher = StringUtil.LOWERCASE_PATTERN.matcher(input);
-        }
-        return input;
     }
 }

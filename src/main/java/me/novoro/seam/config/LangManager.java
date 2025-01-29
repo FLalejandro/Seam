@@ -22,16 +22,29 @@ public final class LangManager extends VersionedConfig {
         for (String key : langSection.getKeys()) LangManager.LANG.put(key, langSection.getString(key));
     }
 
+    /**
+     * Gets any specified lang.
+     * @param langKey The key for the lang.
+     */
     public static @Nullable String getLang(String langKey) {
         String lang = LangManager.LANG.get(langKey);
         if (lang == null || lang.isEmpty() || lang.isBlank()) return null;
         return lang;
     }
 
+    /**
+     * Sends any specified lang to an {@link Audience}.
+     * @param key The key for the lang.
+     */
     public static void sendLang(Audience audience, String key) {
         LangManager.sendLang(audience, key, null);
     }
 
+    /**
+     * Sends any specified lang to an {@link Audience} and replaces all replacements passed in.
+     * @param key The key for the lang.
+     * @param replacements The placeholders to parse.
+     */
     public static void sendLang(Audience audience, String key, @Nullable Map<String, String> replacements) {
         String lang = LangManager.getLang(key);
         if (lang == null) return;
