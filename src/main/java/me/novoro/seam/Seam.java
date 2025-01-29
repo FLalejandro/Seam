@@ -39,6 +39,9 @@ public class Seam implements ModInitializer {
     public void onInitialize() {
         Seam.instance = this;
 
+        // Proudly display SEAM Branding in everyone's console
+        displayAsciiArt();
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.server = server;
             this.checkPermissionProvider();
@@ -51,6 +54,19 @@ public class Seam implements ModInitializer {
         // Registers all of Seam's commands.
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> this.registerCommands(dispatcher));
     }
+
+    /**
+     * Displays an ASCII Art representation of the mod's name in the log.
+     */
+    private void displayAsciiArt() {
+        SeamLogger.info("   _____ ______          __  __  ");
+        SeamLogger.info("  / ____|  ____|   /\\   |  \\/  | ");
+        SeamLogger.info(" | (___ | |__     /  \\  | \\  / | ");
+        SeamLogger.info("  \\___ \\|  __|   / /\\ \\ | |\\/| | ");
+        SeamLogger.info("  ____) | |____ / ____ \\| |  | | ");
+        SeamLogger.info(" |_____/|______/_/    \\_\\_|  |_| ");
+    }
+
 
     // Reloads Seam's various configs.
     public void reloadConfigs() {
@@ -65,9 +81,9 @@ public class Seam implements ModInitializer {
         // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
-
         // Fun Commands
         new SmiteCommand().register(dispatcher);
+
     }
 
     /**
