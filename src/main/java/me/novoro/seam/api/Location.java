@@ -9,6 +9,9 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.Map;
 
+/**
+ * Represents a coordinate location in a {@link ServerWorld}, with optional rotation values.
+ */
 public class Location {
     private ServerWorld world;
     private double x;

@@ -44,7 +44,7 @@ public class SmiteCommand extends CommandBase {
                         String firstPlayer = players.getFirst().getName().getString();
                         LangManager.sendLang(context.getSource(), "Smite-Player-Message", Map.of("{player}", firstPlayer));
                     } else {
-                        LangManager.sendLang(context.getSource(), "Smite-All-Message", Map.of("{amount}", String.valueOf(players.size())));
+                        LangManager.sendLang(context.getSource(), "Smite-Multiple-Message", Map.of("{amount}", String.valueOf(players.size())));
                     }
                     return Command.SINGLE_SUCCESS;
                 })

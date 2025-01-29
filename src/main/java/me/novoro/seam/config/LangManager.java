@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Seam's lang manager. This is used for all of Seam's lang.
+ */
 public final class LangManager extends VersionedConfig {
     private static final Map<String, String> LANG = new HashMap<>();
 

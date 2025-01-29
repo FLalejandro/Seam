@@ -5,7 +5,7 @@ Lang:
   Smite-Message: "<green>Successfully summoned lightning!"
   Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
   Smited-Message: "<gold>The gods chose to smite you today!"
-  Smite-All-Message: "<green>Successfully summoned lightning on {amount} players!"
+  Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

@@ -7,6 +7,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * Provides various Location utility methods to Seam.
+ */
 public final class LocationUtil {
     /**
      * Gets a {@link ServerWorld} via a world name.

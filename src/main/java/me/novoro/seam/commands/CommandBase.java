@@ -11,6 +11,9 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+/**
+ * The basis for all of Seam's commands to make registering commands easier with less repetitive code.
+ */
 public abstract class CommandBase {
     private final String command;
     private final String permission;

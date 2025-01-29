@@ -4,6 +4,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * A utility class for altering Strings in various ways.
+ */
 public final class StringUtil {
     /**
      * Replaces placeholders in a string with those occupied by the replacements map.
@@ -40,17 +43,6 @@ public final class StringUtil {
      */
     public static String s(String string) {
         return string.replaceAll("([sS])\\{s}", "$1'").replace("{s}", "'s");
-    }
-
-    /**
-     * Used to see if a string starts with another string while ignoring case.
-     * @param arg The input.
-     * @param completion The string to check if it begins with arg.
-     */
-    public static boolean startsWith(String arg, String completion) {
-        if (arg.length() > completion.length()) return false;
-        String argEquiv = completion.substring(0, arg.length());
-        return arg.equalsIgnoreCase(argEquiv);
     }
 
     /**
