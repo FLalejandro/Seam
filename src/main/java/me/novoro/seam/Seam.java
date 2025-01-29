@@ -7,6 +7,7 @@ import me.novoro.seam.api.permissions.DefaultPermissionProvider;
 import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
+import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.utils.SeamLogger;
@@ -53,6 +54,7 @@ public class Seam implements ModInitializer {
 
     // Reloads Seam's various configs.
     public void reloadConfigs() {
+        // Lang
         this.langManager.reload();
 
         // ToDo: Reload our *other* configs lol
@@ -60,9 +62,12 @@ public class Seam implements ModInitializer {
 
     // Registers Seam's commands. Commands that are disabled are not registered.
     private void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
+        // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
-        // ToDo: Register more commands!
+
+        // Fun Commands
+        new SmiteCommand().register(dispatcher);
     }
 
     /**

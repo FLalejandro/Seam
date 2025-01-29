@@ -72,7 +72,7 @@ public abstract class CommandBase {
 
     // Sets up the base command and permission node.
     private LiteralArgumentBuilder<ServerCommandSource> getCommand(String commandName) {
-        return this.getCommand(literal(commandName).requires(source -> permission(source, this.permission, this.permissionLevel)));
+        return this.getCommand(literal(commandName).requires(source -> this.permission(source, this.permission, this.permissionLevel)));
     }
 
     /**

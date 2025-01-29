@@ -6,6 +6,9 @@ import me.novoro.seam.Seam;
 import me.novoro.seam.utils.ColorUtil;
 import net.minecraft.server.command.ServerCommandSource;
 
+/**
+ * Seam's reload command.
+ */
 public final class SeamReloadCommand extends CommandBase {
     public SeamReloadCommand() {
         super("seam", "seam.reload", 4);
