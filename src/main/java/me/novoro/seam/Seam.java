@@ -7,6 +7,7 @@ import me.novoro.seam.api.permissions.DefaultPermissionProvider;
 import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
+import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
@@ -31,6 +32,7 @@ public class Seam implements ModInitializer {
     private PermissionProvider permissionProvider;
 
     private final ModuleManager moduleManager = new ModuleManager();
+    private final LangManager langManager = new LangManager();
 
     @Override
     public void onInitialize() {
@@ -51,6 +53,8 @@ public class Seam implements ModInitializer {
 
     // Reloads Seam's various configs.
     public void reloadConfigs() {
+        this.langManager.reload();
+
         // ToDo: Reload our *other* configs lol
     }
 
