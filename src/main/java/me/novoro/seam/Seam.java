@@ -30,7 +30,7 @@ public class Seam implements ModInitializer {
 
     private static Seam instance;
     private MinecraftServer server;
-    private PermissionProvider permissionProvider;
+    private PermissionProvider permissionProvider = null;
 
     private final ModuleManager moduleManager = new ModuleManager();
     private final LangManager langManager = new LangManager();
@@ -96,11 +96,12 @@ public class Seam implements ModInitializer {
      */
     public static void setPermissionProvider(PermissionProvider provider) {
         Seam.instance.permissionProvider = provider;
-        SeamLogger.info("Registered " + provider.getName() + " as the server's permission provider.");
+        SeamLogger.info("Registered " + provider.getName() + " as Seam's permission provider.");
     }
 
     // Checks the server for the built-in permission providers.
     private void checkPermissionProvider() {
+        if (this.permissionProvider != null) return;
         try {
             Class.forName("net.luckperms.api.LuckPerms");
             this.permissionProvider = new LuckPermsPermissionProvider();
