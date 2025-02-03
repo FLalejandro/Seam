@@ -1,9 +1,17 @@
 Lang:
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
 
+  # Ascend
+  Ascend-Location-Not-Found: "<red>No place to ascend to!"
+  Ascend-Location-Not-Found-Other: "<red>{target} has no place to ascend to!"
+  Ascended-Message: "<green>Successfully ascended."
+  Ascended-Message-Other: "<green>Successfully ascended {target}."
+  Ascended-Floors-Message: "<green>Successfully ascended {floor} floors."
+  Ascended-Floors-Message-Other: "<green>Successfully ascended {target} {floor} floors."
+
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
-  Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
+  Smite-Player-Message: "<green>Successfully summoned lightning on {target}!"
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 

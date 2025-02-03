@@ -32,7 +32,7 @@ Commands:
   nightvision: true
   playtime: true
   repair: true
-  rtp: true
+  randomteleport: true
   seen: true
   smite: true
   speed: true

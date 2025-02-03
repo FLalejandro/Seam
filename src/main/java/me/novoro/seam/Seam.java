@@ -8,8 +8,11 @@ import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
+import me.novoro.seam.commands.teleportation.AscendCommand;
+import me.novoro.seam.commands.teleportation.TopCommand;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
+import me.novoro.seam.config.TeleportationConfig;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -35,6 +38,8 @@ public class Seam implements ModInitializer {
     private final ModuleManager moduleManager = new ModuleManager();
     private final LangManager langManager = new LangManager();
 
+    private final TeleportationConfig teleportationConfig = new TeleportationConfig();
+
     @Override
     public void onInitialize() {
         Seam.instance = this;
@@ -57,6 +62,9 @@ public class Seam implements ModInitializer {
         // Lang
         this.langManager.reload();
 
+        // Teleportation
+        this.teleportationConfig.reload();
+
         // ToDo: Reload our *other* configs lol
     }
 
@@ -65,6 +73,9 @@ public class Seam implements ModInitializer {
         // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
+        // Teleportation Commands
+        new AscendCommand().register(dispatcher);
+        new TopCommand().register(dispatcher);
 
         // Fun Commands
         new SmiteCommand().register(dispatcher);

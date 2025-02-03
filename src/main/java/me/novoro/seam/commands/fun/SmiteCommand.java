@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Summons lightning either where the player is looking or on the targetted players.
+ * Summons lightning either where the player is looking or on the targeted players.
  * "The single most important command." - Sun Tzu, The Art of War
  */
 public class SmiteCommand extends CommandBase {
@@ -42,7 +42,7 @@ public class SmiteCommand extends CommandBase {
                     }
                     if (players.size() == 1) {
                         String firstPlayer = players.getFirst().getName().getString();
-                        LangManager.sendLang(context.getSource(), "Smite-Player-Message", Map.of("{player}", firstPlayer));
+                        LangManager.sendLang(context.getSource(), "Smite-Player-Message", Map.of("{target}", firstPlayer));
                     } else {
                         LangManager.sendLang(context.getSource(), "Smite-Multiple-Message", Map.of("{amount}", String.valueOf(players.size())));
                     }

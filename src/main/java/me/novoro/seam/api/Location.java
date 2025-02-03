@@ -2,6 +2,7 @@ package me.novoro.seam.api;
 
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.utils.LocationUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -102,6 +103,11 @@ public class Location {
 
     public WorldChunk getChunk() {
         return this.world.getWorldChunk(this.getBlockPos());
+    }
+
+    public BlockState getBlockState() {
+        if (this.world == null) return null;
+        return world.getBlockState(this.getBlockPos());
     }
 
     public void setWorld(ServerWorld world) {
