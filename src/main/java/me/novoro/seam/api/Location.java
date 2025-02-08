@@ -6,6 +6,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public class Location {
     private double x;
     private double y;
     private double z;
-    private float pitch = -1000;
-    private float yaw = -1000;
+    private Float pitch = null;
+    private Float yaw = null;
 
     public Location(Configuration config) {
         String worldName = config.getString("world", null);
@@ -27,8 +28,10 @@ public class Location {
         this.x = config.getDouble("x");
         this.y = config.getDouble("y");
         this.z = config.getDouble("z");
-        this.pitch = config.getInt("pitch", -1000);
-        this.yaw = config.getInt("yaw", -1000);
+        float pitch = config.getFloat("pitch", -1000);
+        this.pitch = (pitch != -1000) ? pitch : null;
+        float yaw = config.getFloat("yaw", -1000);
+        this.yaw = (yaw != -1000) ? yaw : null;
     }
 
     public Location(ServerPlayerEntity player) {
@@ -57,17 +60,12 @@ public class Location {
     }
 
     public void teleport(ServerPlayerEntity player) {
-        float tpPitch = (this.pitch != -1000) ? this.pitch : player.getPitch();
-        float tpYaw = (this.yaw != -1000) ? this.yaw : player.getYaw();
+        float tpPitch = (this.pitch != null) ? this.pitch : player.getPitch();
+        float tpYaw = (this.yaw != null) ? this.yaw : player.getYaw();
         player.teleport(this.world, this.x, this.y, this.z, tpYaw, tpPitch);
     }
 
     public boolean isEqualTo(Location location) {
-        if (!this.isEqualToCoordinatesOf(location)) return false;
-        return this.yaw == location.getYaw() && this.pitch == location.getPitch();
-    }
-
-    public boolean isEqualToCoordinatesOf(Location location) {
         if (!this.world.equals(location.getWorld())) return false;
         if (this.x != location.getX()) return false;
         if (this.y != location.getY()) return false;
@@ -90,11 +88,11 @@ public class Location {
         return this.z;
     }
 
-    public float getPitch() {
+    public @Nullable Float getPitch() {
         return this.pitch;
     }
 
-    public float getYaw() {
+    public @Nullable Float getYaw() {
         return this.yaw;
     }
 
@@ -138,8 +136,8 @@ public class Location {
         this.x += x;
         this.y += y;
         this.z += z;
-        this.pitch += pitch;
-        this.yaw += yaw;
+        if (this.pitch != null) this.pitch += pitch;
+        if (this.yaw != null) this.yaw += yaw;
     }
 
     public Location withWorld(ServerWorld world) {
@@ -164,9 +162,9 @@ public class Location {
         replacements.put("{x}", String.valueOf(this.x));
         replacements.put("{y}", String.valueOf(this.y));
         replacements.put("{z}", String.valueOf(this.z));
-        replacements.put("{pitch}", String.valueOf(this.pitch));
-        replacements.put("{yaw}", String.valueOf(this.yaw));
-        if (this.world != null) replacements.put("{world}", this.world.getRegistryKey().getValue().toString());
+        replacements.put("{pitch}", (this.pitch != null) ? String.valueOf(this.pitch) : "~");
+        replacements.put("{yaw}", (this.yaw != null) ? String.valueOf(this.yaw) : "~");
+        replacements.put("{world}", (this.world != null) ? this.world.getRegistryKey().getValue().toString() : "~");
     }
 
     public Configuration toConfiguration() {
@@ -175,8 +173,8 @@ public class Location {
         locationConfig.set("x", this.x);
         locationConfig.set("y", this.y);
         locationConfig.set("z", this.z);
-        locationConfig.set("pitch", this.pitch);
-        locationConfig.set("yaw", this.yaw);
+        if (this.pitch != null) locationConfig.set("pitch", this.pitch);
+        if (this.yaw != null) locationConfig.set("yaw", this.yaw);
         return locationConfig;
     }
 }
