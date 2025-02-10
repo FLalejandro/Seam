@@ -53,19 +53,19 @@ public class AscendCommand extends CommandBase {
             if (next == null || next.getY() > highestAscendY) break;
             target = next;
         }
-        boolean sourceIsPlayer = (source.getPlayer() == player);
-        Map<String, String> replacements = new HashMap<>();
-        if (!sourceIsPlayer) replacements.put("{target}", player.getName().getString());
         String lang;
+        Map<String, String> replacements = new HashMap<>();
         if (target == null) {
             lang = "Ascend-Location-Not-Found";
-            if (!sourceIsPlayer) lang += "-Other";
         } else {
             lang = (floor == 1) ? "Ascended-Message" : "Ascended-Floors";
-            if (!sourceIsPlayer) lang += "-Other";
             target.teleport(player);
             target.addReplacements(replacements);
             if (floor > 1) replacements.put("{floor}", String.valueOf(floor));
+        }
+        if (source.getPlayer() != player) {
+            lang += "-Other";
+            replacements.put("{target}", player.getName().getString());
         }
         LangManager.sendLang(source, lang, replacements);
     }

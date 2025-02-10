@@ -15,5 +15,13 @@ Lang:
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
+  # Top
+  Top-Unsafe-Message: "<red>The surface was not safe to ascend to!"
+  Top-Unsafe-Message-Other: "<red>{target}{s} surface was not safe to ascend to!"
+  Top-Already-Highest: "<red>You're already at the surface!"
+  Top-Already-Highest-Other: "<red>{target} is already at the surface!"
+  Top-Success-Message: "<green>Successfully teleported to the surface."
+  Top-Success-Message-Other: "<green>Successfully teleported {target} to the surface."
+
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
