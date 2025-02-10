@@ -4,60 +4,78 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.*;
-import net.minecraft.screen.slot.Slot;
 
-public class InventoryScreens<T extends ScreenHandler> extends ScreenHandler {
+/**
+ * ScreenHandler that sorts between Vanilla (ex: Workbench)
+ * and Custom Screens (ex: Disposal)
+ */
+public class InventoryScreens extends ScreenHandler {
 
-    private final T parentHandler;
-    private final int slotCount;
-
+    /**
+     * Types of screen/container to be created.
+     */
     public enum ScreenType {
-        ANVIL, CARTOGRAPHY, ENCHANTMENT, DISPOSAL, ENDERCHEST, GRINDSTONE, LOOM, SMITHING, STONECUTTER, WORKBENCH
+        ANVIL,
+        CARTOGRAPHY,
+        ENCHANTMENT,
+        GRINDSTONE,
+        LOOM,
+        SMITHING,
+        STONECUTTER,
+        WORKBENCH
     }
 
+    /**
+     * For Custom Gooeys like Disposal/Invsee
+     */
     public InventoryScreens(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, ScreenType type) {
         super(getScreenHandlerType(type), syncId);
-        this.parentHandler = createHandler(syncId, playerInventory, context, type);
-        this.slotCount = getSlotCount(type);
+
     }
 
-    private static <T extends ScreenHandler> T createHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, ScreenType type) {
+    /**
+     * Creates the appropriate ScreenHandler for each ScreenType.
+     */
+    public static ScreenHandler createHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, ScreenType type) {
         return switch (type) {
-            case ANVIL -> (T) new AnvilScreenHandler(syncId, playerInventory, context);
-            case CARTOGRAPHY -> (T) new CartographyTableScreenHandler(syncId, playerInventory, context);
-            case ENCHANTMENT -> (T) new EnchantmentScreenHandler(syncId, playerInventory, context);
-            case DISPOSAL -> null;
-            case ENDERCHEST -> null;
-            case GRINDSTONE -> (T) new GrindstoneScreenHandler(syncId, playerInventory, context);
-            case LOOM -> (T) new LoomScreenHandler(syncId, playerInventory, context);
-            case SMITHING -> (T) new SmithingScreenHandler(syncId, playerInventory, context);
-            case STONECUTTER -> (T) new StonecutterScreenHandler(syncId, playerInventory, context);
-            case WORKBENCH -> (T) new CraftingScreenHandler(syncId, playerInventory, context);
+            case ANVIL -> new SeamAnvilScreenHandler(syncId, playerInventory, context);
+            case CARTOGRAPHY -> new SeamCartographyScreenHandler(syncId, playerInventory, context);
+            case ENCHANTMENT -> new SeamEnchantmentScreenHandler(syncId, playerInventory, context);
+            case GRINDSTONE -> new SeamGrindstoneScreenHandler(syncId, playerInventory, context);
+            case LOOM -> new SeamLoomScreenHandler(syncId, playerInventory, context);
+            case SMITHING -> new SeamSmithingScreenHandler(syncId, playerInventory, context);
+            case STONECUTTER -> new SeamStonecutterScreenHandler(syncId, playerInventory, context);
+            case WORKBENCH -> new SeamWorkbenchScreenHandler(syncId, playerInventory, context);
         };
     }
 
+    /**
+     * Returns the appropriate ScreenHandlerType for each ScreenType.
+     *
+     */
     private static ScreenHandlerType<?> getScreenHandlerType(ScreenType type) {
         return switch (type) {
-            case ANVIL -> ScreenHandlerType.ANVIL;
-            case CARTOGRAPHY -> ScreenHandlerType.CARTOGRAPHY_TABLE;
-            case ENCHANTMENT -> ScreenHandlerType.ENCHANTMENT;
-            case DISPOSAL -> null;
-            case ENDERCHEST -> null;
-            case GRINDSTONE -> null;
-            case LOOM -> null;
-            case SMITHING -> null;
-            case STONECUTTER -> null;
-            case WORKBENCH -> null;
+            case ANVIL        -> ScreenHandlerType.ANVIL;
+            case CARTOGRAPHY  -> ScreenHandlerType.CARTOGRAPHY_TABLE;
+            case ENCHANTMENT  -> ScreenHandlerType.ENCHANTMENT;
+            case GRINDSTONE   -> ScreenHandlerType.GRINDSTONE;
+            case LOOM         -> ScreenHandlerType.LOOM;
+            case SMITHING     -> ScreenHandlerType.SMITHING;
+            case STONECUTTER  -> ScreenHandlerType.STONECUTTER;
+            case WORKBENCH    -> ScreenHandlerType.CRAFTING;
         };
     }
 
+    /**
+     * Returns how many slots we track (We track this to prevent dupes/item loss)
+     */
     private static int getSlotCount(ScreenType type) {
         return switch (type) {
-            case STONECUTTER -> 1;
-            case ANVIL, GRINDSTONE -> 2;
-            case CARTOGRAPHY, ENCHANTMENT, LOOM, SMITHING -> 3;
-            case WORKBENCH -> 10;
-            case DISPOSAL, ENDERCHEST -> 0;
+            case STONECUTTER                 -> 1;
+            case ANVIL, GRINDSTONE           -> 2;
+            case CARTOGRAPHY, ENCHANTMENT,
+                 LOOM, SMITHING             -> 3;
+            case WORKBENCH                   -> 10;
         };
     }
 
@@ -66,25 +84,97 @@ public class InventoryScreens<T extends ScreenHandler> extends ScreenHandler {
         return true;
     }
 
-    @Override
-    public void onClosed(PlayerEntity player) {
-        super.onClosed(player);
-
-        // Dump items back to player or drop on ground
-        for (int i = 1; i < slotCount; i++) {
-            Slot slot = this.getSlot(i);
-            ItemStack stack = slot.getStack();
-            if (!stack.isEmpty()) {
-                if (!player.giveItemStack(stack)) {
-                    player.dropItem(stack, false);
-                }
-                slot.setStack(ItemStack.EMPTY);
-            }
-        }
-    }
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int slotIndex) {
         return ItemStack.EMPTY;
+    }
+
+    public static class SeamAnvilScreenHandler extends AnvilScreenHandler {
+        public SeamAnvilScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamCartographyScreenHandler extends CartographyTableScreenHandler {
+        public SeamCartographyScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamEnchantmentScreenHandler extends EnchantmentScreenHandler {
+        public SeamEnchantmentScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamGrindstoneScreenHandler extends GrindstoneScreenHandler {
+        public SeamGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamLoomScreenHandler extends LoomScreenHandler {
+        public SeamLoomScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamSmithingScreenHandler extends SmithingScreenHandler {
+        public SeamSmithingScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamStonecutterScreenHandler extends StonecutterScreenHandler {
+        public SeamStonecutterScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
+    }
+
+    public static class SeamWorkbenchScreenHandler extends CraftingScreenHandler {
+        public SeamWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+            super(syncId, playerInventory, context);
+        }
+
+        @Override
+        public boolean canUse(PlayerEntity player) {
+            return true;
+        }
     }
 }

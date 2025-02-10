@@ -8,6 +8,7 @@ import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
+import me.novoro.seam.commands.inventories.InventoryCommands;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.utils.SeamLogger;
@@ -83,6 +84,19 @@ public class Seam implements ModInitializer {
 
         // Fun Commands
         new SmiteCommand().register(dispatcher);
+
+        // Inventory Commands
+        new InventoryCommands.AnvilCommand().register(dispatcher);
+        new InventoryCommands.CartographyCommand().register(dispatcher);
+        //new InventoryCommands.DisposalCommand().register(dispatcher);
+        //new InventoryCommands.EnderChestCommand().register(dispatcher);
+        new InventoryCommands.EnchantmentTableCommand().register(dispatcher);
+        new InventoryCommands.GrindstoneCommand().register(dispatcher);
+       // new InventoryCommands.InvseeCommand().register(dispatcher);
+        new InventoryCommands.LoomCommand().register(dispatcher);
+        new InventoryCommands.SmithingCommand().register(dispatcher);
+        new InventoryCommands.StonecutterCommand().register(dispatcher);
+        new InventoryCommands.WorkbenchCommand().register(dispatcher);
 
     }
 

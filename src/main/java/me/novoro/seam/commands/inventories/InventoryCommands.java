@@ -3,7 +3,6 @@ package me.novoro.seam.commands.inventories;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
-import me.novoro.seam.config.LangManager;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.ServerCommandSource;
@@ -12,46 +11,59 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.Map;
-
 /**
  * Registers all inventory-related commands under one class.
  */
 public final class InventoryCommands {
 
-
     private static abstract class InventoryCommand extends CommandBase {
+
         private final InventoryScreens.ScreenType type;
         private final Identifier stat;
         private final String translationKey;
 
+        /**
+         * @param name           The command name, ex: "anvil".
+         * @param permission     The permission node, ex: "seam.anvil".
+         * @param type           The custom screen type to open (defined in InventoryScreens).
+         * @param stat           The relevant statistic to increment (e.g., Stats.INTERACT_WITH_ANVIL).
+         * @param translationKey The translation key for the screen title.
+         */
         protected InventoryCommand(String name, String permission, InventoryScreens.ScreenType type, Identifier stat, String translationKey) {
-            super(name, permission, 2);
+            super(name, permission, 4);
             this.type = type;
             this.stat = stat;
             this.translationKey = translationKey;
         }
 
+
         @Override
         public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
+
             return command.executes(ctx -> openInventory(ctx.getSource()));
         }
 
+        /**
+         * Attempts to open the specified inventory screen for the player executing the command.
+         *
+         * @param source The command source, typically the player.
+         * @return 1 if success, 0 if player is null
+         */
         private int openInventory(ServerCommandSource source) {
             ServerPlayerEntity player = source.getPlayer();
-            if (player == null) return 0;
+
 
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
                     (syncId, inventory, playerEntity) ->
-                            new InventoryScreens<>(syncId, inventory, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()), type),
+                            InventoryScreens.createHandler(syncId, inventory,
+                            ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()), type),
                     Text.translatable(translationKey)
             ));
 
+            // Increment the relevant stat (This is just for the Statistics menu nerds)
             if (stat != null) {
                 player.incrementStat(stat);
             }
-
-            LangManager.sendLang(source, "Inventory-Opened", Map.of("{inventory}", translationKey));
             return Command.SINGLE_SUCCESS;
         }
     }
@@ -68,17 +80,41 @@ public final class InventoryCommands {
         }
     }
 
+    /*
+    public static class DisposalCommand extends InventoryCommand {
+        public DisposalCommand() {
+            super("disposal", "seam.disposal", InventoryScreens.ScreenType.DISPOSAL, null, "Disposal");
+        }
+    }
+    */
+
     public static class EnchantmentTableCommand extends InventoryCommand {
         public EnchantmentTableCommand() {
             super("enchantmenttable", "seam.enchantmenttable", InventoryScreens.ScreenType.ENCHANTMENT, null, "container.enchant");
         }
     }
 
+    /*
+    public static class EnderChestCommand extends InventoryCommand {
+        public EnderChestCommand() {
+            super("enderchest", "seam.enderchest", InventoryScreens.ScreenType.ENDERCHEST, null, "container.enderchest");
+        }
+    }
+     */
+
     public static class GrindstoneCommand extends InventoryCommand {
         public GrindstoneCommand() {
             super("grindstone", "seam.grindstone", InventoryScreens.ScreenType.GRINDSTONE, Stats.INTERACT_WITH_GRINDSTONE, "container.grindstone_title");
         }
     }
+
+    /*
+    public static class InvseeCommand extends InventoryCommand {
+        public InvseeCommand() {
+            super("invsee", "seam.invsee", InventoryScreens.ScreenType.ENDERCHEST, null, "container.enchant");
+        }
+    }
+     */
 
     public static class LoomCommand extends InventoryCommand {
         public LoomCommand() {
