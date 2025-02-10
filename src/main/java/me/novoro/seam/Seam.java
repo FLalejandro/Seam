@@ -9,6 +9,7 @@ import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.commands.teleportation.AscendCommand;
+import me.novoro.seam.commands.teleportation.DescendCommand;
 import me.novoro.seam.commands.teleportation.TopCommand;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
@@ -75,6 +76,7 @@ public class Seam implements ModInitializer {
 
         // Teleportation Commands
         new AscendCommand().register(dispatcher);
+        new DescendCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
 
         // Fun Commands

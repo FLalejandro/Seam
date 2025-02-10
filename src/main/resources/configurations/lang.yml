@@ -2,12 +2,20 @@ Lang:
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
 
   # Ascend
-  Ascend-Location-Not-Found: "<red>No place to ascend to!"
-  Ascend-Location-Not-Found-Other: "<red>{target} has no place to ascend to!"
+  Ascend-Location-Not-Found: "<red>No safe location to ascend to!"
+  Ascend-Location-Not-Found-Other: "<red>{target} has no safe location to ascend to!"
   Ascended-Message: "<green>Successfully ascended."
   Ascended-Message-Other: "<green>Successfully ascended {target}."
   Ascended-Floors-Message: "<green>Successfully ascended {floor} floors."
   Ascended-Floors-Message-Other: "<green>Successfully ascended {target} {floor} floors."
+
+  # Descend
+  Descend-Location-Not-Found: "<red>No safe location to descend to!"
+  Descend-Location-Not-Found-Other: "<red>{target} has no safe location to descend to!"
+  Descended-Message: "<green>Successfully descended."
+  Descended-Message-Other: "<green>Successfully descended {target}."
+  Descended-Floors-Message: "<green>Successfully descended {floor} floors."
+  Descended-Floors-Message-Other: "<green>Successfully descended {target} {floor} floors."
 
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
