@@ -22,35 +22,6 @@ Commands:
   smithing: true
   stonecutter: true
   workbench: true
-  ascend: true
-  biomertp: true
-  clearinventory: true
-  hat: true
-  descend: true
-  enchant: true
-  feed: true
-  fly: true
-  gamemode: true # Contains /gma, /gmc, /gms, /gmsp
-  godmode: true
-  heal: true
-  ignore: true # ToDo: move into chat module?
-  itemeditor: true
-  mail: false
-  message: true # Contains /msg, /reply, /socialspy # ToDo: move into chat module?
-  near: true
-  nightvision: true
-  playtime: true
-  repair: true
-  rtp: true
-  seen: true
-  speed: true
-  text-commands: true
-  time: true
-  tp: true # contains /tphere, /tpoffline
-  tpa: true # Contains /tpa, /tpahere, /tpaccept, /tpdeny, /tpacancel
-  top: true
-  unalive: true
-
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
