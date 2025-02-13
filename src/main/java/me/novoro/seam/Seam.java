@@ -41,7 +41,7 @@ public class Seam implements ModInitializer {
         Seam.instance = this;
 
         // Proudly display SEAM Branding in everyone's console
-        displayAsciiArt();
+        this.displayAsciiArt();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.server = server;
