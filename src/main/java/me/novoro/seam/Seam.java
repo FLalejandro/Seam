@@ -8,6 +8,7 @@ import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
+import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.utils.SeamLogger;
@@ -39,6 +40,9 @@ public class Seam implements ModInitializer {
     public void onInitialize() {
         Seam.instance = this;
 
+        // Proudly display SEAM Branding in everyone's console
+        this.displayAsciiArt();
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.server = server;
             this.checkPermissionProvider();
@@ -51,6 +55,19 @@ public class Seam implements ModInitializer {
         // Registers all of Seam's commands.
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> this.registerCommands(dispatcher));
     }
+
+    /**
+     * Displays an ASCII Art representation of the mod's name in the log.
+     */
+    private void displayAsciiArt() {
+        SeamLogger.info("   _____ ______          __  __  ");
+        SeamLogger.info("  / ____|  ____|   /\\   |  \\/  | ");
+        SeamLogger.info(" | (___ | |__     /  \\  | \\  / | ");
+        SeamLogger.info("  \\___ \\|  __|   / /\\ \\ | |\\/| | ");
+        SeamLogger.info("  ____) | |____ / ____ \\| |  | | ");
+        SeamLogger.info(" |_____/|______/_/    \\_\\_|  |_| ");
+    }
+
 
     // Reloads Seam's various configs.
     public void reloadConfigs() {
@@ -65,9 +82,22 @@ public class Seam implements ModInitializer {
         // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
-
         // Fun Commands
         new SmiteCommand().register(dispatcher);
+
+        // Inventory Commands
+        new AnvilCommand().register(dispatcher);
+        new CartographyCommand().register(dispatcher);
+        new DisposalCommand().register(dispatcher);
+        //new EnderChestCommand().register(dispatcher);
+        new EnchantmentTableCommand().register(dispatcher);
+        new GrindstoneCommand().register(dispatcher);
+       //new InvseeCommand().register(dispatcher);
+        new LoomCommand().register(dispatcher);
+        new SmithingCommand().register(dispatcher);
+        new StonecutterCommand().register(dispatcher);
+        new WorkbenchCommand().register(dispatcher);
+
     }
 
     /**
