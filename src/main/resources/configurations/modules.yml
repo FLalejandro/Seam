@@ -11,14 +11,23 @@ Modules:
 
 # You can stop individual commands and command groups from being registered below.
 Commands:
+  smite: true
+  anvil: true
+  cartography: true
+  disposal: true
+  enderchest: true
+  grindstone: true
+  invsee: true
+  loom: true
+  smithing: true
+  stonecutter: true
+  workbench: true
   ascend: true
   biomertp: true
   clearinventory: true
   hat: true
   descend: true
-  disposal: true
   enchant: true
-  enchantmenttable: true
   feed: true
   fly: true
   gamemode: true # Contains /gma, /gmc, /gms, /gmsp
@@ -34,7 +43,6 @@ Commands:
   repair: true
   rtp: true
   seen: true
-  smite: true
   speed: true
   text-commands: true
   time: true
@@ -42,7 +50,7 @@ Commands:
   tpa: true # Contains /tpa, /tpahere, /tpaccept, /tpdeny, /tpacancel
   top: true
   unalive: true
-  workstations: true # Contains anvil, cartography, enderchest, grindstone, loom, smithing, stonecutter, and workbench # ToDo: split these
+
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

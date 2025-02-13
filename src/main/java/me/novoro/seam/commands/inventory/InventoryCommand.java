@@ -13,23 +13,22 @@ import net.minecraft.util.Identifier;
 
 public class InventoryCommand extends CommandBase {
 
-    // Utilizing Neo's Enum for ScreenType ^^
     private final ScreenType type;
     private final Identifier stat;
-    private final String translationKey;
+    private final Text screenTitle;
 
     /**
      * @param name           The command name, ex: "anvil".
      * @param permission     The permission node, ex: "seam.anvil".
      * @param type           The custom screen type to open (from our enum).
      * @param stat           The relevant statistic to increment (e.g., Stats.INTERACT_WITH_ANVIL).
-     * @param translationKey The translation key for the screen title.
+     * @param screenTitle    The screen's title.
      */
-    protected InventoryCommand(String name, String permission, ScreenType type, Identifier stat, String translationKey) {
-        super(name, permission, 4);
+    protected InventoryCommand(String name, String permission, ScreenType type, Identifier stat, Text screenTitle, String... aliases) {
+        super(name, permission, 4, aliases);
         this.type = type;
         this.stat = stat;
-        this.translationKey = translationKey;
+        this.screenTitle = screenTitle;
     }
 
     @Override
@@ -46,14 +45,12 @@ public class InventoryCommand extends CommandBase {
 
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
                 (syncId, inventory, playerEntity) ->
-                        type.createHandler(syncId, inventory, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos())),
-                Text.translatable(translationKey)
+                        this.type.createHandler(syncId, inventory, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos())),
+                this.screenTitle
         ));
 
-        // Increment the relevant stat if applicable.
-        if (stat != null) {
-            player.incrementStat(stat);
-        }
+        if (this.stat != null) player.incrementStat(this.stat);
+
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -19,7 +19,7 @@ public enum ScreenType {
         }
     }, 3),
     DISPOSAL((syncID, playerInventory, context) ->
-            new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, syncID, playerInventory, new SimpleInventory(27), 3),
+            new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X4, syncID, playerInventory, new SimpleInventory(27), 3),
             0),
     ENCHANTMENT((syncID, playerInventory, context) -> new EnchantmentScreenHandler(syncID, playerInventory, context) {
         @Override

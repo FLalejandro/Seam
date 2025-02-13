@@ -88,11 +88,11 @@ public class Seam implements ModInitializer {
         // Inventory Commands
         new AnvilCommand().register(dispatcher);
         new CartographyCommand().register(dispatcher);
-        //new InventoryCommand.DisposalCommand().register(dispatcher);
-        //new InventoryCommand.EnderChestCommand().register(dispatcher);
+        new DisposalCommand().register(dispatcher);
+        //new EnderChestCommand().register(dispatcher);
         new EnchantmentTableCommand().register(dispatcher);
         new GrindstoneCommand().register(dispatcher);
-       // new InventoryCommand.InvseeCommand().register(dispatcher);
+       //new InvseeCommand().register(dispatcher);
         new LoomCommand().register(dispatcher);
         new SmithingCommand().register(dispatcher);
         new StonecutterCommand().register(dispatcher);
