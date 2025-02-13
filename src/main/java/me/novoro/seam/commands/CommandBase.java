@@ -61,7 +61,7 @@ public abstract class CommandBase {
      * Registers this command to the dispatcher, unless it is disabled.
      */
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        //if (!this.bypassCommandCheck() && !ModuleManager.isCommandEnabled(this)) return;
+        if (!this.bypassCommandCheck() && !ModuleManager.isCommandEnabled(this)) return;
         dispatcher.register(this.getCommand(this.command));
         for (String alias : this.aliases) dispatcher.register(this.getCommand(alias));
     }
