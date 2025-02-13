@@ -11,7 +11,9 @@ Modules:
 
 # You can stop individual commands and command groups from being registered below.
 Commands:
+  # Fun Commands
   smite: true
+  # Inventory Commands
   anvil: true
   cartography: true
   disposal: true
