@@ -24,6 +24,10 @@ Commands:
   smithing: true
   stonecutter: true
   workbench: true
+  # Utility Commands
+  clearinventory: true
+  feed: true
+  heal: true
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

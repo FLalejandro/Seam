@@ -9,6 +9,7 @@ import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.commands.inventory.*;
+import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.utils.SeamLogger;
@@ -89,15 +90,19 @@ public class Seam implements ModInitializer {
         new AnvilCommand().register(dispatcher);
         new CartographyCommand().register(dispatcher);
         new DisposalCommand().register(dispatcher);
-        //new EnderChestCommand().register(dispatcher);
+        new EnderChestCommand().register(dispatcher);
         new EnchantmentTableCommand().register(dispatcher);
         new GrindstoneCommand().register(dispatcher);
-       //new InvseeCommand().register(dispatcher);
+        new InvseeCommand().register(dispatcher);
         new LoomCommand().register(dispatcher);
         new SmithingCommand().register(dispatcher);
         new StonecutterCommand().register(dispatcher);
         new WorkbenchCommand().register(dispatcher);
 
+        // Utility Commands
+        new ClearInventoryCommand().register(dispatcher);
+        new FeedCommand().register(dispatcher);
+        new HealCommand().register(dispatcher);
     }
 
     /**

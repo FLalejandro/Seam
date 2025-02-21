@@ -27,12 +27,18 @@ public enum ScreenType {
             return true;
         }
     }, 3),
+    ENDERCHEST((syncID, playerInventory, context) ->
+            new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, syncID, playerInventory, new SimpleInventory(27), 3),
+            0),
     GRINDSTONE((syncID, playerInventory, context) -> new GrindstoneScreenHandler(syncID, playerInventory, context) {
         @Override
         public boolean canUse(PlayerEntity player) {
             return true;
         }
     }, 2),
+    INVSEE((syncID, playerInventory, context) ->
+            new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X5, syncID, playerInventory, new SimpleInventory(36), 4),
+            0),
     LOOM((syncID, playerInventory, context) -> new LoomScreenHandler(syncID, playerInventory, context) {
         @Override
         public boolean canUse(PlayerEntity player) {

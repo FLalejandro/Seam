@@ -7,5 +7,20 @@ Lang:
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
+  # Clear Inventory
+  ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
+  ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
+  ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
+
+  # Feed
+  Feed-Self-Message: "<gold>You have been fed."
+  Feed-Other-Message: "<gold>Fed <red>{player}."
+  Feed-All-Message: "<gold>You have fed <red>{amount} <gold>players."
+
+  # Heal
+  Heal-Self-Message: "<gold>You have been healed."
+  Heal-Other-Message: "<gold>Healed <red>{player}."
+  Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
+
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
