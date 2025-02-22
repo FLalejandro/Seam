@@ -38,9 +38,8 @@ public class ClearInventoryCommand extends CommandBase {
                     if (players.size() == 1) {
                         String firstPlayer = players.getFirst().getName().getString();
                         LangManager.sendLang(context.getSource(), "ClearInventory-Other-Message", Map.of("{player}", firstPlayer));
-                    } else {
-                        LangManager.sendLang(context.getSource(), "ClearInventory-All-Message", Map.of("{amount}", String.valueOf(players.size())));
-                    }
+                    } else LangManager.sendLang(context.getSource(), "ClearInventory-All-Message", Map.of("{amount}", String.valueOf(players.size())));
+
                     return Command.SINGLE_SUCCESS;
                 })
         );
