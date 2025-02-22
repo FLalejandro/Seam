@@ -7,6 +7,9 @@ Lang:
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
+  # Broadcast
+  Broadcast-Prefix: "<gold>[<dark_red>Broadcast<gold>] <green>"
+
   # Clear Inventory
   ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
   ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."

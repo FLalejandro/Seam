@@ -100,6 +100,7 @@ public class Seam implements ModInitializer {
         new WorkbenchCommand().register(dispatcher);
 
         // Utility Commands
+        new BroadcastCommand().register(dispatcher);
         new ClearInventoryCommand().register(dispatcher);
         new FeedCommand().register(dispatcher);
         new HealCommand().register(dispatcher);

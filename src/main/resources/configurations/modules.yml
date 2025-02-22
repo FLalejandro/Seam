@@ -25,6 +25,7 @@ Commands:
   stonecutter: true
   workbench: true
   # Utility Commands
+  broadcast: true
   clearinventory: true
   feed: true
   heal: true

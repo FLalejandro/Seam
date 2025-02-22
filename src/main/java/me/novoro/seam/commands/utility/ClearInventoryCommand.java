@@ -24,7 +24,7 @@ public class ClearInventoryCommand extends CommandBase {
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
             ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
-            ClearInventory(player);
+            clearInventory(player);
             LangManager.sendLang(context.getSource(), "ClearInventory-Self-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
@@ -32,7 +32,7 @@ public class ClearInventoryCommand extends CommandBase {
                 .executes(context -> {
                     List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target").stream().toList();
                     for (ServerPlayerEntity player : players) {
-                        ClearInventory(player);
+                        clearInventory(player);
                         LangManager.sendLang(player, "ClearInventory-Self-Message");
                     }
                     if (players.size() == 1) {
@@ -47,12 +47,12 @@ public class ClearInventoryCommand extends CommandBase {
     }
 
     /**
-     * Clears the inventory the target player(s).
+     * Clears the target's inventory.
      *
      * @param ctx     The command context.
      * @param targets The target players.
      */
-    private static void ClearInventory(ServerPlayerEntity ctx, ServerPlayerEntity... targets) {
+    private static void clearInventory(ServerPlayerEntity ctx, ServerPlayerEntity... targets) {
         ServerCommandSource source = ctx.getCommandSource();
         ServerPlayerEntity player = targets.length > 0 ? targets[0] : source.getPlayer();
 
