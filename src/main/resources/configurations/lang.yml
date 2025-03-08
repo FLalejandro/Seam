@@ -15,10 +15,24 @@ Lang:
   Feed-Other-Message: "<gold>Fed <red>{player}."
   Feed-All-Message: "<gold>You have fed <red>{amount} <gold>players."
 
+  # God
+  God-Enabled-Message: "<gold>You are now invulnerable."
+  God-Disabled-Message: "<gold>You are now vulnerable."
+  God-Other-Enabled-Message: "<red>{player} <gold>is now invulnerable."
+  God-Other-Disabled-Message: "<red>{player} <gold>is now vulnerable."
+  God-All-Message: "<gold>You have toggled invulnerability for <red>{amount} <gold>players."
+
   # Heal
   Heal-Self-Message: "<gold>You have been healed."
   Heal-Other-Message: "<gold>Healed <red>{player}."
   Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
+
+  # Night Vision
+  NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
+  NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
+  NightVision-Other-Enabled-Message: "<gold>Night Vision has been enabled for <red>{player}."
+  NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}."
+  NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
 
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"

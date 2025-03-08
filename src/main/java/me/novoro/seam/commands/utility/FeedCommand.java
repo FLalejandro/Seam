@@ -29,7 +29,6 @@ public class FeedCommand extends CommandBase {
                 .requires(source -> this.permission(source, "seam.feedtargets", 4))
                 .executes(context -> {
                     Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
-                    // Loop directly over the collection:
                     players.forEach(player -> {
                         feedPlayer(player);
                         LangManager.sendLang(player, "Feed-Self-Message");
@@ -56,6 +55,4 @@ public class FeedCommand extends CommandBase {
             target.getHungerManager().setSaturationLevel(20);
         }
     }
-
-
 }

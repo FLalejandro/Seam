@@ -11,6 +11,9 @@ Modules:
 
 # You can stop individual commands and command groups from being registered below.
 Commands:
+  # Ability Commands
+  god: true
+  nightvision: true
   # Fun Commands
   smite: true
   # Inventory Commands
