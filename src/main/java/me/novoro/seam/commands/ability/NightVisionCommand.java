@@ -1,3 +1,5 @@
+// ToDo: Hook this up w/ player storage
+
 package me.novoro.seam.commands.ability;
 
 import com.mojang.brigadier.Command;

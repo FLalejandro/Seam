@@ -1,3 +1,5 @@
+// ToDo: Hook this up w/ player storage
+
 package me.novoro.seam.commands.ability;
 
 import com.mojang.brigadier.Command;
@@ -11,6 +13,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Provides command to toggle God mode for players.
+ */
 public class GodCommand extends CommandBase {
     public GodCommand() {
         super("god", "seam.god", 2);
