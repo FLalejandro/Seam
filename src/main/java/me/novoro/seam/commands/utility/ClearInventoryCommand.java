@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -23,21 +23,20 @@ public class ClearInventoryCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
-            ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
-            clearInventory(player);
+            ClearInventoryCommand.clearInventory(context.getSource().getPlayerOrThrow());
             LangManager.sendLang(context.getSource(), "ClearInventory-Self-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.clearinventorytargets", 4))
                 .executes(context -> {
-                    List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target").stream().toList();
-                    for (ServerPlayerEntity player : players) {
+                    Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
+                    players.forEach(player -> {
                         clearInventory(player);
                         LangManager.sendLang(player, "ClearInventory-Self-Message");
-                    }
+                    });
                     if (players.size() == 1) {
-                        String firstPlayer = players.getFirst().getName().getString();
-                        LangManager.sendLang(context.getSource(), "ClearInventory-Other-Message", Map.of("{player}", firstPlayer));
+                        ServerPlayerEntity firstPlayer = players.iterator().next();
+                        LangManager.sendLang(context.getSource(), "ClearInventory-Other-Message", Map.of("{player}", firstPlayer.getName().getString()));
                     } else LangManager.sendLang(context.getSource(), "ClearInventory-All-Message", Map.of("{amount}", String.valueOf(players.size())));
 
                     return Command.SINGLE_SUCCESS;
@@ -46,28 +45,23 @@ public class ClearInventoryCommand extends CommandBase {
     }
 
     /**
-     * Clears the target's inventory.
+     * Clears the inventory of each target player.
      *
-     * @param ctx     The command context.
      * @param targets The target players.
      */
-    private static void clearInventory(ServerPlayerEntity ctx, ServerPlayerEntity... targets) {
-        ServerCommandSource source = ctx.getCommandSource();
-        ServerPlayerEntity player = targets.length > 0 ? targets[0] : source.getPlayer();
+    private static void clearInventory(ServerPlayerEntity... targets) {
+        for (ServerPlayerEntity target : targets) {
+            // Clear main inventory
+            target.getInventory().clear();
 
-        if (player == null) return;
+            // Clear armor slots
+            for (int i = 0; i < target.getInventory().armor.size(); i++) {
+                target.getInventory().armor.set(i, ItemStack.EMPTY);
+            }
 
-        // Clearing main inventory
-        player.getInventory().clear();
-
-        // Clearing armor slots
-        for (int i = 0; i < player.getInventory().armor.size(); i++) {
-            player.getInventory().armor.set(i, ItemStack.EMPTY);
+            // Clear off-hand slot
+            target.getInventory().offHand.set(0, ItemStack.EMPTY);
         }
-
-        // Clearing off-hand slot
-        player.getInventory().offHand.set(0, ItemStack.EMPTY);
-
     }
 }
 

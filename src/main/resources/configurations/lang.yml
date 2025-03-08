@@ -1,11 +1,6 @@
 Lang:
+  # Mod Prefix
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
-
-  # Smite
-  Smite-Message: "<green>Successfully summoned lightning!"
-  Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
-  Smited-Message: "<gold>The gods chose to smite you today!"
-  Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
   # Broadcast
   Broadcast-Prefix: "<gold>[<dark_red>Broadcast<gold>] <green>"
@@ -24,6 +19,12 @@ Lang:
   Heal-Self-Message: "<gold>You have been healed."
   Heal-Other-Message: "<gold>Healed <red>{player}."
   Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
+
+  # Smite
+  Smite-Message: "<green>Successfully summoned lightning!"
+  Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
+  Smited-Message: "<gold>The gods chose to smite you today!"
+  Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

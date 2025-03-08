@@ -17,9 +17,7 @@ Commands:
   anvil: true
   cartography: true
   disposal: true
-  enderchest: true
   grindstone: true
-  invsee: true
   loom: true
   smithing: true
   stonecutter: true
