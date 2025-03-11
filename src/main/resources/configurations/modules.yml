@@ -27,6 +27,7 @@ Commands:
   workbench: true
   # Utility Commands
   broadcast: true
+  checktime: true
   clearinventory: true
   feed: true
   heal: true
