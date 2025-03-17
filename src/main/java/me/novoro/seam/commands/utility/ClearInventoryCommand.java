@@ -24,21 +24,16 @@ public class ClearInventoryCommand extends CommandBase {
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
             ClearInventoryCommand.clearInventory(context.getSource().getPlayerOrThrow());
-            LangManager.sendLang(context.getSource(), "ClearInventory-Self-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.clearinventorytargets", 4))
                 .executes(context -> {
                     Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
-                    players.forEach(player -> {
-                        clearInventory(player);
-                        LangManager.sendLang(player, "ClearInventory-Self-Message");
-                    });
+                    players.forEach(ClearInventoryCommand::clearInventory);
                     if (players.size() == 1) {
                         ServerPlayerEntity firstPlayer = players.iterator().next();
                         LangManager.sendLang(context.getSource(), "ClearInventory-Other-Message", Map.of("{player}", firstPlayer.getName().getString()));
                     } else LangManager.sendLang(context.getSource(), "ClearInventory-All-Message", Map.of("{amount}", String.valueOf(players.size())));
-
                     return Command.SINGLE_SUCCESS;
                 })
         );
@@ -61,7 +56,9 @@ public class ClearInventoryCommand extends CommandBase {
 
             // Clear off-hand slot
             target.getInventory().offHand.set(0, ItemStack.EMPTY);
+
+            // Send message to the player
+            LangManager.sendLang(target, "ClearInventory-Self-Message");
         }
     }
 }
-

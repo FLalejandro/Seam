@@ -23,16 +23,12 @@ public class FeedCommand extends CommandBase {
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
             FeedCommand.feedPlayer(context.getSource().getPlayerOrThrow());
-            LangManager.sendLang(context.getSource(), "Feed-Self-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.feedtargets", 4))
                 .executes(context -> {
                     Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
-                    players.forEach(player -> {
-                        feedPlayer(player);
-                        LangManager.sendLang(player, "Feed-Self-Message");
-                    });
+                    players.forEach(FeedCommand::feedPlayer);
                     if (players.size() == 1) {
                         ServerPlayerEntity firstPlayer = players.iterator().next();
                         LangManager.sendLang(context.getSource(), "Feed-Other-Message", Map.of("{player}", firstPlayer.getName().getString()));
@@ -53,6 +49,7 @@ public class FeedCommand extends CommandBase {
         for (ServerPlayerEntity target : targets) {
             target.getHungerManager().setFoodLevel(20);
             target.getHungerManager().setSaturationLevel(20);
+            LangManager.sendLang(target, "Feed-Self-Message");
         }
     }
 }

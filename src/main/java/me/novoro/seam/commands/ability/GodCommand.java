@@ -1,5 +1,3 @@
-// ToDo: Hook this up w/ player storage
-
 package me.novoro.seam.commands.ability;
 
 import com.mojang.brigadier.Command;
@@ -55,6 +53,7 @@ public class GodCommand extends CommandBase {
      * @param targets the target players.
      * @return true if god mode is enabled after toggling, false otherwise.
      */
+    // ToDo: Move toggles to plaer data
     private static boolean toggleGod(ServerPlayerEntity... targets) {
         for (ServerPlayerEntity target : targets) {
             boolean wasGod = target.getAbilities().invulnerable;

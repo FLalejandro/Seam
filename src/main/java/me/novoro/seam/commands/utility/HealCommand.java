@@ -23,16 +23,12 @@ public class HealCommand extends CommandBase {
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
             HealCommand.healPlayer(context.getSource().getPlayerOrThrow());
-            LangManager.sendLang(context.getSource(), "Heal-Self-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.healtargets", 4))
                 .executes(context -> {
                     Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
-                    players.forEach(player -> {
-                        healPlayer(player);
-                        LangManager.sendLang(player, "Heal-Self-Message");
-                    });
+                    players.forEach(HealCommand::healPlayer);
                     if (players.size() == 1) {
                         ServerPlayerEntity firstPlayer = players.iterator().next();
                         LangManager.sendLang(context.getSource(), "Heal-Other-Message", Map.of("{player}", firstPlayer.getName().getString()));
@@ -53,7 +49,9 @@ public class HealCommand extends CommandBase {
         // Set Health to max
         for (ServerPlayerEntity target : targets) {
             target.setHealth(target.getMaxHealth());
+            LangManager.sendLang(target, "Heal-Self-Message");
         }
+
     }
 
 }

@@ -27,9 +27,9 @@ public class BroadcastCommand extends CommandBase {
         return command.then(
                 argument("message", StringArgumentType.greedyString())
                         .executes(ctx -> {
+                            //ToDo: Neo set up adventure for dis pls
                             String message = StringArgumentType.getString(ctx, "message");
-                            String prefix = LangManager.getLang("Broadcast-Prefix");
-                            if (prefix != null) message = prefix + message;
+                            message = LangManager.getLang("Broadcast-Prefix") + message;
                             Component adventureComponent = ColorUtil.parseColour(message);
 
                             Collection<ServerPlayerEntity> players = getServer().getPlayerManager().getPlayerList();

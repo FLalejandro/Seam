@@ -56,6 +56,7 @@ public class NightVisionCommand extends CommandBase {
      * @param targets the target players.
      * @return true if night vision is enabled after toggling, false otherwise.
      */
+    // ToDo: Move toggles to plaer data
     private static boolean toggleNightVision(ServerPlayerEntity... targets) {
         for (ServerPlayerEntity target : targets) {
             boolean hadEffect = target.hasStatusEffect(StatusEffects.NIGHT_VISION);
