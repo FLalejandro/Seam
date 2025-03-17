@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
+import me.novoro.seam.config.SettingsManager;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,14 +43,12 @@ public class FeedCommand extends CommandBase {
     /**
      * Feeds the target players.
      *
-     * @param targets The target players.
+     * @param target The target players.
      */
-    private static void feedPlayer(ServerPlayerEntity... targets) {
-        // Set Hunger and Saturation to max
-        for (ServerPlayerEntity target : targets) {
-            target.getHungerManager().setFoodLevel(20);
-            target.getHungerManager().setSaturationLevel(20);
-            LangManager.sendLang(target, "Feed-Self-Message");
-        }
+    private static void feedPlayer(ServerPlayerEntity target) {
+        // Set Hunger to max
+        target.getHungerManager().setFoodLevel(20);
+        if (Boolean.parseBoolean(SettingsManager.getSetting("Feed-Fills-Saturation"))) target.getHungerManager().setSaturationLevel(20);
+        LangManager.sendLang(target, "Feed-Self-Message");
     }
 }

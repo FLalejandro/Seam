@@ -14,6 +14,7 @@ import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
+import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -36,8 +37,9 @@ public class Seam implements ModInitializer {
     private MinecraftServer server;
     private PermissionProvider permissionProvider = null;
 
-    private final ModuleManager moduleManager = new ModuleManager();
     private final LangManager langManager = new LangManager();
+    private final ModuleManager moduleManager = new ModuleManager();
+    private final SettingsManager settingsManager = new SettingsManager();
 
     @Override
     public void onInitialize() {
@@ -76,7 +78,8 @@ public class Seam implements ModInitializer {
     public void reloadConfigs() {
         // Lang
         this.langManager.reload();
-
+        // Settings
+        this.settingsManager.reload();
         // ToDo: Reload our *other* configs lol
     }
 

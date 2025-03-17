@@ -29,7 +29,7 @@ public class BroadcastCommand extends CommandBase {
                         .executes(ctx -> {
                             //ToDo: Neo set up adventure for dis pls
                             String message = StringArgumentType.getString(ctx, "message");
-                            message = LangManager.getLang("Broadcast-Prefix") + message;
+                            message = LangManager.getLangSafely("Broadcast-Prefix") + message;
                             Component adventureComponent = ColorUtil.parseColour(message);
 
                             Collection<ServerPlayerEntity> players = getServer().getPlayerManager().getPlayerList();

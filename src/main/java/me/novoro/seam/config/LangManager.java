@@ -5,6 +5,7 @@ import me.novoro.seam.api.configuration.VersionedConfig;
 import me.novoro.seam.utils.ColorUtil;
 import me.novoro.seam.utils.StringUtil;
 import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -33,6 +34,14 @@ public final class LangManager extends VersionedConfig {
         String lang = LangManager.LANG.get(langKey);
         if (lang == null || lang.isEmpty() || lang.isBlank()) return null;
         return lang;
+    }
+
+    /**
+     * Gets any specified lang safely.
+     * @param langKey The key for the lang.
+     * */
+    public static @NotNull String getLangSafely(String langKey) {
+        return LANG.getOrDefault(langKey, "");
     }
 
     /**

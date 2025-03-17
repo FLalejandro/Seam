@@ -1,0 +1,6 @@
+# In this config, you can tweak how certain commands function.
+# Any changes to this config will require either a server restart, or `/seam reload`.
+Feed-Fills-Saturation: true
+
+# Do not touch this. This is solely for future config updates.
+Config-Version: 1.0

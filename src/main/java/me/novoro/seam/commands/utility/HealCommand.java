@@ -42,16 +42,12 @@ public class HealCommand extends CommandBase {
     /**
      * Heals the target player.
      *
-     * @param targets The target players.
-     * @return 1 if successful, 0 otherwise.
+     * @param target The target players.
      */
-    private static void healPlayer(ServerPlayerEntity... targets) {
+    private static void healPlayer(ServerPlayerEntity target) {
         // Set Health to max
-        for (ServerPlayerEntity target : targets) {
-            target.setHealth(target.getMaxHealth());
-            LangManager.sendLang(target, "Heal-Self-Message");
-        }
-
+        target.setHealth(target.getMaxHealth());
+        LangManager.sendLang(target, "Heal-Self-Message");
     }
 
 }

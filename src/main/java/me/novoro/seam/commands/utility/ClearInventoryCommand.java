@@ -42,10 +42,9 @@ public class ClearInventoryCommand extends CommandBase {
     /**
      * Clears the inventory of each target player.
      *
-     * @param targets The target players.
+     * @param target The target players.
      */
-    private static void clearInventory(ServerPlayerEntity... targets) {
-        for (ServerPlayerEntity target : targets) {
+    private static void clearInventory(ServerPlayerEntity target) {
             // Clear main inventory
             target.getInventory().clear();
 
@@ -59,6 +58,5 @@ public class ClearInventoryCommand extends CommandBase {
 
             // Send message to the player
             LangManager.sendLang(target, "ClearInventory-Self-Message");
-        }
     }
 }

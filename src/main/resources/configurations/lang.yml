@@ -41,7 +41,7 @@ Lang:
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
   # Time
-  CheckTime: "<gold>Current World Time: <red>{world-time}"
+  Time-Check: "<gold>Current World Time: <red>{world-time}"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
