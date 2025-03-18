@@ -12,7 +12,7 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -35,17 +35,16 @@ public class SmiteCommand extends CommandBase {
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.smitetargets", 4))
                 .executes(context -> {
-                    List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target").stream().toList();
-                    for (ServerPlayerEntity player : players) {
+                    Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
+                    players.forEach(player -> {
                         this.summonLightning(new Location(player));
                         LangManager.sendLang(player, "Smited-Message");
-                    }
+                    });
                     if (players.size() == 1) {
-                        String firstPlayer = players.getFirst().getName().getString();
-                        LangManager.sendLang(context.getSource(), "Smite-Player-Message", Map.of("{player}", firstPlayer));
-                    } else {
-                        LangManager.sendLang(context.getSource(), "Smite-Multiple-Message", Map.of("{amount}", String.valueOf(players.size())));
-                    }
+                        ServerPlayerEntity firstPlayer = players.iterator().next();
+                        LangManager.sendLang(context.getSource(), "Smite-Player-Message", Map.of("{player}", firstPlayer.getName().getString()));
+                    } else LangManager.sendLang(context.getSource(), "Smite-Multiple-Message", Map.of("{amount}", String.valueOf(players.size())));
+
                     return Command.SINGLE_SUCCESS;
                 })
         );

@@ -1,11 +1,47 @@
 Lang:
+  # Mod Prefix
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
+
+  # Broadcast
+  Broadcast-Prefix: "<gold>[<dark_red>Broadcast<gold>] <green>"
+
+  # Clear Inventory
+  ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
+  ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
+  ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
+
+  # Feed
+  Feed-Self-Message: "<gold>You have been fed."
+  Feed-Other-Message: "<gold>Fed <red>{player}."
+  Feed-All-Message: "<gold>You have fed <red>{amount} <gold>players."
+
+  # God
+  God-Enabled-Message: "<gold>You are now invulnerable."
+  God-Disabled-Message: "<gold>You are now vulnerable."
+  God-Other-Enabled-Message: "<red>{player} <gold>is now invulnerable."
+  God-Other-Disabled-Message: "<red>{player} <gold>is now vulnerable."
+  God-All-Message: "<gold>You have toggled invulnerability for <red>{amount} <gold>players."
+
+  # Heal
+  Heal-Self-Message: "<gold>You have been healed."
+  Heal-Other-Message: "<gold>Healed <red>{player}."
+  Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
+
+  # Night Vision
+  NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
+  NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
+  NightVision-Other-Enabled-Message: "<gold>Night Vision has been enabled for <red>{player}."
+  NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}."
+  NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
 
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
   Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
+
+  # Time
+  Time-Check: "<gold>Current World Time: <red>{world-time}"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

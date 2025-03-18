@@ -7,10 +7,14 @@ import me.novoro.seam.api.permissions.DefaultPermissionProvider;
 import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
+import me.novoro.seam.commands.ability.GodCommand;
+import me.novoro.seam.commands.ability.NightVisionCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.commands.inventory.*;
+import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
+import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -33,8 +37,9 @@ public class Seam implements ModInitializer {
     private MinecraftServer server;
     private PermissionProvider permissionProvider = null;
 
-    private final ModuleManager moduleManager = new ModuleManager();
     private final LangManager langManager = new LangManager();
+    private final ModuleManager moduleManager = new ModuleManager();
+    private final SettingsManager settingsManager = new SettingsManager();
 
     @Override
     public void onInitialize() {
@@ -73,7 +78,8 @@ public class Seam implements ModInitializer {
     public void reloadConfigs() {
         // Lang
         this.langManager.reload();
-
+        // Settings
+        this.settingsManager.reload();
         // ToDo: Reload our *other* configs lol
     }
 
@@ -82,6 +88,10 @@ public class Seam implements ModInitializer {
         // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
+        // Ability Commands
+        new NightVisionCommand().register(dispatcher);
+        new GodCommand().register(dispatcher);
+
         // Fun Commands
         new SmiteCommand().register(dispatcher);
 
@@ -89,15 +99,19 @@ public class Seam implements ModInitializer {
         new AnvilCommand().register(dispatcher);
         new CartographyCommand().register(dispatcher);
         new DisposalCommand().register(dispatcher);
-        //new EnderChestCommand().register(dispatcher);
         new EnchantmentTableCommand().register(dispatcher);
         new GrindstoneCommand().register(dispatcher);
-       //new InvseeCommand().register(dispatcher);
         new LoomCommand().register(dispatcher);
         new SmithingCommand().register(dispatcher);
         new StonecutterCommand().register(dispatcher);
         new WorkbenchCommand().register(dispatcher);
 
+        // Utility Commands
+        new BroadcastCommand().register(dispatcher);
+        new CheckTimeCommand().register(dispatcher);
+        new ClearInventoryCommand().register(dispatcher);
+        new FeedCommand().register(dispatcher);
+        new HealCommand().register(dispatcher);
     }
 
     /**
