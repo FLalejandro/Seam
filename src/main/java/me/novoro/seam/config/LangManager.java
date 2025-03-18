@@ -41,7 +41,7 @@ public final class LangManager extends VersionedConfig {
      * @param langKey The key for the lang.
      * */
     public static @NotNull String getLangSafely(String langKey) {
-        return LANG.getOrDefault(langKey, "");
+        return LangManager.LANG.getOrDefault(langKey, "");
     }
 
     /**

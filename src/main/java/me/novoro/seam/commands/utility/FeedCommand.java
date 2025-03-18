@@ -48,7 +48,7 @@ public class FeedCommand extends CommandBase {
     private static void feedPlayer(ServerPlayerEntity target) {
         // Set Hunger to max
         target.getHungerManager().setFoodLevel(20);
-        if (Boolean.parseBoolean(SettingsManager.getSetting("Feed-Fills-Saturation"))) target.getHungerManager().setSaturationLevel(20);
+        if (SettingsManager.feedFillsSaturation()) target.getHungerManager().setSaturationLevel(20);
         LangManager.sendLang(target, "Feed-Self-Message");
     }
 }
