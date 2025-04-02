@@ -32,8 +32,7 @@ public final class StringUtil {
      * @param string The string to be parsed.
      */
     public static String n(String string) {
-        return string.replaceAll("\\{n} (&#?[a-fA-F0-9]+)?([aeiouAEIOU])", "n $1$2")
-                .replace("{n}", "");
+        return string.replaceAll("\\{n} (&#?[a-fA-F0-9]+)?([aeiouAEIOU])", "n $1$2").replace("{n}", "");
     }
 
     /**
@@ -43,6 +42,12 @@ public final class StringUtil {
      */
     public static String s(String string) {
         return string.replaceAll("([sS])\\{s}", "$1'").replace("{s}", "'s");
+    }
+
+    public static boolean startsWith(String arg, String completion) {
+        if (arg.length() > completion.length()) return false;
+        String argEquiv = completion.substring(0, arg.length());
+        return arg.equalsIgnoreCase(argEquiv);
     }
 
     /**

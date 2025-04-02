@@ -11,6 +11,7 @@ import me.novoro.seam.commands.ability.GodCommand;
 import me.novoro.seam.commands.ability.NightVisionCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.commands.inventory.*;
+import me.novoro.seam.commands.item.ItemNameCommand;
 import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
@@ -20,6 +21,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -36,6 +38,7 @@ public class Seam implements ModInitializer {
     private static Seam instance;
     private MinecraftServer server;
     private PermissionProvider permissionProvider = null;
+    private FabricServerAudiences adventure = null;
 
     private final LangManager langManager = new LangManager();
     private final ModuleManager moduleManager = new ModuleManager();
@@ -48,10 +51,16 @@ public class Seam implements ModInitializer {
         // Proudly display SEAM Branding in everyone's console
         this.displayAsciiArt();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             this.server = server;
+            this.adventure = FabricServerAudiences.of(server);
+        });
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.checkPermissionProvider();
             this.reloadConfigs();
+        });
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+            this.adventure = null;
         });
 
         // Reloads modules on startup. Needs to be called before commands are registered.
@@ -106,6 +115,9 @@ public class Seam implements ModInitializer {
         new StonecutterCommand().register(dispatcher);
         new WorkbenchCommand().register(dispatcher);
 
+        // Item Commands
+        new ItemNameCommand().register(dispatcher);
+
         // Utility Commands
         new BroadcastCommand().register(dispatcher);
         new CheckTimeCommand().register(dispatcher);
@@ -119,6 +131,16 @@ public class Seam implements ModInitializer {
      */
     public static Seam inst() {
         return Seam.instance;
+    }
+
+
+    /**
+     * Gets the adventure instance.
+     */
+    public static FabricServerAudiences adventure() {
+        if (Seam.instance.adventure == null) return null;
+
+        return Seam.instance.adventure;
     }
 
     /**

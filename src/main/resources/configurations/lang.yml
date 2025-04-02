@@ -7,12 +7,12 @@ Lang:
 
   # Clear Inventory
   ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
-  ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
+  ClearInventory-Other-Message: "<gold>Cleared <red>{player}{s} <gold>inventory."
   ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
 
   # Feed
   Feed-Self-Message: "<gold>You have been fed."
-  Feed-Other-Message: "<gold>Fed <red>{player}."
+  Feed-Other-Message: "<gold>Fed <red>{player}<gold>."
   Feed-All-Message: "<gold>You have fed <red>{amount} <gold>players."
 
   # God
@@ -24,21 +24,31 @@ Lang:
 
   # Heal
   Heal-Self-Message: "<gold>You have been healed."
-  Heal-Other-Message: "<gold>Healed <red>{player}."
+  Heal-Other-Message: "<gold>Healed <red>{player}<gold>."
   Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
+
+  # Item General
+  Item-No-Item-In-Hand: "<red>You don't have an item in your hand."
+
+  # Item Lore
+  ItemLore-Add-Success: ""
+
+  # Item Name
+  ItemName-Success: "<gold>You renamed your <reset>{item} <reset><gold>to <reset>{name}<reset><gold>."
+  ItemName-Reset: "<gold>You successfully reset your <reset>{item}<gold>."
 
   # Night Vision
   NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
   NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
-  NightVision-Other-Enabled-Message: "<gold>Night Vision has been enabled for <red>{player}."
-  NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}."
+  NightVision-Other-Enabled-Message: "<gold>Night Vision has been enabled for <red>{player}<gold>."
+  NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}<gold>."
   NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
 
   # Smite
-  Smite-Message: "<green>Successfully summoned lightning!"
-  Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
-  Smited-Message: "<gold>The gods chose to smite you today!"
-  Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
+  Smite-Message: "<gold>Successfully summoned lightning."
+  Smite-Player-Message: "<gold>Successfully summoned lightning on <red>{player}<gold>."
+  Smited-Message: "<gold>The gods chose to smite you today."
+  Smite-Multiple-Message: "<gold>Successfully summoned lightning on <red>{amount} <gold>players."
 
   # Time
   Time-Check: "<gold>Current World Time: <red>{world-time}"

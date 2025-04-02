@@ -63,7 +63,7 @@ public final class LangManager extends VersionedConfig {
         lang = StringUtil.replaceReplacements(lang, replacements);
         String prefix = LangManager.getLang("Prefix");
         if (prefix != null) lang = prefix + lang;
-        audience.sendMessage(ColorUtil.parseColour(lang));
+        audience.sendMessage(ColorUtil.parseColour(StringUtil.n(StringUtil.s(lang))));
     }
 
     @Override

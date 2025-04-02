@@ -25,6 +25,9 @@ Commands:
   smithing: true
   stonecutter: true
   workbench: true
+  # Item Commands
+  itemlore: true
+  itemname: true
   # Utility Commands
   broadcast: true
   checktime: true

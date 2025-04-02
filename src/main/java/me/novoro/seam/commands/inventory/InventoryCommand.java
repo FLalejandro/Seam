@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class InventoryCommand extends CommandBase {
+public abstract class InventoryCommand extends CommandBase {
 
     private final ScreenType type;
     private final Identifier stat;
