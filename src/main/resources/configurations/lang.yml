@@ -10,10 +10,29 @@ Lang:
   ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
   ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
 
+  # Enchant
+  Invalid-Item-In-Hand: "<red>You must have an item in your hand."
+  Invalid-Enchantment-Or-Level: "<red>You do not have permission to apply this enchantment or level."
+  Enchantment-Success: "<gold>Enchantment {enchantment} applied with level {level}."
+  Enchantment-Removal-Success: "<gold>Enchantment {enchantment} removed."
+  Enchantment-Not-Present: "<red>Enchantment {enchantment} is not present on the item."
+  Enchantment-Error: "<red>An error occurred while applying the enchantment."
+
   # Feed
   Feed-Self-Message: "<gold>You have been fed."
   Feed-Other-Message: "<gold>Fed <red>{player}."
   Feed-All-Message: "<gold>You have fed <red>{amount} <gold>players."
+
+  # Fly
+  Fly-Enabled-Message: "<gold>Flight has been enabled."
+  Fly-Disabled-Message: "<gold>Flight has been disabled."
+  Fly-Other-Enabled-Message: "<gold>Flight has been enabled for <red>{player}."
+  Fly-Other-Disabled-Message: "<gold>Flight has been disabled for <red>{player}."
+  Fly-All-Message: "<gold>You have toggled flight for <red>{amount} <gold>players."
+
+  # Game Mode
+  GameMode-Self-Message: "<gold>Your game mode has been set to <red>{gamemode}<gold>."
+  GameMode-Other-Message: "<gold>Set <red>{player}'s<gold> game mode to <red>{gamemode}<gold>."
 
   # God
   God-Enabled-Message: "<gold>You are now invulnerable."
@@ -21,6 +40,11 @@ Lang:
   God-Other-Enabled-Message: "<red>{player} <gold>is now invulnerable."
   God-Other-Disabled-Message: "<red>{player} <gold>is now vulnerable."
   God-All-Message: "<gold>You have toggled invulnerability for <red>{amount} <gold>players."
+
+  # Hat
+  Hat-Blacklisted-Message: "<red>You can't put this item on your head!"
+  Hat-Equipped-Message: "<green>Successfully put {item} on your head!"
+  Hat-Hand-Empty-Message: "<red>You have nothing in your hand!"
 
   # Heal
   Heal-Self-Message: "<gold>You have been healed."
@@ -34,11 +58,20 @@ Lang:
   NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}."
   NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
 
+  # Repair
+  Repair-Blacklisted-Message: "<red>You can't repair this item!"
+  Repair-Success-Message: "<gold>You have repaired this item!"
+  Repair-All-Success-Message: "<gold>You have repaired all valid items in your inventory!"
+  Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
+
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
   Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"
   Smited-Message: "<gold>The gods chose to smite you today!"
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
+
+  # Suicide
+  Suicide-Commit: "<dark_red><italic>You have perished..."
 
   # Time
   Time-Check: "<gold>Current World Time: <red>{world-time}"

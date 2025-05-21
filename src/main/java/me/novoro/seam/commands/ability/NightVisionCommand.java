@@ -20,24 +20,24 @@ import java.util.Map;
  */
 public class NightVisionCommand extends CommandBase {
     public NightVisionCommand() {
-        super("nightvision", "seam.nightvision", 2);
+        super("nightvision", "seam.nightvision", 2, "nv");
     }
 
+    // TODO fix night vision returning opposite lang
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
-            boolean enabled = toggleNightVision(context.getSource().getPlayerOrThrow());
-            if (enabled) LangManager.sendLang(context.getSource(), "NightVision-Enabled-Message");
-            else LangManager.sendLang(context.getSource(), "NightVision-Disabled-Message");
+            ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+            boolean wasEnabled = toggleNightVision(player);
+            LangManager.sendLang(player, wasEnabled ? "NightVision-Disabled-Message" : "NightVision-Enabled-Message");
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.nightvisiontargets", 4))
                 .executes(context -> {
                     Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "target");
                     players.forEach(player -> {
-                        boolean enabled = toggleNightVision(player);
-                        if (enabled) LangManager.sendLang(player, "NightVision-Enabled-Message");
-                        else LangManager.sendLang(player, "NightVision-Disabled-Message");
+                        boolean wasEnabled = toggleNightVision(player);
+                        LangManager.sendLang(player, wasEnabled ? "NightVision-Disabled-Message" : "NightVision-Enabled-Message");
                     });
                     if (players.size() == 1) {
                         ServerPlayerEntity first = players.iterator().next();
@@ -53,17 +53,14 @@ public class NightVisionCommand extends CommandBase {
     /**
      * Toggles the night vision effect on the target player.
      *
-     * @param targets the target players.
+     * @param target the target players.
      * @return true if night vision is enabled after toggling, false otherwise.
      */
-    // ToDo: Move toggles to plaer data
-    private static boolean toggleNightVision(ServerPlayerEntity... targets) {
-        for (ServerPlayerEntity target : targets) {
-            boolean hadEffect = target.hasStatusEffect(StatusEffects.NIGHT_VISION);
-            if (hadEffect) target.removeStatusEffect(StatusEffects.NIGHT_VISION);
-            else target.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, StatusEffectInstance.INFINITE, 0, false, false));
-            return !hadEffect;
-        }
-        return false;
+    // ToDo: Move toggles to player data
+    private static boolean toggleNightVision(ServerPlayerEntity target) {
+        boolean hadEffect = target.hasStatusEffect(StatusEffects.NIGHT_VISION);
+        if (hadEffect) target.removeStatusEffect(StatusEffects.NIGHT_VISION);
+        else target.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, StatusEffectInstance.INFINITE, 0, false, false, true));
+        return hadEffect;
     }
 }

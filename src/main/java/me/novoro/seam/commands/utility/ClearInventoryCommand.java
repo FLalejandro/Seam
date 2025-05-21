@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class ClearInventoryCommand extends CommandBase {
     public ClearInventoryCommand() {
-        super("clearinventory", "seam.clearinventory", 2);
+        super("clearinventory", "seam.clearinventory", 2, "ci");
     }
 
     @Override

@@ -7,9 +7,8 @@ import me.novoro.seam.api.permissions.DefaultPermissionProvider;
 import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
-import me.novoro.seam.commands.ability.GodCommand;
-import me.novoro.seam.commands.ability.NightVisionCommand;
-import me.novoro.seam.commands.fun.SmiteCommand;
+import me.novoro.seam.commands.ability.*;
+import me.novoro.seam.commands.fun.*;
 import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
@@ -65,12 +64,12 @@ public class Seam implements ModInitializer {
      * Displays an ASCII Art representation of the mod's name in the log.
      */
     private void displayAsciiArt() {
-        SeamLogger.info("   _____ ______          __  __  ");
-        SeamLogger.info("  / ____|  ____|   /\\   |  \\/  | ");
-        SeamLogger.info(" | (___ | |__     /  \\  | \\  / | ");
-        SeamLogger.info("  \\___ \\|  __|   / /\\ \\ | |\\/| | ");
-        SeamLogger.info("  ____) | |____ / ____ \\| |  | | ");
-        SeamLogger.info(" |_____/|______/_/    \\_\\_|  |_| ");
+        SeamLogger.info("\u001B[1;36m   _____ ______          __  __  \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  / ____|  ____|   /\\   |  \\/  | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m | (___ | |__     /  \\  | \\  / | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  \\___ \\|  __|   / /\\ \\ | |\\/| | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  ____) | |____ / ____ \\| |  | | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m |_____/|______/_/    \\_\\_|  |_| \u001B[0m");
     }
 
 
@@ -89,11 +88,18 @@ public class Seam implements ModInitializer {
         new SeamReloadCommand().register(dispatcher);
 
         // Ability Commands
-        new NightVisionCommand().register(dispatcher);
+        new AdventureCommand().register(dispatcher);
+        new CreativeCommand().register(dispatcher);
+        new FlyCommand().register(dispatcher);
         new GodCommand().register(dispatcher);
+        new NightVisionCommand().register(dispatcher);
+        new SpectatorCommand().register(dispatcher);
+        new SurvivalCommand().register(dispatcher);
 
         // Fun Commands
+        new HatCommand().register(dispatcher);
         new SmiteCommand().register(dispatcher);
+        new SuicideCommand().register(dispatcher);
 
         // Inventory Commands
         new AnvilCommand().register(dispatcher);
@@ -112,6 +118,7 @@ public class Seam implements ModInitializer {
         new ClearInventoryCommand().register(dispatcher);
         new FeedCommand().register(dispatcher);
         new HealCommand().register(dispatcher);
+        new RepairCommand().register(dispatcher);
     }
 
     /**
