@@ -8,6 +8,7 @@ import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
 import me.novoro.seam.commands.ability.GodCommand;
+import me.novoro.seam.commands.ability.LockInventoryCommand;
 import me.novoro.seam.commands.ability.NightVisionCommand;
 import me.novoro.seam.commands.fun.SmiteCommand;
 import me.novoro.seam.commands.inventory.*;
@@ -89,8 +90,9 @@ public class Seam implements ModInitializer {
         new SeamReloadCommand().register(dispatcher);
 
         // Ability Commands
-        new NightVisionCommand().register(dispatcher);
         new GodCommand().register(dispatcher);
+        new LockInventoryCommand().register(dispatcher);
+        new NightVisionCommand().register(dispatcher);
 
         // Fun Commands
         new SmiteCommand().register(dispatcher);

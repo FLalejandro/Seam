@@ -27,6 +27,13 @@ Lang:
   Heal-Other-Message: "<gold>Healed <red>{player}."
   Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
 
+  # LockInventory
+  LockInventory-Enabled-Message: "<gold>You can no longer pick up items."
+  LockInventory-Disabled-Message: "<gold>You can now pick up items."
+  LockInventory-Other-Enabled-Message: "<red>{player} <gold>can no longer pick up items."
+  LockInventory-Other-Disabled-Message: "<red>{player} <gold>can now pick up items."
+  LockInventory-All-Message: "<gold>You have toggled inventory lock for <red>{amount} <gold>players."
+
   # Night Vision
   NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
   NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
