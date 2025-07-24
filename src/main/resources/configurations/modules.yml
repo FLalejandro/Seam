@@ -13,10 +13,10 @@ Modules:
 Commands:
   # Ability Commands
   fly: true
-  gma: true
-  gmc: true
-  gms: true
-  gmsp: true
+  adventure: true
+  creative: true
+  survival: true
+  spectator: true
   god: true
   nightvision: true
   # Fun Commands

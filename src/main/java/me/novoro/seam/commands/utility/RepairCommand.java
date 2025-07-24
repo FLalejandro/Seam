@@ -29,7 +29,7 @@ public class RepairCommand extends CommandBase {
                 return Command.SINGLE_SUCCESS;
             }
 
-            if(SettingsManager.isRepairBlacklisted(heldItem)) {
+            if (SettingsManager.isRepairBlacklisted(heldItem)) {
                 LangManager.sendLang(context.getSource(), "Repair-Blacklisted-Message");
                 return Command.SINGLE_SUCCESS;
             }

@@ -9,14 +9,19 @@ Lang:
   ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
   ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
   ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
+  ClearInventory-Confirmation: "<gold>Type /clearinventory again to confirm you want to wipe your inventory. Otherwise, wait 30 seconds.
+  making this super ugly so i remember to come back to it
+  aaaaa
+  aaaaaaaa
+  novoro fix me
+  "
 
   # Enchant
   Invalid-Item-In-Hand: "<red>You must have an item in your hand."
   Invalid-Enchantment-Or-Level: "<red>You do not have permission to apply this enchantment or level."
-  Enchantment-Success: "<gold>Enchantment {enchantment} applied with level {level}."
-  Enchantment-Removal-Success: "<gold>Enchantment {enchantment} removed."
+  Enchantment-Success: "<gold>You successfully applied <red>{enchantment} {level} <gold>to your <red>{item}<gold>."
+  Enchantment-Removal-Success: "<gold>You successfully removed <red>{enchantment} <gold>from your <red>{item}<gold>."
   Enchantment-Not-Present: "<red>Enchantment {enchantment} is not present on the item."
-  Enchantment-Error: "<red>An error occurred while applying the enchantment."
 
   # Feed
   Feed-Self-Message: "<gold>You have been fed."
@@ -43,7 +48,7 @@ Lang:
 
   # Hat
   Hat-Blacklisted-Message: "<red>You can't put this item on your head!"
-  Hat-Equipped-Message: "<green>Successfully put {item} on your head!"
+  Hat-Equipped-Message: "<green>Successfully put {item}<green> on your head!"
   Hat-Hand-Empty-Message: "<red>You have nothing in your hand!"
 
   # Heal

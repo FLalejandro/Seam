@@ -11,7 +11,7 @@ Repair:
   # Items the player may not repair.
   Blacklisted-Items:
     - "minecraft:wooden_axe"
-    - "minecraft:wooden_axe:1"
+    - "minecraft:golden_axe:1"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

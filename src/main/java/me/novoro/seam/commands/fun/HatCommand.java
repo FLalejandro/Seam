@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.SettingsManager;
+import me.novoro.seam.utils.ColorUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
@@ -34,7 +35,7 @@ public class HatCommand extends CommandBase {
                 return Command.SINGLE_SUCCESS;
             }
 
-            if(SettingsManager.isHatBlacklisted(heldItem)) {
+            if (SettingsManager.isHatBlacklisted(heldItem)) {
                 LangManager.sendLang(context.getSource(), "Hat-Blacklisted-Message");
                 return Command.SINGLE_SUCCESS;
             }
@@ -42,7 +43,7 @@ public class HatCommand extends CommandBase {
             ItemStack playerHelmet = playerInv.getArmorStack(3);
             playerInv.armor.set(3, heldItem);
             playerInv.main.set(selectedSlot, playerHelmet);
-            LangManager.sendLang(player, "Hat-Equipped-Message", Map.of("{item}", heldItem.getName().getString()));
+            LangManager.sendLang(player, "Hat-Equipped-Message", Map.of("{item}", ColorUtil.serialize(heldItem.getName())));
             return Command.SINGLE_SUCCESS;
         });
     }

@@ -1,4 +1,4 @@
-package me.novoro.seam.commands.ability;
+package me.novoro.seam.commands.ability.gamemode;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
