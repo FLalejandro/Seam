@@ -5,10 +5,13 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.SettingsManager;
+import me.novoro.seam.utils.ColorUtil;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+
+import java.util.Map;
 
 /**
  * Provides command to repair the item in the player's hand.
@@ -30,12 +33,12 @@ public class RepairCommand extends CommandBase {
             }
 
             if (SettingsManager.isRepairBlacklisted(heldItem)) {
-                LangManager.sendLang(context.getSource(), "Repair-Blacklisted-Message");
+                LangManager.sendLang(context.getSource(), "Repair-Blacklisted-Message", Map.of("{item}", ColorUtil.serialize(heldItem.getName())));
                 return Command.SINGLE_SUCCESS;
             }
 
             heldItem.setDamage(0);
-            LangManager.sendLang(context.getSource(), "Repair-Success-Message");
+            LangManager.sendLang(context.getSource(), "Repair-Success-Message", Map.of("{item}", ColorUtil.serialize(heldItem.getName())));
             return Command.SINGLE_SUCCESS;
         }).then(argument("all", EntityArgumentType.player())
                 .requires(source -> this.permission(source, "seam.repairall", 4))

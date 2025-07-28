@@ -11,6 +11,7 @@ import java.util.List;
 
 public final class SettingsManager extends VersionedConfig {
     private static boolean feedFillsSaturation;
+    private static boolean clearInventoryRequiresConfirmation;
     private static List<String> hatBlacklist;
     private static List<String> repairBlacklist;
 
@@ -18,12 +19,17 @@ public final class SettingsManager extends VersionedConfig {
     protected void reload(Configuration settingsConfig) {
         super.reload(settingsConfig);
         SettingsManager.feedFillsSaturation = settingsConfig.getBoolean("Feed-Fills-Saturation");
+        SettingsManager.clearInventoryRequiresConfirmation = settingsConfig.getBoolean("ClearInventory-Requires-Confirmation");
         SettingsManager.hatBlacklist = settingsConfig.getStringList("Hat.Blacklisted-Items");
         SettingsManager.repairBlacklist = settingsConfig.getStringList("Repair.Blacklisted-Items");
     }
 
     public static boolean feedFillsSaturation() {
         return SettingsManager.feedFillsSaturation;
+    }
+
+    public static boolean clearInventoryRequiresConfirmation() {
+        return SettingsManager.clearInventoryRequiresConfirmation;
     }
 
     public static boolean isHatBlacklisted(ItemStack item) {

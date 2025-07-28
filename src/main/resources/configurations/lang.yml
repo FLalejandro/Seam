@@ -9,12 +9,7 @@ Lang:
   ClearInventory-Self-Message: "<gold>Your inventory has been cleared."
   ClearInventory-Other-Message: "<gold>Cleared <red>{player}'s <gold>inventory."
   ClearInventory-All-Message: "<gold>Cleared <red>{amount} <gold>player's inventories."
-  ClearInventory-Confirmation: "<gold>Type /clearinventory again to confirm you want to wipe your inventory. Otherwise, wait 30 seconds.
-  making this super ugly so i remember to come back to it
-  aaaaa
-  aaaaaaaa
-  novoro fix me
-  "
+  ClearInventory-Confirmation: "<gold>Type <red>{command} <gold>again to confirm you want to wipe your inventory."
 
   # Enchant
   Invalid-Item-In-Hand: "<red>You must have an item in your hand."
@@ -47,8 +42,8 @@ Lang:
   God-All-Message: "<gold>You have toggled invulnerability for <red>{amount} <gold>players."
 
   # Hat
-  Hat-Blacklisted-Message: "<red>You can't put this item on your head!"
-  Hat-Equipped-Message: "<green>Successfully put {item}<green> on your head!"
+  Hat-Blacklisted-Message: "<red>You can't put <dark_red>{item} <red>on your head!"
+  Hat-Equipped-Message: "<gold>Successfully put <red>{item}<gold> on your head!"
   Hat-Hand-Empty-Message: "<red>You have nothing in your hand!"
 
   # Heal
@@ -64,8 +59,8 @@ Lang:
   NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
 
   # Repair
-  Repair-Blacklisted-Message: "<red>You can't repair this item!"
-  Repair-Success-Message: "<gold>You have repaired this item!"
+  Repair-Blacklisted-Message: "<red>You can't repair your <dark_red>{item}<red>!"
+  Repair-Success-Message: "<gold>You have repaired your <red>{item}<gold>!"
   Repair-All-Success-Message: "<gold>You have repaired all valid items in your inventory!"
   Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
 

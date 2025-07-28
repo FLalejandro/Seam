@@ -36,7 +36,7 @@ public class HatCommand extends CommandBase {
             }
 
             if (SettingsManager.isHatBlacklisted(heldItem)) {
-                LangManager.sendLang(context.getSource(), "Hat-Blacklisted-Message");
+                LangManager.sendLang(context.getSource(), "Hat-Blacklisted-Message", Map.of("{item}", ColorUtil.serialize(heldItem.getName())));
                 return Command.SINGLE_SUCCESS;
             }
 

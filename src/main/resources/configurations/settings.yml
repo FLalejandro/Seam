@@ -1,6 +1,7 @@
 # In this config, you can tweak how certain commands function.
 # Any changes to this config will require either a server restart, or `/seam reload`.
 Feed-Fills-Saturation: true
+ClearInventory-Requires-Confirmation: true
 
 Hat:
   # Items the player may not place on their head

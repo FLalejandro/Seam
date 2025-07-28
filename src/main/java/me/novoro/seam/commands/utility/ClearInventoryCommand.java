@@ -2,15 +2,20 @@ package me.novoro.seam.commands.utility;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import me.novoro.seam.commands.CommandBase;
+import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.config.LangManager;
+import me.novoro.seam.utils.TimeUtil;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides command to clear the player's inventory.
@@ -20,10 +25,17 @@ public class ClearInventoryCommand extends CommandBase {
         super("clearinventory", "seam.clearinventory", 2, "ci");
     }
 
+    private static final Map<ServerPlayerEntity, Long> clearInventoryConfirmations = new HashMap<>();
+    private static final long timeoutSeconds = TimeUnit.SECONDS.toMillis(30);
+    private static final String formattedTime = TimeUtil.getFormattedTime(timeoutSeconds);
+
+
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {
-            ClearInventoryCommand.clearInventory(context.getSource().getPlayerOrThrow());
+            String commandUsed = "/" + context.getInput().split(" ")[0];
+            if (!SettingsManager.clearInventoryRequiresConfirmation()) ClearInventoryCommand.clearInventory(context.getSource().getPlayerOrThrow());
+            else clearInventoryConfirmation(context.getSource().getPlayerOrThrow(), commandUsed);
             return Command.SINGLE_SUCCESS;
         }).then(argument("target", EntityArgumentType.players())
                 .requires(source -> this.permission(source, "seam.clearinventorytargets", 4))
@@ -58,5 +70,24 @@ public class ClearInventoryCommand extends CommandBase {
 
             // Send message to the player
             LangManager.sendLang(target, "ClearInventory-Self-Message");
+    }
+
+    /**
+     * Clear Inventory Confirmation
+     */
+    private static void clearInventoryConfirmation(ServerPlayerEntity player, String commandAlias) {
+        long currentTime = System.currentTimeMillis();
+
+        clearInventoryConfirmations.entrySet().removeIf(entry ->
+                currentTime - entry.getValue() > timeoutSeconds
+        );
+
+        if (clearInventoryConfirmations.containsKey(player)) {
+            clearInventory(player);
+            clearInventoryConfirmations.remove(player);
+        } else {
+            clearInventoryConfirmations.put(player, currentTime);
+            LangManager.sendLang(player, "ClearInventory-Confirmation", Map.of("{command}", commandAlias, "{time}", formattedTime));
+        }
     }
 }
