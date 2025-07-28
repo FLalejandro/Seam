@@ -23,7 +23,6 @@ public class NightVisionCommand extends CommandBase {
         super("nightvision", "seam.nightvision", 2, "nv");
     }
 
-    // TODO fix night vision returning opposite lang
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.executes(context -> {

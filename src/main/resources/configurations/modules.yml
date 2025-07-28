@@ -19,6 +19,7 @@ Commands:
   spectator: true
   god: true
   nightvision: true
+  waterbreathing: true
   # Fun Commands
   hat: true
   smite: true

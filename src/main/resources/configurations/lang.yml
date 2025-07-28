@@ -76,5 +76,12 @@ Lang:
   # Time
   Time-Check: "<gold>Current World Time: <red>{world-time}"
 
+  # Water Breathing
+  WaterBreathing-Enabled-Message: "<gold>Water Breathing has been enabled."
+  WaterBreathing-Disabled-Message: "<gold>Water Breathing has been disabled."
+  WaterBreathing-Other-Enabled-Message: "<gold>Water Breathing has been enabled for <red>{player}."
+  WaterBreathing-Other-Disabled-Message: "<gold>Water Breathing has been disabled for <red>{player}."
+  WaterBreathing-All-Message: "<gold>You have toggled Water Breathing for <red>{amount} <gold>players."
+
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

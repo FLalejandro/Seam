@@ -99,6 +99,7 @@ public class Seam implements ModInitializer {
         new NightVisionCommand().register(dispatcher);
         new SpectatorCommand().register(dispatcher);
         new SurvivalCommand().register(dispatcher);
+        new WaterBreathingCommand().register(dispatcher);
 
         // Fun Commands
         new HatCommand().register(dispatcher);
