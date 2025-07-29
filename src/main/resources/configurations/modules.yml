@@ -12,9 +12,16 @@ Modules:
 # You can stop individual commands and command groups from being registered below.
 Commands:
   # Ability Commands
+  fly: true
+  adventure: true
+  creative: true
+  survival: true
+  spectator: true
   god: true
   nightvision: true
+  waterbreathing: true
   # Fun Commands
+  hat: true
   smite: true
   # Inventory Commands
   anvil: true
@@ -29,8 +36,11 @@ Commands:
   broadcast: true
   checktime: true
   clearinventory: true
+  enchant: true
   feed: true
   heal: true
+  repair: true
+  suicide: true
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
