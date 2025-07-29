@@ -4,6 +4,6 @@ import net.minecraft.world.GameMode;
 
 public class SurvivalCommand extends GamemodeCommand {
     public SurvivalCommand() {
-        super("survival", "minecraft.command.gamemode", GameMode.SURVIVAL, "gms");
+        super("survival", "minecraft.command.gamemode.survival", GameMode.SURVIVAL, "gms");
     }
 }

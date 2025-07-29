@@ -4,6 +4,6 @@ import net.minecraft.world.GameMode;
 
 public class CreativeCommand extends GamemodeCommand {
     public CreativeCommand() {
-        super("creative", "minecraft.command.gamemode", GameMode.CREATIVE, "gmc");
+        super("creative", "minecraft.command.gamemode.creative", GameMode.CREATIVE, "gmc");
     }
 }

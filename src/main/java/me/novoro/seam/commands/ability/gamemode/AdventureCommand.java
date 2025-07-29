@@ -4,6 +4,6 @@ import net.minecraft.world.GameMode;
 
 public class AdventureCommand extends GamemodeCommand {
     public AdventureCommand() {
-        super("adventure", "minecraft.command.gamemode", GameMode.ADVENTURE, "gma");
+        super("adventure", "minecraft.command.gamemode.adventure", GameMode.ADVENTURE, "gma");
     }
 }

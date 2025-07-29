@@ -2,6 +2,7 @@
 # Any changes to this config will require either a server restart, or `/seam reload`.
 Feed-Fills-Saturation: true
 ClearInventory-Requires-Confirmation: true
+ClearInventory-Confirmation-Timeout: 30
 
 Hat:
   # Items the player may not place on their head

@@ -2,7 +2,6 @@ package me.novoro.seam.commands.utility;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.config.LangManager;
@@ -26,9 +25,6 @@ public class ClearInventoryCommand extends CommandBase {
     }
 
     private static final Map<ServerPlayerEntity, Long> clearInventoryConfirmations = new HashMap<>();
-    private static final long timeoutSeconds = TimeUnit.SECONDS.toMillis(30);
-    private static final String formattedTime = TimeUtil.getFormattedTime(timeoutSeconds);
-
 
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
@@ -77,9 +73,10 @@ public class ClearInventoryCommand extends CommandBase {
      */
     private static void clearInventoryConfirmation(ServerPlayerEntity player, String commandAlias) {
         long currentTime = System.currentTimeMillis();
+        long timeoutMillis = SettingsManager.getClearInventoryConfirmationTimeoutMillis();
 
         clearInventoryConfirmations.entrySet().removeIf(entry ->
-                currentTime - entry.getValue() > timeoutSeconds
+                currentTime - entry.getValue() > timeoutMillis
         );
 
         if (clearInventoryConfirmations.containsKey(player)) {
@@ -87,7 +84,8 @@ public class ClearInventoryCommand extends CommandBase {
             clearInventoryConfirmations.remove(player);
         } else {
             clearInventoryConfirmations.put(player, currentTime);
-            LangManager.sendLang(player, "ClearInventory-Confirmation", Map.of("{command}", commandAlias, "{time}", formattedTime));
+            LangManager.sendLang(player, "ClearInventory-Confirmation", Map.of("{command}", commandAlias,
+                    "{time}", TimeUtil.getFormattedTime(TimeUnit.MILLISECONDS.toSeconds(timeoutMillis))));
         }
     }
 }
