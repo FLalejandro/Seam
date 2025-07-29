@@ -15,6 +15,7 @@ public class PlayerStorage {
     public boolean socialSpy = false;
     public boolean godMode = false;
     public boolean nightVision = false;
+    public boolean waterBreathing = false;
     private Location previousLocation = null;
     private Location logoutLocation = null;
     private int totalPlaytime = 0;
@@ -54,6 +55,7 @@ public class PlayerStorage {
     public boolean getSocialSpy(){ return this.socialSpy; }
     public boolean getGodMode() { return this.godMode;}
     public boolean getNightVision() { return this.nightVision; }
+    public boolean getWaterBreathing() { return this.waterBreathing; }
 
     public void setLogoutLocation(Location location) {
         this.logoutLocation = location;

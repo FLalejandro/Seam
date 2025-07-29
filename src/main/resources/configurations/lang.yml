@@ -48,6 +48,8 @@ Lang:
   Smite-Multiple-Message: "<green>Successfully summoned lightning on {amount} players!"
 
   # Time
+  Seen-Last: "<gold>Player <red>{player} <gold>was last seen {time} ago."
+  Seen-Online: "<gold>Player <red>{player} <gold>is currently online."
   Time-Check: "<gold>Current World Time: <red>{world-time}"
 
 # Do not touch this. This is solely for future config updates.
