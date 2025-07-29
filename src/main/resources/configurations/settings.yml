@@ -1,6 +1,19 @@
 # In this config, you can tweak how certain commands function.
 # Any changes to this config will require either a server restart, or `/seam reload`.
 Feed-Fills-Saturation: true
+ClearInventory-Requires-Confirmation: true
+ClearInventory-Confirmation-Timeout: 30
+
+Hat:
+  # Items the player may not place on their head
+  Blacklisted-Items:
+    - "minecraft:barrier"
+    - "minecraft:diamond_sword:1"
+Repair:
+  # Items the player may not repair.
+  Blacklisted-Items:
+    - "minecraft:wooden_axe"
+    - "minecraft:golden_axe:1"
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
