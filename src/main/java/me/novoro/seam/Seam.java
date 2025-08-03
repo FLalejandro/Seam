@@ -127,6 +127,7 @@ public class Seam implements ModInitializer {
         new ClearInventoryCommand().register(dispatcher);
         new FeedCommand().register(dispatcher);
         new HealCommand().register(dispatcher);
+        new PlaytimeCommand().register(dispatcher);
         new RepairCommand().register(dispatcher);
     }
 

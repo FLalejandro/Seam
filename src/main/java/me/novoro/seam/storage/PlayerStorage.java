@@ -18,7 +18,6 @@ public class PlayerStorage {
     public boolean waterBreathing = false;
     private Location previousLocation = null;
     private Location logoutLocation = null;
-    private int totalPlaytime = 0;
     private Instant lastTimeOnline = Instant.now();
 
     /**
@@ -53,33 +52,29 @@ public class PlayerStorage {
     }
 
     public boolean getSocialSpy(){ return this.socialSpy; }
-    public boolean getGodMode() { return this.godMode;}
-    public boolean getNightVision() { return this.nightVision; }
-    public boolean getWaterBreathing() { return this.waterBreathing; }
+    public void setSocialSpy(boolean socialSpy) { this.socialSpy = socialSpy; }
 
-    public void setLogoutLocation(Location location) {
-        this.logoutLocation = location;
-    }
+    public boolean getGodMode() { return this.godMode;}
+    public void setGodMode(boolean godMode) { this.godMode = godMode; }
+
+    public boolean getNightVision() { return this.nightVision; }
+    public void setNightVision(boolean nightVision) { this.nightVision = nightVision; }
+
+    public boolean getWaterBreathing() { return this.waterBreathing; }
+    public void setWaterBreathing(boolean waterBreathing) { this.waterBreathing = waterBreathing; }
 
     public Location getLogoutLocation() {
         return this.logoutLocation;
     }
-
-    public int getTotalPlaytime() {
-        return totalPlaytime;
-    }
-
-    public void setTotalPlaytime(int totalPlaytime) {
-        this.totalPlaytime = totalPlaytime;
-    }
-    public void setLastTimeOnline() {
-        this.lastTimeOnline = Instant.now();
+    public void setLogoutLocation(Location location) {
+        this.logoutLocation = location;
     }
 
     public Instant getLastTimeOnline() {
         return this.lastTimeOnline;
     }
-
-
+    public void setLastTimeOnline() {
+        this.lastTimeOnline = Instant.now();
+    }
 
 }

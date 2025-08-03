@@ -2,6 +2,7 @@ Lang:
   # Mod Prefix
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
 
+
   # Broadcast
   Broadcast-Prefix: "<gold>[<dark_red>Broadcast<gold>] <green>"
 
@@ -81,6 +82,8 @@ Lang:
   Suicide-Commit: "<dark_red><italic>You have perished..."
 
   # Time
+  PlayTime-Self: "<gold>Your playtime: <red>{playtime}"
+  PlayTime-Other: "<red>{player}'s <gold>playtime: <red>{playtime}"
   Seen-Last: "<gold>Player <red>{player} <gold>was last seen {time} ago."
   Seen-Online: "<gold>Player <red>{player} <gold>is currently online."
   Time-Check: "<gold>Current World Time: <red>{world-time}"
@@ -91,6 +94,9 @@ Lang:
   WaterBreathing-Other-Enabled-Message: "<gold>Water Breathing has been enabled for <red>{player}."
   WaterBreathing-Other-Disabled-Message: "<gold>Water Breathing has been disabled for <red>{player}."
   WaterBreathing-All-Message: "<gold>You have toggled Water Breathing for <red>{amount} <gold>players."
+
+  # Errors
+  Invalid-Player: "<red>Player does not exist."
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

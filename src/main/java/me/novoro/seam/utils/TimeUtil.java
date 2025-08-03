@@ -65,10 +65,10 @@ public final class TimeUtil {
             if (newSeconds == 0) return timeString.toString();
             boolean oneLeft = (newSeconds % 60 == 0) || (newSeconds < 60);
             if (oneLeft) {
-                if (usedComma) timeString.append(langManager.getOrDefault("timeunit-comma", ","));
+                if (usedComma) timeString.append(langManager.getOrDefault("timeunit-comma", ",")).append(" ");
                 timeString.append(" ").append(langManager.getOrDefault("timeunit-joiner", "and")).append(" ");
             } else {
-                timeString.append(langManager.getOrDefault("timeunit-comma", ","));
+                timeString.append(langManager.getOrDefault("timeunit-comma", ",")).append(" ");
                 usedComma = true;
             }
         }
