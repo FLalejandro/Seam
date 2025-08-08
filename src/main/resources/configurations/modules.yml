@@ -28,6 +28,7 @@ Commands:
   anvil: true
   cartography: true
   disposal: true
+  enchantmenttable: true
   grindstone: true
   loom: true
   smithing: true
@@ -40,6 +41,7 @@ Commands:
   enchant: true
   feed: true
   heal: true
+  near: true
   playtime: true
   repair: true
   suicide: true

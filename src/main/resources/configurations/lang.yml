@@ -59,6 +59,11 @@ Lang:
   LockInventory-Other-Disabled-Message: "<red>{player} <gold>can now pick up items."
   LockInventory-All-Message: "<gold>You have toggled inventory lock for <red>{amount} <gold>players."
 
+  # Near Command
+  Near-No-Players: "<red>No players nearby within {radius} blocks."
+  Near-Player-List: "<gold>Nearby players:\n{playerList}"
+  Near-Player-Entry: "<yellow>{player} <gold>is ~<yellow>{distance} <gold>blocks away"
+
   # Night Vision
   NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
   NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
