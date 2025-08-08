@@ -86,4 +86,12 @@ public final class ColorUtil {
             default -> input;
         };
     }
+
+    public static String serialize(Component component) {
+        return MiniMessage.miniMessage().serialize(component).replaceFirst("<!italic>", "");
+    }
+
+    public static String serialize(Text text) {
+        return ColorUtil.serialize(text.asComponent());
+    }
 }

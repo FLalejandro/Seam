@@ -5,6 +5,7 @@ import me.novoro.seam.api.configuration.VersionedConfig;
 import me.novoro.seam.utils.ColorUtil;
 import me.novoro.seam.utils.StringUtil;
 import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Map;
  * Seam's lang manager. This is used for all of Seam's lang.
  */
 public final class LangManager extends VersionedConfig {
+    public static final LangManager EMPTY = new LangManager();
     private static final Map<String, String> LANG = new HashMap<>();
 
     @Override
@@ -36,6 +38,14 @@ public final class LangManager extends VersionedConfig {
     }
 
     /**
+     * Gets any specified lang safely.
+     * @param langKey The key for the lang.
+     * */
+    public static @NotNull String getLangSafely(String langKey) {
+        return LangManager.LANG.getOrDefault(langKey, "");
+    }
+
+    /**
      * Sends any specified lang to an {@link Audience}.
      * @param key The key for the lang.
      */
@@ -55,6 +65,10 @@ public final class LangManager extends VersionedConfig {
         String prefix = LangManager.getLang("Prefix");
         if (prefix != null) lang = prefix + lang;
         audience.sendMessage(ColorUtil.parseColour(lang));
+    }
+
+    public @NotNull String getOrDefault(String langKey, String def) {
+        return this.LANG.getOrDefault(langKey, def);
     }
 
     @Override

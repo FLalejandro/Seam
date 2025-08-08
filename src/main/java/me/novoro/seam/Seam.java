@@ -7,12 +7,18 @@ import me.novoro.seam.api.permissions.DefaultPermissionProvider;
 import me.novoro.seam.api.permissions.LuckPermsPermissionProvider;
 import me.novoro.seam.api.permissions.PermissionProvider;
 import me.novoro.seam.commands.SeamReloadCommand;
-import me.novoro.seam.commands.fun.SmiteCommand;
-import me.novoro.seam.commands.teleportation.AscendCommand;
-import me.novoro.seam.commands.teleportation.DescendCommand;
-import me.novoro.seam.commands.teleportation.TopCommand;
+import me.novoro.seam.commands.ability.*;
+import me.novoro.seam.commands.ability.gamemode.AdventureCommand;
+import me.novoro.seam.commands.ability.gamemode.CreativeCommand;
+import me.novoro.seam.commands.ability.gamemode.SpectatorCommand;
+import me.novoro.seam.commands.ability.gamemode.SurvivalCommand;
+import me.novoro.seam.commands.fun.*;
+import me.novoro.seam.commands.inventory.*;
+import me.novoro.seam.commands.teleportation.*;
+import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
+import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.config.TeleportationConfig;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
@@ -36,14 +42,18 @@ public class Seam implements ModInitializer {
     private MinecraftServer server;
     private PermissionProvider permissionProvider = null;
 
-    private final ModuleManager moduleManager = new ModuleManager();
     private final LangManager langManager = new LangManager();
+    private final ModuleManager moduleManager = new ModuleManager();
+    private final SettingsManager settingsManager = new SettingsManager();
 
     private final TeleportationConfig teleportationConfig = new TeleportationConfig();
 
     @Override
     public void onInitialize() {
         Seam.instance = this;
+
+        // Proudly display SEAM Branding in everyone's console
+        this.displayAsciiArt();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.server = server;
@@ -58,10 +68,25 @@ public class Seam implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> this.registerCommands(dispatcher));
     }
 
+    /**
+     * Displays an ASCII Art representation of the mod's name in the log.
+     */
+    private void displayAsciiArt() {
+        SeamLogger.info("\u001B[1;36m   _____ ______          __  __  \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  / ____|  ____|   /\\   |  \\/  | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m | (___ | |__     /  \\  | \\  / | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  \\___ \\|  __|   / /\\ \\ | |\\/| | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m  ____) | |____ / ____ \\| |  | | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m |_____/|______/_/    \\_\\_|  |_| \u001B[0m");
+    }
+
+
     // Reloads Seam's various configs.
     public void reloadConfigs() {
         // Lang
         this.langManager.reload();
+        // Settings
+        this.settingsManager.reload();
 
         // Teleportation
         this.teleportationConfig.reload();
@@ -74,13 +99,44 @@ public class Seam implements ModInitializer {
         // Reload Command
         new SeamReloadCommand().register(dispatcher);
 
+        // Ability Commands
+        new AdventureCommand().register(dispatcher);
+        new CreativeCommand().register(dispatcher);
+        new FlyCommand().register(dispatcher);
+        new GodCommand().register(dispatcher);
+        new NightVisionCommand().register(dispatcher);
+        new SpectatorCommand().register(dispatcher);
+        new SurvivalCommand().register(dispatcher);
+        new WaterBreathingCommand().register(dispatcher);
+
+        // Fun Commands
+        new HatCommand().register(dispatcher);
+        new SmiteCommand().register(dispatcher);
+        new SuicideCommand().register(dispatcher);
+
+        // Inventory Commands
+        new AnvilCommand().register(dispatcher);
+        new CartographyCommand().register(dispatcher);
+        new DisposalCommand().register(dispatcher);
+        new EnchantmentTableCommand().register(dispatcher);
+        new GrindstoneCommand().register(dispatcher);
+        new LoomCommand().register(dispatcher);
+        new SmithingCommand().register(dispatcher);
+        new StonecutterCommand().register(dispatcher);
+        new WorkbenchCommand().register(dispatcher);
+
         // Teleportation Commands
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
 
-        // Fun Commands
-        new SmiteCommand().register(dispatcher);
+        // Utility Commands
+        new BroadcastCommand().register(dispatcher);
+        new CheckTimeCommand().register(dispatcher);
+        new ClearInventoryCommand().register(dispatcher);
+        new FeedCommand().register(dispatcher);
+        new HealCommand().register(dispatcher);
+        new RepairCommand().register(dispatcher);
     }
 
     /**
