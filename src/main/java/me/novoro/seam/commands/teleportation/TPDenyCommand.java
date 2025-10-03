@@ -7,7 +7,7 @@ import me.novoro.seam.utils.TPAUtil;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class TPDenyCommand extends CommandBase {
-    public TPDenyCommand() { super("tpdeny", "seam.tpdeny", 2); }
+    public TPDenyCommand() { super("tpdeny", "seam.tpdeny", 2, "tpno"); }
 
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {

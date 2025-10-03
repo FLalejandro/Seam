@@ -7,7 +7,7 @@ import me.novoro.seam.utils.TPAUtil;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class TPAcceptCommand extends CommandBase {
-    public TPAcceptCommand() { super("tpaccept", "seam.tpaccept", 2); }
+    public TPAcceptCommand() { super("tpaccept", "seam.tpaccept", 2, "tpyes"); }
 
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
