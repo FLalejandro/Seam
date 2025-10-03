@@ -20,10 +20,12 @@ import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.ModuleManager;
 import me.novoro.seam.config.SettingsManager;
 import me.novoro.seam.config.TeleportationConfig;
+import me.novoro.seam.utils.TPAUtil;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -48,6 +50,9 @@ public class Seam implements ModInitializer {
 
     private final TeleportationConfig teleportationConfig = new TeleportationConfig();
 
+    // Counters for tracking ticks in the server.
+    private static int tickCounter = 0;
+
     @Override
     public void onInitialize() {
         Seam.instance = this;
@@ -61,6 +66,9 @@ public class Seam implements ModInitializer {
             this.reloadConfigs();
         });
 
+        // Register tick listeners for handling timed events.
+        this.registerTickListeners();
+
         // Reloads modules on startup. Needs to be called before commands are registered.
         this.moduleManager.reload();
 
@@ -72,12 +80,11 @@ public class Seam implements ModInitializer {
      * Displays an ASCII Art representation of the mod's name in the log.
      */
     private void displayAsciiArt() {
-        SeamLogger.info("\u001B[1;36m   _____ ______          __  __  \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  / ____|  ____|   /\\   |  \\/  | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m | (___ | |__     /  \\  | \\  / | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  \\___ \\|  __|   / /\\ \\ | |\\/| | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  ____) | |____ / ____ \\| |  | | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m |_____/|______/_/    \\_\\_|  |_| \u001B[0m");
+        SeamLogger.info("\u001B[1;36m ____  _____    _    __  __ \u001B[0m");
+        SeamLogger.info("\u001B[1;36m/ ___|| ____|  / \\  |  \\/  | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m\\___ \\|  _|   / _ \\ | |\\/| | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m ___) | |___ / ___ \\| |  | | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m|____/|_____/_/   \\_\\_|  |_| \u001B[0m");
     }
 
 
@@ -126,9 +133,16 @@ public class Seam implements ModInitializer {
         new WorkbenchCommand().register(dispatcher);
 
         // Teleportation Commands
+        //TODO: put all TPA commands into their own module
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
+        new TPHereCommand().register(dispatcher);
+        new TPACommand().register(dispatcher);
+        new TPAHereCommand().register(dispatcher);
+        new TPAcceptCommand().register(dispatcher);
+        new TPDenyCommand().register(dispatcher);
+        new TPOfflineCommand().register(dispatcher);
 
         // Utility Commands
         new BroadcastCommand().register(dispatcher);
@@ -179,6 +193,21 @@ public class Seam implements ModInitializer {
         } catch (ClassNotFoundException ignored) {}
         this.permissionProvider = new DefaultPermissionProvider();
         SeamLogger.warn("Couldn't find a built in permission provider.. falling back to permission levels.");
+    }
+
+    /**
+     * Register tick listeners to handle timed functionalities like TPA Timeouts
+     */
+    private void registerTickListeners() {
+        ServerTickEvents.START_SERVER_TICK.register((MinecraftServer server) -> {
+            tickCounter++;
+
+            // Check for expired teleportation requests every 20 ticks (1 seconds).
+            if (tickCounter >= 20) {
+                TPAUtil.handleTeleportTimeouts(server);
+                tickCounter = 0;
+            }
+        });
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

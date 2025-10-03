@@ -8,6 +8,7 @@ Modules:
   homes: true
   spawn: true
   warps: true
+  tpa: true #reviewer note: includes tpa, tpahere, tpdeny, tpaccept, tpacancel.
 
 # You can stop individual commands and command groups from being registered below.
 Commands:
@@ -36,6 +37,13 @@ Commands:
   ascend: true
   descend: true
   top: true
+  tpa: true
+  tpahere: true
+  tpaccept: true
+  tpdeny: true
+  tphere: true
+  tptoggle: true
+  tpoffline: true
   # Utility Commands
   broadcast: true
   checktime: true
