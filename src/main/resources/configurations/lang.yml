@@ -130,5 +130,32 @@ Lang:
   TPA-Accept: "<gold>Teleport request accepted."
   TPA-Deny: "<gold>Teleport request denied."
 
+  # Waypoints
+  Invalid-Player: "<red>'<dark_red>{input}<red>' is not a valid player. Make sure they're online!"
+  Spawn-Teleported-Message: "<gold>Teleporting to spawn."
+  Spawn-Invalid-Point: "<red>'<dark_red>{input}<red>' is not a valid spawn! Try using one from tab complete."
+  Spawn-Invalid-Permission-All: "<red>You don't have permission to teleport everyone to spawn!"
+  Spawn-Already-Exists: "<red>Spawn '<dark_red>{input}<red>' already exists! Try using another name!"
+  Spawn-Set: "<gold>Set Spawn <red>{spawn} <gold>at <red>{x}, {y}, {z} <gold>in world <red>{world} <gold>with the permission of<red>{permission}<gold>!"
+  Spawn-Deleted: "<red>Successfully deleted spawn: <dark_red>{spawn}<red>."
+  Spawn-None-Message: '<red>You have no active spawn point!'
+  Spawn-None-Message-Admin: '<red>{player} has no specific spawn point!'
+  Spawn-Force-Message-Admin: '<gold>You sent {player} to their spawn!'
+  Spawn-Force-Specific-Admin: '<gold>You sent {player} to the spawn point: {spawn}'
+  Spawn-Force-Message-Player: '<gold>You have been sent to spawn!'
+  Spawn-Teleported-All-Admin: "<gold>Successfully teleported {succeeded}/{amount} players to their spawn."
+  Spawn-Teleported-All-Specific-Admin: "<gold>Successfully teleported {amount} players to spawn point: {spawn}."
+  Warp-Teleported-Message: "<gold>Teleporting to <red>{warp}<gold>."
+  Warp-Invalid-Point: "<red>'<dark_red>{input}<red>' is not a valid warp! Try using one from tab complete."
+  Warp-Invalid-Permission-All: "<red>You don't have permission to teleport everyone to {warp}!"
+  Warp-Already-Exists: "<red>Warp '<dark_red>{input}<red>' already exists! Try using another name!"
+  Warp-Set: "<gold>Set Warp <red>{warp} <gold>at <red>{x}, {y}, {z} <gold>in world <red>{world} <gold>with the permission of<red>{permission}<gold>!"
+  Warp-Deleted: "<red>Successfully deleted warp: <dark_red>{warp}<red>."
+  Warp-List: "<gold>Warps: <white>{warps}"
+  Warp-List-Empty: "<red>There are no available warps."
+  Warp-Force-Message-Admin: '<gold>You sent {player} to {warp}!'
+  Warp-Force-Message-Player: '<gold>You have been sent to {warp}!'
+  Warp-Teleported-All-Admin: "<gold>Successfully teleported {amount} players to {warp}."
+
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

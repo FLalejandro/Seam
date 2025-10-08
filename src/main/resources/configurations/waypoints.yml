@@ -1,0 +1,27 @@
+# In this config you'll find all your Spawns and Warps being stored, as well as
+# settings for how spawns should behave on your server.
+# Any changes to this config will require either a server restart, or `/seam reload`.
+First-Join-Spawn: ""
+Spawn-No-Respawn: true
+Force-Spawn-On-Death: false
+Force-Spawn-On-Join: false
+Spawns:
+  example_spawn:
+    x: 100.5
+    y: 64.0
+    z: -200.5
+    pitch: 0.0
+    yaw: 90.0
+    dimension: "minecraft:overworld"
+    weight: 1
+Warps:
+  example_warp:
+    x: -150.5
+    y: 70.0
+    z: 75.5
+    pitch: 0.0
+    yaw: 180.0
+    dimension: "minecraft:the_nether"
+
+# Do not touch this. This is solely for future config updates.
+Config-Version: 1.0

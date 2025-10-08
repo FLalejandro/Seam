@@ -1,6 +1,7 @@
 package me.novoro.seam.utils;
 
 import me.novoro.seam.api.Location;
+import me.novoro.seam.api.async.ServerScheduler;
 import me.novoro.seam.config.LangManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -92,13 +93,15 @@ public final class TPAUtil {
             for (TeleportRequest expiredRequest : expiredRequests) {
                 removeTeleportRequest(expiredRequest.senderUuid, expiredRequest.targetUuid);
 
-                ServerPlayerEntity sender = server.getPlayerManager().getPlayer(expiredRequest.senderUuid);
-                ServerPlayerEntity target = server.getPlayerManager().getPlayer(targetUuid);
+                ServerScheduler.runSync(server, () -> {
+                    ServerPlayerEntity sender = server.getPlayerManager().getPlayer(expiredRequest.senderUuid);
+                    ServerPlayerEntity target = server.getPlayerManager().getPlayer(targetUuid);
 
-                assert target != null;
-                assert sender != null;
-                LangManager.sendLang(sender, "TPA-Sender-Timeout", Map.of("{player}", target.getName().getString()));
-                LangManager.sendLang(target, "TPA-Target-Timeout", Map.of("{player}", sender.getName().getString()));
+                    assert target != null;
+                    assert sender != null;
+                    LangManager.sendLang(sender, "TPA-Sender-Timeout", Map.of("{player}", target.getName().getString()));
+                    LangManager.sendLang(target, "TPA-Target-Timeout", Map.of("{player}", sender.getName().getString()));
+                });
             }
         });
     }

@@ -1,6 +1,7 @@
 package me.novoro.seam;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.novoro.seam.api.async.SeamExecutorManager;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.api.configuration.YamlConfiguration;
 import me.novoro.seam.api.permissions.DefaultPermissionProvider;
@@ -15,17 +16,14 @@ import me.novoro.seam.commands.ability.gamemode.SurvivalCommand;
 import me.novoro.seam.commands.fun.*;
 import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.commands.teleportation.*;
+import me.novoro.seam.commands.teleportation.waypoints.*;
 import me.novoro.seam.commands.utility.*;
-import me.novoro.seam.config.LangManager;
-import me.novoro.seam.config.ModuleManager;
-import me.novoro.seam.config.SettingsManager;
-import me.novoro.seam.config.TeleportationConfig;
+import me.novoro.seam.config.*;
 import me.novoro.seam.utils.TPAUtil;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -47,11 +45,9 @@ public class Seam implements ModInitializer {
     private final LangManager langManager = new LangManager();
     private final ModuleManager moduleManager = new ModuleManager();
     private final SettingsManager settingsManager = new SettingsManager();
+    private final WaypointManager waypointManager = new WaypointManager();
 
     private final TeleportationConfig teleportationConfig = new TeleportationConfig();
-
-    // Counters for tracking ticks in the server.
-    private static int tickCounter = 0;
 
     @Override
     public void onInitialize() {
@@ -66,8 +62,13 @@ public class Seam implements ModInitializer {
             this.reloadConfigs();
         });
 
-        // Register tick listeners for handling timed events.
-        this.registerTickListeners();
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            SeamExecutorManager.shutdownAll();
+        });
+
+
+        // Async Tasks for stuff like Teleport Request timeouts, RTP, and Future Cross-Server implementations.
+        this.startAsyncTasks();
 
         // Reloads modules on startup. Needs to be called before commands are registered.
         this.moduleManager.reload();
@@ -97,6 +98,9 @@ public class Seam implements ModInitializer {
 
         // Teleportation
         this.teleportationConfig.reload();
+
+        // Waypoints (Warps and Spawns)
+        this.waypointManager.reload();
 
         // ToDo: Reload our *other* configs lol
     }
@@ -134,8 +138,15 @@ public class Seam implements ModInitializer {
 
         // Teleportation Commands
         //TODO: put all TPA commands into their own module
+        //TODO: Put all Warp commands into their own module (and spawn).
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
+        new SpawnCommand().register(dispatcher);
+        new DeleteSpawnCommand().register(dispatcher);
+        new SetSpawnCommand().register(dispatcher);
+        new WarpCommand().register(dispatcher);
+        new DeleteWarpCommand().register(dispatcher);
+        new SetWarpCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
         new TPHereCommand().register(dispatcher);
         new TPACommand().register(dispatcher);
@@ -196,18 +207,22 @@ public class Seam implements ModInitializer {
     }
 
     /**
-     * Register tick listeners to handle timed functionalities like TPA Timeouts
+     * Starts all asynchronous background tasks.
      */
-    private void registerTickListeners() {
-        ServerTickEvents.START_SERVER_TICK.register((MinecraftServer server) -> {
-            tickCounter++;
-
-            // Check for expired teleportation requests every 20 ticks (1 seconds).
-            if (tickCounter >= 20) {
-                TPAUtil.handleTeleportTimeouts(server);
-                tickCounter = 0;
-            }
-        });
+    private void startAsyncTasks() {
+        SeamExecutorManager.getDefaultExecutor().scheduleRepeatingAsync(
+                () -> {
+                    try {
+                        if (Seam.getServer() != null && Seam.getServer().isRunning()) {
+                            TPAUtil.handleTeleportTimeouts(Seam.getServer());
+                        }
+                    } catch (Exception e) {
+                        SeamLogger.warn("Error while handling teleport timeouts:");
+                        SeamLogger.printStackTrace(e);
+                    }
+                },
+                0, 1, java.util.concurrent.TimeUnit.SECONDS
+        );
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

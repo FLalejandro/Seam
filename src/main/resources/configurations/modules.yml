@@ -44,6 +44,12 @@ Commands:
   tphere: true
   tptoggle: true
   tpoffline: true
+  spawn: true
+  setspawn: true
+  deletespawn: true
+  warp: true
+  setwarp: true
+  deletewarp: true
   # Utility Commands
   broadcast: true
   checktime: true
