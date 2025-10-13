@@ -39,8 +39,12 @@ public class Waypoint extends Location {
         replacements.put("{permission}", this.permission == null ? "none" : this.permission);
     }
 
-    public int getPriority() {
+    public int getWeight() {
         return this.weight;
+    }
+
+    public String getPermission() {
+        return this.permission;
     }
 
     public TeleportTarget toTeleportTarget(TeleportTarget.PostDimensionTransition transition) {

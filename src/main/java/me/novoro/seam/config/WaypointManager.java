@@ -3,7 +3,9 @@ package me.novoro.seam.config;
 import me.novoro.seam.Seam;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.api.configuration.VersionedConfig;
+import me.novoro.seam.api.permissions.SeamPermission;
 import me.novoro.seam.objects.Waypoint;
+import me.novoro.seam.utils.RandomUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.ArrayList;
@@ -78,18 +80,16 @@ public class WaypointManager extends VersionedConfig {
         List<Waypoint> possibleTeleports = new ArrayList<>();
         int highestPriority = 0;
         for (Map.Entry<String, Waypoint> entry : WaypointManager.SPAWNS.entrySet()) {
-            //if (!NeoPermission.of("neospawnpoints.spawn." + entry.getKey(), 1).matches(player)) continue;
+            if (!SeamPermission.of("seam.spawn." + entry.getKey(), 1).matches(player)) continue;
             Waypoint spawn = entry.getValue();
-            if (spawn.getPriority() > highestPriority) {
-                highestPriority = spawn.getPriority();
+            if (spawn.getWeight() > highestPriority) {
+                highestPriority = spawn.getWeight();
                 possibleTeleports.clear();
                 possibleTeleports.add(spawn);
-            } else if (spawn.getPriority() == highestPriority) possibleTeleports.add(spawn);
+            } else if (spawn.getWeight() == highestPriority) possibleTeleports.add(spawn);
         }
         if (possibleTeleports.isEmpty()) return null;
-        //TODO: fix this
-        return possibleTeleports.get(0);
-        //return RandomHelper.getRandomValue(possibleTeleports);
+        return RandomUtil.getRandomValue(possibleTeleports);
     }
 
     public static Waypoint createSpawn(ServerPlayerEntity player, String spawnName, int weight, String permission) {

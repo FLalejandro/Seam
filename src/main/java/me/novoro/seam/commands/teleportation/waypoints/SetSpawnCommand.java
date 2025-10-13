@@ -47,7 +47,11 @@ public class SetSpawnCommand extends CommandBase {
         LangManager.sendLang(player, "Spawn-Set", Map.of(
                 "{spawn}", spawnName,
                 "{weight}", String.valueOf(weight),
-                "{permission}", permission
+                "{permission}", permission,
+                "{x}", String.valueOf((int) player.getX()),
+                "{y}", String.valueOf((int) player.getY()),
+                "{z}", String.valueOf((int) player.getZ()),
+                "{world}", player.getWorld().getRegistryKey().getValue().toString()
         ));
         return 1;
     }

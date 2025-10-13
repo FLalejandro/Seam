@@ -45,7 +45,11 @@ public class SetWarpCommand extends CommandBase {
 
         LangManager.sendLang(player, "Warp-Set", Map.of(
                 "{warp}", warpName,
-                "{permission}", permission
+                "{permission}", permission,
+                "{x}", String.valueOf((int) player.getX()),
+                "{y}", String.valueOf((int) player.getY()),
+                "{z}", String.valueOf((int) player.getZ()),
+                "{world}", player.getWorld().getRegistryKey().getValue().toString()
         ));
         return 1;
     }

@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class Seam implements ModInitializer {
     public static final String MOD_PREFIX = "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f ";
@@ -147,6 +148,8 @@ public class Seam implements ModInitializer {
         new WarpCommand().register(dispatcher);
         new DeleteWarpCommand().register(dispatcher);
         new SetWarpCommand().register(dispatcher);
+        new ListSpawnsCommand().register(dispatcher);
+        new ListWarpsCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
         new TPHereCommand().register(dispatcher);
         new TPACommand().register(dispatcher);

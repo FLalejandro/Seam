@@ -6,8 +6,8 @@ Modules:
   afk: true
   back: true
   homes: true
-  spawn: true
-  warps: true
+  spawn: true #reviewer note: includes /spawn, /setspawn, /delspawn
+  warps: true #reviewer note: includes /warp, /setwarp, /delwarp
   tpa: true #reviewer note: includes tpa, tpahere, tpdeny, tpaccept, tpacancel.
 
 # You can stop individual commands and command groups from being registered below.
@@ -50,6 +50,8 @@ Commands:
   warp: true
   setwarp: true
   deletewarp: true
+  listwarps: true
+  listspawns: true
   # Utility Commands
   broadcast: true
   checktime: true
