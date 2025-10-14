@@ -1,6 +1,7 @@
 package me.novoro.seam;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.novoro.seam.api.async.SeamExecutorManager;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.api.configuration.YamlConfiguration;
 import me.novoro.seam.api.permissions.DefaultPermissionProvider;
@@ -15,11 +16,10 @@ import me.novoro.seam.commands.ability.gamemode.SurvivalCommand;
 import me.novoro.seam.commands.fun.*;
 import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.commands.teleportation.*;
+import me.novoro.seam.commands.teleportation.waypoints.*;
 import me.novoro.seam.commands.utility.*;
-import me.novoro.seam.config.LangManager;
-import me.novoro.seam.config.ModuleManager;
-import me.novoro.seam.config.SettingsManager;
-import me.novoro.seam.config.TeleportationConfig;
+import me.novoro.seam.config.*;
+import me.novoro.seam.utils.TPAUtil;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class Seam implements ModInitializer {
     public static final String MOD_PREFIX = "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f ";
@@ -45,6 +46,7 @@ public class Seam implements ModInitializer {
     private final LangManager langManager = new LangManager();
     private final ModuleManager moduleManager = new ModuleManager();
     private final SettingsManager settingsManager = new SettingsManager();
+    private final WaypointManager waypointManager = new WaypointManager();
 
     private final TeleportationConfig teleportationConfig = new TeleportationConfig();
 
@@ -61,6 +63,14 @@ public class Seam implements ModInitializer {
             this.reloadConfigs();
         });
 
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            SeamExecutorManager.shutdownAll();
+        });
+
+
+        // Async Tasks for stuff like Teleport Request timeouts, RTP, and Future Cross-Server implementations.
+        this.startAsyncTasks();
+
         // Reloads modules on startup. Needs to be called before commands are registered.
         this.moduleManager.reload();
 
@@ -72,12 +82,11 @@ public class Seam implements ModInitializer {
      * Displays an ASCII Art representation of the mod's name in the log.
      */
     private void displayAsciiArt() {
-        SeamLogger.info("\u001B[1;36m   _____ ______          __  __  \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  / ____|  ____|   /\\   |  \\/  | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m | (___ | |__     /  \\  | \\  / | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  \\___ \\|  __|   / /\\ \\ | |\\/| | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m  ____) | |____ / ____ \\| |  | | \u001B[0m");
-        SeamLogger.info("\u001B[1;36m |_____/|______/_/    \\_\\_|  |_| \u001B[0m");
+        SeamLogger.info("\u001B[1;36m ____  _____    _    __  __ \u001B[0m");
+        SeamLogger.info("\u001B[1;36m/ ___|| ____|  / \\  |  \\/  | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m\\___ \\|  _|   / _ \\ | |\\/| | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m ___) | |___ / ___ \\| |  | | \u001B[0m");
+        SeamLogger.info("\u001B[1;36m|____/|_____/_/   \\_\\_|  |_| \u001B[0m");
     }
 
 
@@ -90,6 +99,9 @@ public class Seam implements ModInitializer {
 
         // Teleportation
         this.teleportationConfig.reload();
+
+        // Waypoints (Warps and Spawns)
+        this.waypointManager.reload();
 
         // ToDo: Reload our *other* configs lol
     }
@@ -126,9 +138,25 @@ public class Seam implements ModInitializer {
         new WorkbenchCommand().register(dispatcher);
 
         // Teleportation Commands
+        //TODO: put all TPA commands into their own module
+        //TODO: Put all Warp commands into their own module (and spawn).
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
+        new SpawnCommand().register(dispatcher);
+        new DeleteSpawnCommand().register(dispatcher);
+        new SetSpawnCommand().register(dispatcher);
+        new WarpCommand().register(dispatcher);
+        new DeleteWarpCommand().register(dispatcher);
+        new SetWarpCommand().register(dispatcher);
+        new ListSpawnsCommand().register(dispatcher);
+        new ListWarpsCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
+        new TPHereCommand().register(dispatcher);
+        new TPACommand().register(dispatcher);
+        new TPAHereCommand().register(dispatcher);
+        new TPAcceptCommand().register(dispatcher);
+        new TPDenyCommand().register(dispatcher);
+        new TPOfflineCommand().register(dispatcher);
 
         // Utility Commands
         new BroadcastCommand().register(dispatcher);
@@ -179,6 +207,25 @@ public class Seam implements ModInitializer {
         } catch (ClassNotFoundException ignored) {}
         this.permissionProvider = new DefaultPermissionProvider();
         SeamLogger.warn("Couldn't find a built in permission provider.. falling back to permission levels.");
+    }
+
+    /**
+     * Starts all asynchronous background tasks.
+     */
+    private void startAsyncTasks() {
+        SeamExecutorManager.getDefaultExecutor().scheduleRepeatingAsync(
+                () -> {
+                    try {
+                        if (Seam.getServer() != null && Seam.getServer().isRunning()) {
+                            TPAUtil.handleTeleportTimeouts(Seam.getServer());
+                        }
+                    } catch (Exception e) {
+                        SeamLogger.warn("Error while handling teleport timeouts:");
+                        SeamLogger.printStackTrace(e);
+                    }
+                },
+                0, 1, java.util.concurrent.TimeUnit.SECONDS
+        );
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

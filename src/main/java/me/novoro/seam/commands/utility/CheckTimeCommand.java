@@ -29,7 +29,7 @@ public class CheckTimeCommand extends CommandBase {
     private static int checkTime(ServerPlayerEntity ctx) {
 
         String formattedTime = formatTime(ctx.getWorld().getTimeOfDay() % 24000);
-        LangManager.sendLang(ctx, "CheckTime", Map.of("{world-time}", formattedTime));
+        LangManager.sendLang(ctx, "Time-Check", Map.of("{world-time}", formattedTime));
         return 1;
     }
 
