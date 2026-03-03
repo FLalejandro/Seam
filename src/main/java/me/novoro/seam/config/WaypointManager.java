@@ -24,8 +24,6 @@ public class WaypointManager extends VersionedConfig {
     @Override
     protected void reload(Configuration waypointConfig) {
         super.reload(waypointConfig);
-        String firstJoinSpawnName = waypointConfig.getString("First-Join-Spawn", "");
-        WaypointManager.firstJoinSpawn = WaypointManager.getSpawn(firstJoinSpawnName);
         WaypointManager.spawnNoRespawn = waypointConfig.getBoolean("Spawn-No-Respawn", true);
         WaypointManager.forceSpawnOnJoin = waypointConfig.getBoolean("Force-Spawn-On-Join", false);
         WaypointManager.forceSpawnOnDeath = waypointConfig.getBoolean("Force-Spawn-On-Death", false);
@@ -37,6 +35,9 @@ public class WaypointManager extends VersionedConfig {
                 if (spawnConfig != null) SPAWNS.put(spawnName, new Waypoint(spawnName, spawnConfig));
             }
         }
+
+        String firstJoinSpawnName = waypointConfig.getString("First-Join-Spawn", "");
+        WaypointManager.firstJoinSpawn = WaypointManager.getSpawn(firstJoinSpawnName);
 
         Configuration warpsSection = waypointConfig.getSection("Warps");
         if (warpsSection != null) {

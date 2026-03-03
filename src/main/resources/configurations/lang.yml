@@ -1,6 +1,7 @@
 Lang:
   # Mod Prefix
   Prefix: "&8&l[<gradient:#96B8C3:#7C93A2>&lSᴇᴀᴍ</gradient>&8&l]&f "
+  Player-Only-Command: "<red>This command can only be used by a player!"
 
   # Ascend
   Ascend-Location-Not-Found: "<red>No safe location to ascend to!"
@@ -26,6 +27,12 @@ Lang:
   Descended-Message-Other: "<green>Successfully descended {target}."
   Descended-Floors-Message: "<green>Successfully descended {floor} floors."
   Descended-Floors-Message-Other: "<green>Successfully descended {target} {floor} floors."
+
+  # Enderchest
+  Enderchest-Self-Message: "<gold>Opening your ender chest."
+  Enderchest-Other-Edit-Message: "<gold>Editing <red>{player}'s<gold> ender chest."
+  Enderchest-Other-View-Message: "<gold>Viewing <red>{player}'s<gold> ender chest."
+  Enderchest-Offline-Fail: "<red>No data found for <dark_red>{player}<red>."
 
   # Enchant
   Invalid-Item-In-Hand: "<red>You must have an item in your hand."
@@ -73,6 +80,15 @@ Lang:
   NightVision-Other-Enabled-Message: "<gold>Night Vision has been enabled for <red>{player}."
   NightVision-Other-Disabled-Message: "<gold>Night Vision has been disabled for <red>{player}."
   NightVision-All-Message: "<gold>You have toggled Night Vision for <red>{amount} <gold>players."
+
+  # Speed
+  Speed-Walk-Set-Message: "<gold>Walk speed set to <red>{speed}<gold>."
+  Speed-Walk-Set-Other-Message: "<gold>Set <red>{player}'s<gold> walk speed to <red>{speed}<gold>."
+  Speed-Fly-Set-Message: "<gold>Fly speed set to <red>{speed}<gold>."
+  Speed-Fly-Set-Other-Message: "<gold>Set <red>{player}'s<gold> fly speed to <red>{speed}<gold>."
+  Speed-Reset-Message: "<gold>Your speed has been reset to default."
+  Speed-Reset-Other-Message: "<gold>Reset <red>{player}'s<gold> speed to default."
+  Speed-All-Message: "<gold>You have modified the speed of <red>{amount} <gold>players."
 
   # Repair
   Repair-Blacklisted-Message: "<red>You can't repair your <dark_red>{item}<red>!"

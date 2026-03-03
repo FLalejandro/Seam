@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 
 //TODO: Use this for offline inventory and enderchest viewing. LastDeath if that is ever relevant. Maybe for /back
@@ -39,6 +40,16 @@ public class GameProfileUtil {
 
         try (InputStream is = Files.newInputStream(file.toPath())) {
             return NbtIo.readCompressed(is, NbtSizeTracker.of(2097152L));
+        }
+    }
+
+    /**
+     * Writes the root NBT compound back to an offline player's data file.
+     */
+    public static void saveOfflineData(GameProfile profile, NbtCompound nbt) throws IOException {
+        File file = getPlayerDataFile(profile);
+        try (OutputStream os = Files.newOutputStream(file.toPath())) {
+            NbtIo.writeCompressed(nbt, os);
         }
     }
 

@@ -120,6 +120,7 @@ public class Seam implements ModInitializer {
         new SpectatorCommand().register(dispatcher);
         new SurvivalCommand().register(dispatcher);
         new WaterBreathingCommand().register(dispatcher);
+        new SpeedCommand().register(dispatcher);
 
         // Fun Commands
         new HatCommand().register(dispatcher);
@@ -136,6 +137,7 @@ public class Seam implements ModInitializer {
         new SmithingCommand().register(dispatcher);
         new StonecutterCommand().register(dispatcher);
         new WorkbenchCommand().register(dispatcher);
+        new EnderchestCommand().register(dispatcher);
 
         // Teleportation Commands
         //TODO: put all TPA commands into their own module
