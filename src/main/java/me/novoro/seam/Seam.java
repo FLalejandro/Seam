@@ -19,11 +19,13 @@ import me.novoro.seam.commands.teleportation.*;
 import me.novoro.seam.commands.teleportation.waypoints.*;
 import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.*;
+import me.novoro.seam.objects.PlayerData;
 import me.novoro.seam.utils.TPAUtil;
 import me.novoro.seam.utils.SeamLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -64,7 +66,18 @@ public class Seam implements ModInitializer {
         });
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            PlayerStorageManager.saveAll();
             SeamExecutorManager.shutdownAll();
+        });
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            PlayerData data = PlayerStorageManager.get(handler.player.getUuid());
+            data.username = handler.player.getName().getString();
+        });
+
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+            PlayerStorageManager.save(handler.player.getUuid());
+            PlayerStorageManager.remove(handler.player.getUuid());
         });
 
 
@@ -142,6 +155,7 @@ public class Seam implements ModInitializer {
         // Teleportation Commands
         //TODO: put all TPA commands into their own module
         //TODO: Put all Warp commands into their own module (and spawn).
+        new BackCommand().register(dispatcher);
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
         new SpawnCommand().register(dispatcher);

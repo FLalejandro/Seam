@@ -4,7 +4,6 @@
 # Modules are settings that have additional logic. Disabling a module disables all associated logic and related commands.
 Modules:
   afk: true
-  back: true
   homes: true
   spawn: true #reviewer note: includes /spawn, /setspawn, /delspawn
   warps: true #reviewer note: includes /warp, /setwarp, /delwarp
@@ -38,6 +37,7 @@ Commands:
   enderchest: true
   # Teleportation Commands
   ascend: true
+  back: true
   descend: true
   top: true
   tpa: true

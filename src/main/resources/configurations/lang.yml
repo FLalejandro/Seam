@@ -11,6 +11,12 @@ Lang:
   Ascended-Floors-Message: "<green>Successfully ascended {floor} floors."
   Ascended-Floors-Message-Other: "<green>Successfully ascended {target} {floor} floors."
 
+  # Back
+  Back-Teleport: "<gold>Teleported to your previous location."
+  Back-Teleport-Other: "<gold>Sent <red>{player}<gold> back to their previous location."
+  Back-No-Location: "<red>You have no previous location to teleport to!"
+  Back-No-Location-Other: "<red>{player} has no previous location to teleport to!"
+
   # Broadcast
   Broadcast-Prefix: "<gold>[<dark_red>Broadcast<gold>] <green>"
 
