@@ -25,21 +25,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Provides command to open a player's ender chest.
- * <ul>
- *   <li>/enderchest - Opens your own ender chest.</li>
- *   <li>/enderchest (online target) - Opens the target's ender chest (edit or view-only based on permission).</li>
- *   <li>/enderchest (offline target) - Loads the target's ender chest from playerdata NBT.</li>
- * </ul>
- *
- * Permissions:
- * <ul>
- *   <li>seam.enderchest - Base permission to open your own ender chest.</li>
- *   <li>seam.enderchestedit - Permission to edit another player's ender chest.</li>
- *   <li>seam.enderchestview - Permission to view (read-only) another player's ender chest.</li>
- * </ul>
- */
 public class EnderchestCommand extends CommandBase {
     public EnderchestCommand() {
         super("enderchest", "seam.enderchest", 2, "ec");
@@ -47,46 +32,31 @@ public class EnderchestCommand extends CommandBase {
 
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
-        return command
-                // /enderchest - Opens your own ender chest
+        return command.executes(context -> {
+            ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+            openEnderChest(player, player.getEnderChestInventory(), Text.translatable("container.enderchest"));
+            LangManager.sendLang(context.getSource(), "Enderchest-Self-Message");
+            return Command.SINGLE_SUCCESS;
+        }).then(argument("target", GameProfileArgumentType.gameProfile())
+                .requires(source -> this.permission(source, "seam.enderchestview", 4) || this.permission(source, "seam.enderchestedit", 4))
                 .executes(context -> {
-                    ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
-                    openEnderChest(player, player.getEnderChestInventory(), Text.translatable("container.enderchest"));
-                    LangManager.sendLang(context.getSource(), "Enderchest-Self-Message");
-                    return Command.SINGLE_SUCCESS;
+                    ServerPlayerEntity sender = context.getSource().getPlayerOrThrow();
+                    GameProfile target = GameProfileArgumentType.getProfileArgument(context, "target").iterator().next();
+                    boolean canEdit = this.permission(context.getSource(), "seam.enderchestedit", 4);
+                    ServerPlayerEntity onlineTarget = Objects.requireNonNull(sender.getServer()).getPlayerManager().getPlayer(target.getId());
+                    if (onlineTarget != null) return openOnlineEnderChest(sender, onlineTarget, canEdit);
+                    return openOfflineEnderChest(sender, target, canEdit);
                 })
-                // /enderchest <target> - Opens target's ender chest (online or offline)
-                .then(argument("target", GameProfileArgumentType.gameProfile())
-                        .requires(source -> this.permission(source, "seam.enderchestview", 4) || this.permission(source, "seam.enderchestedit", 4))
-                        .executes(context -> {
-                            ServerPlayerEntity sender = context.getSource().getPlayerOrThrow();
-                            GameProfile target = GameProfileArgumentType.getProfileArgument(context, "target").iterator().next();
-                            boolean canEdit = this.permission(context.getSource(), "seam.enderchestedit", 4);
-
-                            // Check if the target is online
-                            ServerPlayerEntity onlineTarget = Objects.requireNonNull(sender.getServer()).getPlayerManager().getPlayer(target.getId());
-                            if (onlineTarget != null) {
-                                return openOnlineEnderChest(sender, onlineTarget, canEdit);
-                            }
-
-                            // Target is offline — load from playerdata
-                            return openOfflineEnderChest(sender, target, canEdit);
-                        })
-                );
+        );
     }
 
-    /**
-     * Opens an online player's ender chest for the sender.
-     */
     private int openOnlineEnderChest(ServerPlayerEntity sender, ServerPlayerEntity target, boolean canEdit) {
         Text title = Text.of(target.getName().getString() + "'s Ender Chest");
 
         if (canEdit) {
-            // Direct access to the target's live ender chest inventory
             openEnderChest(sender, target.getEnderChestInventory(), title);
             LangManager.sendLang(sender, "Enderchest-Other-Edit-Message", Map.of("{player}", target.getName().getString()));
         } else {
-            // View-only: copy contents into a read-only screen
             SimpleInventory viewOnly = copyToViewOnly(target.getEnderChestInventory());
             openEnderChest(sender, viewOnly, title);
             LangManager.sendLang(sender, "Enderchest-Other-View-Message", Map.of("{player}", target.getName().getString()));
@@ -95,9 +65,6 @@ public class EnderchestCommand extends CommandBase {
         return Command.SINGLE_SUCCESS;
     }
 
-    /**
-     * Opens an offline player's ender chest by loading their playerdata NBT.
-     */
     private int openOfflineEnderChest(ServerPlayerEntity sender, GameProfile target, boolean canEdit) {
         NbtCompound nbt;
         try {
@@ -118,7 +85,6 @@ public class EnderchestCommand extends CommandBase {
         Text title = Text.of(target.getName() + "'s Ender Chest");
 
         if (canEdit) {
-            // Editable: load into a SimpleInventory, save back on close
             SimpleInventory inventory = new SimpleInventory(27);
             inventory.readNbtList(enderItems, sender.getRegistryManager());
 
@@ -130,7 +96,6 @@ public class EnderchestCommand extends CommandBase {
                     title
             ));
 
-            // Save changes back when the screen is closed
             inventory.addListener(inv -> {
                 NbtList updatedItems = inventory.toNbtList(sender.getRegistryManager());
                 nbt.put("EnderItems", updatedItems);
@@ -144,7 +109,6 @@ public class EnderchestCommand extends CommandBase {
 
             LangManager.sendLang(sender, "Enderchest-Other-Edit-Message", Map.of("{player}", target.getName()));
         } else {
-            // View-only: load into a SimpleInventory but don't persist
             SimpleInventory viewOnly = new SimpleInventory(27);
             viewOnly.readNbtList(enderItems, sender.getRegistryManager());
             openEnderChest(sender, viewOnly, title);
@@ -154,9 +118,6 @@ public class EnderchestCommand extends CommandBase {
         return Command.SINGLE_SUCCESS;
     }
 
-    /**
-     * Opens a generic 9x3 container screen backed by the given inventory.
-     */
     private static void openEnderChest(ServerPlayerEntity player, Inventory inventory, Text title) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
                 (syncId, playerInventory, playerEntity) ->
@@ -165,9 +126,6 @@ public class EnderchestCommand extends CommandBase {
         ));
     }
 
-    /**
-     * Copies the contents of an ender chest into a read-only {@link SimpleInventory}.
-     */
     private static SimpleInventory copyToViewOnly(EnderChestInventory source) {
         SimpleInventory copy = new SimpleInventory(source.size());
         for (int i = 0; i < source.size(); i++) {
