@@ -4,10 +4,10 @@
 # Modules are settings that have additional logic. Disabling a module disables all associated logic and related commands.
 Modules:
   afk: true
-  back: true
   homes: true
-  spawn: true
-  warps: true
+  spawn: true #reviewer note: includes /spawn, /setspawn, /delspawn
+  warps: true #reviewer note: includes /warp, /setwarp, /delwarp
+  tpa: true #reviewer note: includes tpa, tpahere, tpdeny, tpaccept, tpacancel.
 
 # You can stop individual commands and command groups from being registered below.
 Commands:
@@ -20,9 +20,11 @@ Commands:
   god: true
   nightvision: true
   waterbreathing: true
+  speed: true
   # Fun Commands
   hat: true
   smite: true
+  suicide: true
   # Inventory Commands
   anvil: true
   cartography: true
@@ -32,6 +34,27 @@ Commands:
   smithing: true
   stonecutter: true
   workbench: true
+  enderchest: true
+  # Teleportation Commands
+  ascend: true
+  back: true
+  descend: true
+  top: true
+  tpa: true
+  tpahere: true
+  tpaccept: true
+  tpdeny: true
+  tphere: true
+  tptoggle: true
+  tpoffline: true
+  spawn: true
+  setspawn: true
+  deletespawn: true
+  warp: true
+  setwarp: true
+  deletewarp: true
+  listwarps: true
+  listspawns: true
   # Utility Commands
   broadcast: true
   checktime: true
@@ -40,7 +63,6 @@ Commands:
   feed: true
   heal: true
   repair: true
-  suicide: true
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

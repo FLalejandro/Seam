@@ -1,0 +1,67 @@
+# The player will never land on these blocks when teleporting through most Seam commands.
+Unsafe-Blocks:
+  - "minecraft:lava"
+  - "minecraft:cactus"
+  - "minecraft:bedrock"
+
+# These are the blocks that teleports will see as air for safe teleporting.
+Air-Blocks:
+  - "minecraft:air"
+  - "minecraft:void_air"
+  - "minecraft:cave_air"
+
+# The highest Y level that ascend and top can teleport a player to in the specified worlds.
+Ascend-Max-Y-Values:
+  # The nether is set to 120 to prevent being able to ascend to the nether roof.
+  "minecraft:the_nether": 120
+  # The default value all worlds will use unless otherwise specified.
+  default: 320
+
+# Settings for the randomteleport command.
+Random-Teleport:
+  # The amount of attempts the mod will make to find a safe location for the player.
+  Max-Attempts: 10
+  # Each world's individual randomteleport settings.
+  Worlds:
+    # Minecraft's default overworld world ID. Worlds not here will automatically be blacklisted.
+    "minecraft:overworld":
+      # The permission to be able to rtp in or into this world.
+      Permission: "seam.overworldrtp"
+      # The center of randomteleport's radius.
+      Center-X: 0
+      Center-Z: 0
+      # The minimum distance from Center-X, Center-Y that the random location must be.
+      Min-Distance: 25
+      # The maximum distance from Center-X, Center-Y that the random location can be.
+      Max-Distance: 5000
+      # The cooldown for randomteleport when using this world's settings, in seconds.
+      Cooldown: 60
+      # Whether the randomteleport settings for this world allows underground caves.
+      # If false, the player will always land on the highest block exposed to air.
+      # If this is a nether or end world, set this to true for best results.
+      Allow-Cave-Teleports: false
+      # The highest Y the teleport may be.
+      # It is suggested to use 127 for nether worlds, and 320 otherwise.
+      Highest-Y: 320
+    # Minecraft's default nether world ID.
+    "minecraft:the_nether":
+      # Redirects the use of randomteleport in this world to the target world.
+      # Redirects use the target's permission and cooldown.
+      Redirect-To: "minecraft:overworld"
+    # Minecraft's default end world ID.
+    "minecraft:the_end":
+      Redirect-To: "minecraft:overworld"
+  # Biomes that players can never teleport into via randomteleport.
+  Blacklisted-Biomes:
+    - "minecraft:cold_ocean"
+    - "minecraft:deep_cold_ocean"
+    - "minecraft:deep_frozen_ocean"
+    - "minecraft:deep_lukewarm_ocean"
+    - "minecraft:deep_ocean"
+    - "minecraft:frozen_ocean"
+    - "minecraft:lukewarm_ocean"
+    - "minecraft:ocean"
+    - "minecraft:warm_ocean"
+
+# Do not touch this. This is solely for future config updates.
+Config-Version: 1.0

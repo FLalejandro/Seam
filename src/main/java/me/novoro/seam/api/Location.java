@@ -2,9 +2,12 @@ package me.novoro.seam.api;
 
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.utils.LocationUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,8 +103,22 @@ public class Location {
         return new BlockPos((int) Math.round(this.x), (int) Math.round(this.y), (int) Math.round(this.z));
     }
 
+    public Vec3d toVec3d() {
+        return new Vec3d(this.x, this.y, this.z);
+    }
+
+    public Biome getBiome() {
+        return this.world.getBiome(this.getBlockPos()).value();
+    }
+
+
     public WorldChunk getChunk() {
         return this.world.getWorldChunk(this.getBlockPos());
+    }
+
+    public BlockState getBlockState() {
+        if (this.world == null) return null;
+        return world.getBlockState(this.getBlockPos());
     }
 
     public void setWorld(ServerWorld world) {
