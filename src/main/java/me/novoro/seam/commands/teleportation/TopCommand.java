@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class TopCommand extends CommandBase {
     public TopCommand() {
-        super("top", "seam.top", 1);
+        super("top", "seam.top", 2);
     }
 
     @Override

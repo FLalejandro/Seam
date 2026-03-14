@@ -1,6 +1,7 @@
 package me.novoro.seam.mixins;
 
 import me.novoro.seam.api.Location;
+import me.novoro.seam.config.PlayerStorageManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -26,27 +27,21 @@ public abstract class ServerPlayerEntityMixin {
     }
 
     @Inject(method = "teleportTo",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;requestTeleport(DDDFF)V"
-            )
+            at = @At(value = "HEAD")
     )
     public void seam$teleportTo(TeleportTarget teleportTarget, CallbackInfoReturnable<Entity> callback) {
         this.cacheLastLocation();
     }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDLjava/util/Set;FF)Z",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;requestTeleport(DDDFFLjava/util/Set;)V"
-            )
+            at = @At(value = "HEAD")
     )
     public void seam$teleport1(ServerWorld world, double destX, double destY, double destZ, Set<PositionFlag> flags, float yaw, float pitch, CallbackInfoReturnable<Boolean> callback) {
         this.cacheLastLocation();
     }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;requestTeleport(DDDFF)V"
-            )
+            at = @At(value = "HEAD")
     )
     public void seam$teleport2(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo callback) {
         this.cacheLastLocation();
@@ -54,7 +49,8 @@ public abstract class ServerPlayerEntityMixin {
 
     @Unique
     private void cacheLastLocation() {
-        Location lastLocation = new Location((ServerPlayerEntity) (Object) this);
-        // ToDo: this
+        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+        PlayerStorageManager.get(player.getUuid()).previousLocation = new Location(player);
+        PlayerStorageManager.save(player.getUuid());
     }
 }

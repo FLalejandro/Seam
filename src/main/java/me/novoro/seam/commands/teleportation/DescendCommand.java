@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class DescendCommand extends CommandBase {
     public DescendCommand() {
-        super("descend", "seam.descend", 1);
+        super("descend", "seam.descend", 2);
     }
 
     @Override

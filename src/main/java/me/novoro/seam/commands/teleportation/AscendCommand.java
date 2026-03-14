@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class AscendCommand extends CommandBase {
     public AscendCommand() {
-        super("ascend", "seam.ascend", 1);
+        super("ascend", "seam.ascend", 2);
     }
 
     @Override
@@ -55,9 +55,8 @@ public class AscendCommand extends CommandBase {
         }
         String lang;
         Map<String, String> replacements = new HashMap<>();
-        if (target == null) {
-            lang = "Ascend-Location-Not-Found";
-        } else {
+        if (target == null) lang = "Ascend-Location-Not-Found";
+        else {
             lang = (floor == 1) ? "Ascended-Message" : "Ascended-Floors";
             target.teleport(player);
             target.addReplacements(replacements);
