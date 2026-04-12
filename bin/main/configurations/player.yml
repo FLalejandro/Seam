@@ -1,0 +1,22 @@
+# Player Info
+Username: "Player1"
+UUID: "123e4567-e89b-12d3-a456-426614174000"
+
+# Player Toggles
+Fly: false
+God: false
+NightVision: false
+TPToggle: false
+WaterBreathing: false
+
+# /back Location
+Previous-Location:
+  x: 100.5
+  y: 64.0
+  z: -200.5
+  pitch: 0.0
+  yaw: 90.0
+  dimension: "minecraft:overworld"
+
+# Homes
+Homes:

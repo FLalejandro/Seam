@@ -18,6 +18,7 @@ public final class SettingsManager extends VersionedConfig {
     private static long tpaRequestTimeoutMillis;
     private static List<String> hatBlacklist;
     private static List<String> repairBlacklist;
+    private static int maxHomes;
 
     @Override
     protected void reload(Configuration settingsConfig) {
@@ -28,6 +29,7 @@ public final class SettingsManager extends VersionedConfig {
         SettingsManager.tpaRequestTimeoutMillis = TimeUnit.SECONDS.toMillis(settingsConfig.getLong("TPA-Request-Timeout"));
         SettingsManager.hatBlacklist = settingsConfig.getStringList("Hat.Blacklisted-Items");
         SettingsManager.repairBlacklist = settingsConfig.getStringList("Repair.Blacklisted-Items");
+        SettingsManager.maxHomes = settingsConfig.getInt("Max-Homes");
     }
 
     public static boolean feedFillsSaturation() {
@@ -62,6 +64,10 @@ public final class SettingsManager extends VersionedConfig {
         int customModelData = customModelDataComponent != null ? customModelDataComponent.value() : 0;
 
         return blacklist.contains(itemId) || blacklist.contains(itemId + ":" + customModelData);
+    }
+
+    public static int getMaxHomes() {
+        return maxHomes;
     }
 
     @Override
