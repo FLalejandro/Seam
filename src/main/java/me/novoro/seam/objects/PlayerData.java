@@ -3,7 +3,7 @@ package me.novoro.seam.objects;
 import me.novoro.seam.api.Location;
 import me.novoro.seam.api.configuration.Configuration;
 
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerData {
     public String username;
@@ -14,6 +14,7 @@ public class PlayerData {
     public boolean nightVisionToggle;
     public boolean tpToggle;
     public boolean waterBreathingToggle;
+    private final Map<String, Home> homes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
@@ -57,6 +58,26 @@ public class PlayerData {
         return waterBreathingToggle;
     }
 
+    public Home getHome(String name) {
+        return this.homes.get(name);
+    }
+
+    public Map<String, Home> getHomes() {
+        return this.homes;
+    }
+
+    public List<String> getHomeNames() {
+        return new ArrayList<>(this.homes.keySet());
+    }
+
+    public void setHome(String name, Home home) {
+        this.homes.put(name, home);
+    }
+
+    public boolean deleteHome(String name) {
+        return this.homes.remove(name) != null;
+    }
+
     public Configuration toConfiguration() {
         Configuration config = new Configuration();
         if (this.username != null) config.set("username", this.username);
@@ -66,6 +87,13 @@ public class PlayerData {
         config.set("tp-toggle", this.tpToggle);
         config.set("water-breathing", this.waterBreathingToggle);
         if (this.previousLocation != null) config.set("previous-location", this.previousLocation.toConfiguration());
+        if (!this.homes.isEmpty()) {
+            Configuration homesConfig = new Configuration();
+            for (Map.Entry<String, Home> entry : this.homes.entrySet()) {
+                homesConfig.set(entry.getKey(), entry.getValue().toConfiguration());
+            }
+            config.set("homes", homesConfig);
+        }
         return config;
     }
 
@@ -78,6 +106,13 @@ public class PlayerData {
         data.tpToggle = config.getBoolean("tp-toggle", false);
         data.waterBreathingToggle = config.getBoolean("water-breathing", false);
         if (config.contains("previous-location")) data.previousLocation = config.getLocation("previous-location");
+        if (config.contains("homes")) {
+            Configuration homesConfig = config.getSection("homes");
+            for (String key : homesConfig.getKeys()) {
+                Configuration homeConfig = homesConfig.getSection(key);
+                if (homeConfig != null) data.homes.put(key, new Home(key, homeConfig));
+            }
+        }
         return data;
     }
 }

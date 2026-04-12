@@ -18,6 +18,8 @@ Repair:
 
 # Amount of homes a player can have
 # This can be overriden per-player via the LuckPerms meta key "seam.max-homes"
+# Neo when u read this lmk ur thoughts on having a default max homes setting
+# as an easier entry for noobs who aren't used to LuckPerms
 Max-Homes: 3
 
 # Do not touch this. This is solely for future config updates.

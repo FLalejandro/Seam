@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 //TODO: NEED TO FIGURE OUT FIRST JOIN SPAWN
 public class WaypointManager extends VersionedConfig {
-    private static final HashMap<String, Waypoint> SPAWNS = new HashMap<>();
-    private static final HashMap<String, Waypoint> WARPS = new HashMap<>();
+    private static final TreeMap<String, Waypoint> SPAWNS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static final TreeMap<String, Waypoint> WARPS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private static Waypoint firstJoinSpawn = null;
     private static boolean spawnNoRespawn = true;
     private static boolean forceSpawnOnJoin = false;
