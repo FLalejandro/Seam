@@ -35,7 +35,6 @@ Commands:
   stonecutter: true
   workbench: true
   enderchest: true
-  invsee: true
   # Home Commands
   home: true
   homeother: true
@@ -51,12 +50,9 @@ Commands:
   tpahere: true
   tpaccept: true
   tpdeny: true
-  tpacancel: true
   tphere: true
   tptoggle: true
   tpoffline: true
-  randomteleport: true
-  biomertp: true
   spawn: true
   setspawn: true
   deletespawn: true
@@ -65,12 +61,6 @@ Commands:
   deletewarp: true
   listwarps: true
   listspawns: true
-  near: true
-  seen: true
-  msg: true
-  reply: true
-  socialspy: true
-  socialspies: true
   # Utility Commands
   broadcast: true
   checktime: true
