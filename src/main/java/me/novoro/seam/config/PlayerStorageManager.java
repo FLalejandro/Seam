@@ -69,7 +69,7 @@ public class PlayerStorageManager {
         PLAYER_DATA.remove(uuid);
     }
     
-    public static PlayerData findbyUsername(String username) {
+    public static PlayerData findByUsername(String username) {
         for (PlayerData data : PLAYER_DATA.values()) {
             if (data.getUsername().equalsIgnoreCase(username)) return data;
         }

@@ -121,9 +121,9 @@ Lang:
   Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
 
   # Seen
-  Seen-Online: "<gold>{player} <green>[Online] <dark_gray>- <gold>World: <red>{world}\n<gold>First Joined: <red>{first-join} <dark_gray>| <gold>Last Login: <red>{last-login}"
-  Seen-Offline: "<gold>{player} <red>[Offline]\n<gold>First Joined: <red>{first-join} <dark_gray>| <gold>Last Seen: <red>{last-seen} <gold>ago"
-  Seen-IP: "<gold>IP Address: <red>{ip}"
+  Seen-Online: "<gold>{player} <green>[Online]\n<gold>First Joined: <red>{first-join}\n<gold>Last Seen: <red>{last-seen}"
+  Seen-Offline: "<gold>{player} <red>[Offline]\n<gold>First Joined: <red>{first-join}\n<gold>Last Seen: <red>{last-seen} <gold>ago"
+  Seen-Online-IP: "<gold>IP Address: <red>{ip}"
   Seen-Unknown: "<red>No data found for <dark_red>{player}<red>."
 
   # Smite

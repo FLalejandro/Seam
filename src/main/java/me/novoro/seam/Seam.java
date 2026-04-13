@@ -76,7 +76,7 @@ public class Seam implements ModInitializer {
             data.username = handler.player.getName().getString();
             long now = System.currentTimeMillis();
             if (data.firstJoin == 0L) data.firstJoin = now;
-            data.lastJoin = now;
+            data.lastSeen = now;
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {

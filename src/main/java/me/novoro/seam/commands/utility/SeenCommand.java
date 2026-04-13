@@ -1,18 +1,16 @@
 package me.novoro.seam.commands.utility;
-
+ 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
+import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.PlayerStorageManager;
 import me.novoro.seam.objects.PlayerData;
 import me.novoro.seam.utils.TimeUtil;
-import me.novoro.seam.config.LangManager;
-
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
-import com.mojang.brigadier.Command;
 import net.minecraft.server.network.ServerPlayerEntity;
-
 import java.util.Map;
-
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
 
@@ -24,22 +22,24 @@ public class SeenCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> getCommand(LiteralArgumentBuilder<ServerCommandSource> command) {
         return command.then(argument("player", string())
+                .suggests((ctx, builder) -> CommandSource.suggestMatching(
+                        ctx.getSource().getServer().getPlayerManager().getPlayerNames(), builder))
         .executes(context -> {
             String name = getString(context, "player");
             ServerCommandSource source = context.getSource();
-            ServerPlayerEntity target = source.getPlayerOrThrow();
-            
+            ServerPlayerEntity target = source.getServer().getPlayerManager().getPlayer(name);
+
             if (target != null) {
                 seenOnline(source, target);
                 return Command.SINGLE_SUCCESS;
             }
 
-            PlayerData data = PlayerStorageManager.findbyUsername(name);
+            PlayerData data = PlayerStorageManager.findByUsername(name);
             if (data == null) {
-                    LangManager.sendLang(source, "Seen-Unknown", Map.of("player", name));
-                    return 0;
+                LangManager.sendLang(source, "Seen-Unknown", Map.of("{player}", name));
+                return 0;
             }
-            
+
             seenOffline(source, data);
             return Command.SINGLE_SUCCESS;
         })
@@ -52,7 +52,7 @@ public class SeenCommand extends CommandBase {
         Map<String, String> replacements = Map.of(
             "{player}", target.getName().getString(),
             "{first-join}", TimeUtil.formatDate(data.firstJoin),
-            "{last-join}", TimeUtil.formatDate(data.lastJoin)
+            "{last-seen}", TimeUtil.formatDate(data.lastSeen)
         );
         LangManager.sendLang(source, "Seen-Online", replacements);
         if(this.permission(source, "seam.seen.ip", 2)) {
@@ -64,7 +64,7 @@ public class SeenCommand extends CommandBase {
     // get IP for offline players. is it really worth storing in player data?
     private void seenOffline(ServerCommandSource source, PlayerData data) {
         String name = data.username != null ? data.username : data.uuid.toString();
-        String lastSeen = data.lastJoin > 0 ? TimeUtil.executedTimeToFormatted(data.lastJoin) : "Unknown";
+        String lastSeen = data.lastSeen > 0 ? TimeUtil.executedTimeToFormatted(data.lastSeen) : "Unknown";
         Map<String, String> replacements = Map.of(
             "{player}", name,
             "{first-join}", TimeUtil.formatDate(data.firstJoin),
