@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.WaypointManager;
+import me.novoro.seam.objects.Waypoint;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -22,7 +23,7 @@ public class ListSpawnsCommand extends CommandBase {
             StringBuilder spawnList = new StringBuilder();
 
             WaypointManager.getAllSpawnNames().forEach(name -> {
-                var waypoint = WaypointManager.getSpawn(name);
+                Waypoint waypoint = WaypointManager.getSpawn(name);
                 if (waypoint != null) {
                     spawnList.append(name)
                             .append(", ");

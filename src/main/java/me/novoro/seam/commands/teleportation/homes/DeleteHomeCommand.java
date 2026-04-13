@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DeleteHomeCommand extends CommandBase {
     public DeleteHomeCommand() {
-        super("deletehome", "seam.deletehome", 2);
+        super("deletehome", "seam.deletehome", 2, "delhome");
     }
 
     @Override

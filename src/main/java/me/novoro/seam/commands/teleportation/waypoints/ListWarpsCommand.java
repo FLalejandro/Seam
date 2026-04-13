@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.config.WaypointManager;
+import me.novoro.seam.objects.Waypoint;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -22,7 +23,7 @@ public class ListWarpsCommand extends CommandBase {
             StringBuilder warpList = new StringBuilder();
 
             WaypointManager.getAllWarpNames().forEach(name -> {
-                var waypoint = WaypointManager.getWarp(name);
+                Waypoint waypoint = WaypointManager.getWarp(name);
                 if (waypoint != null) {
                     warpList.append(name)
                             .append(", ");

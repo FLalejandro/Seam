@@ -1,5 +1,6 @@
 package me.novoro.seam.commands.teleportation.homes;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -9,11 +10,13 @@ import me.novoro.seam.config.PlayerStorageManager;
 import me.novoro.seam.objects.PlayerData;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
- 
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
- 
+
 import static me.novoro.seam.Seam.getServer;
 
 public class ListHomesCommand extends CommandBase {
@@ -32,11 +35,6 @@ public class ListHomesCommand extends CommandBase {
                 LangManager.sendLang(player, "Home-List-Empty");
                 return Command.SINGLE_SUCCESS;
             }
-
-            if (homeNames.isEmpty()) {
-                LangManager.sendLang(player, "Home-List-Empty");
-                return Command.SINGLE_SUCCESS;
-            }
  
             String homeList = String.join(", ", homeNames);
             LangManager.sendLang(player, "Home-List", Map.of("{homes}", homeList));
@@ -49,25 +47,36 @@ public class ListHomesCommand extends CommandBase {
                 })
                 .executes(context -> {
                     String playerName = StringArgumentType.getString(context, "player");
-                    ServerPlayerEntity target = getServer().getPlayerManager().getPlayer(playerName);
- 
-                    if (target == null) {
-                        LangManager.sendLang(context.getSource(), "Invalid-Player", Map.of("{input}", playerName));
-                        return 0;
+
+                    ServerPlayerEntity onlineTarget = getServer().getPlayerManager().getPlayer(playerName);
+                    UUID targetUuid;
+                    String targetDisplayName;
+
+                    if (onlineTarget != null) {
+                        targetUuid = onlineTarget.getUuid();
+                        targetDisplayName = onlineTarget.getName().getString();
+                    } else {
+                        Optional<GameProfile> profile = getServer().getUserCache().findByName(playerName);
+                        if (profile.isEmpty()) {
+                            LangManager.sendLang(context.getSource(), "Invalid-Player", Map.of("{input}", playerName));
+                            return 0;
+                        }
+                        targetUuid = profile.get().getId();
+                        targetDisplayName = profile.get().getName();
                     }
- 
-                    PlayerData data = PlayerStorageManager.get(target.getUuid());
+
+                    PlayerData data = PlayerStorageManager.get(targetUuid);
                     List<String> homeNames = data.getHomeNames();
- 
+
                     if (homeNames.isEmpty()) {
                         LangManager.sendLang(context.getSource(), "Home-Other-List-Empty",
-                                Map.of("{player}", target.getName().getString()));
+                                Map.of("{player}", targetDisplayName));
                         return Command.SINGLE_SUCCESS;
                     }
- 
+
                     String homeList = String.join(", ", homeNames);
                     LangManager.sendLang(context.getSource(), "Home-Other-List", Map.of(
-                            "{player}", target.getName().getString(),
+                            "{player}", targetDisplayName,
                             "{homes}", homeList
                     ));
                     return Command.SINGLE_SUCCESS;

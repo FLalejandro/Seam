@@ -19,6 +19,7 @@ public final class SettingsManager extends VersionedConfig {
     private static List<String> hatBlacklist;
     private static List<String> repairBlacklist;
     private static int maxHomes;
+    private static int nearRadius;
 
     @Override
     protected void reload(Configuration settingsConfig) {
@@ -30,6 +31,7 @@ public final class SettingsManager extends VersionedConfig {
         SettingsManager.hatBlacklist = settingsConfig.getStringList("Hat.Blacklisted-Items");
         SettingsManager.repairBlacklist = settingsConfig.getStringList("Repair.Blacklisted-Items");
         SettingsManager.maxHomes = settingsConfig.getInt("Max-Homes");
+        SettingsManager.nearRadius = settingsConfig.getInt("Near-Radius");
     }
 
     public static boolean feedFillsSaturation() {
@@ -68,6 +70,10 @@ public final class SettingsManager extends VersionedConfig {
 
     public static int getMaxHomes() {
         return maxHomes;
+    }
+
+    public static int getNearRadius() {
+        return nearRadius;
     }
 
     @Override

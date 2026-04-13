@@ -14,6 +14,8 @@ public class PlayerData {
     public boolean nightVisionToggle;
     public boolean tpToggle;
     public boolean waterBreathingToggle;
+    public long firstJoin = 0L;
+    public long lastJoin = 0L;
     private final Map<String, Home> homes = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public PlayerData(UUID uuid) {
@@ -86,6 +88,8 @@ public class PlayerData {
         config.set("nightvision", this.nightVisionToggle);
         config.set("tp-toggle", this.tpToggle);
         config.set("water-breathing", this.waterBreathingToggle);
+        if (this.firstJoin != 0L) config.set("first-join", this.firstJoin);
+        if (this.lastJoin != 0L) config.set("last-join", this.lastJoin);
         if (this.previousLocation != null) config.set("previous-location", this.previousLocation.toConfiguration());
         if (!this.homes.isEmpty()) {
             Configuration homesConfig = new Configuration();
@@ -105,6 +109,8 @@ public class PlayerData {
         data.nightVisionToggle = config.getBoolean("nightvision", false);
         data.tpToggle = config.getBoolean("tp-toggle", false);
         data.waterBreathingToggle = config.getBoolean("water-breathing", false);
+        data.firstJoin = config.getLong("first-join", 0L);
+        data.lastJoin = config.getLong("last-join", 0L);
         if (config.contains("previous-location")) data.previousLocation = config.getLocation("previous-location");
         if (config.contains("homes")) {
             Configuration homesConfig = config.getSection("homes");

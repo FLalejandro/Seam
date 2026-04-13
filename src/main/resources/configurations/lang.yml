@@ -94,6 +94,10 @@ Lang:
   Home-Other-List: "<gold>{player}'s homes: <white>{homes}"
   Home-Other-List-Empty: "<red>{player} doesn't have any homes set."
 
+  # Near
+  Near-Players: "<gold>Players within <red>{radius} <gold>blocks: <white>{players}"
+  Near-None: "<red>No players found within <dark_red>{radius} <red>blocks."
+
   # Night Vision
   NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
   NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
@@ -115,6 +119,12 @@ Lang:
   Repair-Success-Message: "<gold>You have repaired your <red>{item}<gold>!"
   Repair-All-Success-Message: "<gold>You have repaired all valid items in your inventory!"
   Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
+
+  # Seen
+  Seen-Online: "<gold>{player} <green>[Online] <dark_gray>- <gold>World: <red>{world}\n<gold>First Joined: <red>{first-join} <dark_gray>| <gold>Last Login: <red>{last-login}"
+  Seen-Offline: "<gold>{player} <red>[Offline]\n<gold>First Joined: <red>{first-join} <dark_gray>| <gold>Last Seen: <red>{last-seen} <gold>ago"
+  Seen-IP: "<gold>IP Address: <red>{ip}"
+  Seen-Unknown: "<red>No data found for <dark_red>{player}<red>."
 
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"

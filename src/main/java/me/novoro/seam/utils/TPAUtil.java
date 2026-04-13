@@ -107,6 +107,33 @@ public final class TPAUtil {
     }
 
     /*
+     * Cancels a teleport request
+     */
+    public static boolean cancelTeleportRequest(UUID senderUuid, MinecraftServer server) {
+        ServerPlayerEntity sender = server.getPlayerManager().getPlayer(senderUuid);
+        List<UUID> cancelledTargets = new ArrayList<>();
+        
+        new HashMap<>(teleportRequests).forEach((targetUuid, requests) -> {
+            boolean removed = requests.removeIf(request -> request.senderUuid.equals(senderUuid));
+            if (removed) { 
+                cancelledTargets.add(targetUuid);
+                if (requests.isEmpty()) teleportRequests.remove(targetUuid);
+            }
+        });
+        
+        if (cancelledTargets.isEmpty()) return false;
+
+        for (UUID targetUuid : cancelledTargets) {
+            ServerPlayerEntity target = server.getPlayerManager().getPlayer(targetUuid);
+            String targetName = target != null ? target.getName().getString() : "Unknown";
+            if (sender != null) LangManager.sendLang(sender, "TPA-Cancel-Sender", Map.of("{target}", targetName));
+            if (target != null) LangManager.sendLang(target, "TPA-Cancel-Target", Map.of("{player}", sender.getName().getString()));
+        }
+        
+        return true;
+    }
+
+    /*
      * Removes Teleport Requests from the List once Accepted/Timed Out
      */
     public static void removeTeleportRequest(UUID senderUuid, UUID targetUuid) {

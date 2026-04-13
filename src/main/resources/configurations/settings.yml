@@ -22,5 +22,8 @@ Repair:
 # as an easier entry for noobs who aren't used to LuckPerms
 Max-Homes: 3
 
+# Maximum radius that the Near Command searches for players.
+Near-Radius: 200
+
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

@@ -74,6 +74,9 @@ public class Seam implements ModInitializer {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             PlayerData data = PlayerStorageManager.get(handler.player.getUuid());
             data.username = handler.player.getName().getString();
+            long now = System.currentTimeMillis();
+            if (data.firstJoin == 0L) data.firstJoin = now;
+            data.lastJoin = now;
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -172,6 +175,7 @@ public class Seam implements ModInitializer {
         new ListWarpsCommand().register(dispatcher);
 
         new HomeCommand().register(dispatcher);
+        new HomeOtherCommand().register(dispatcher);
         new DeleteHomeCommand().register(dispatcher);
         new SetHomeCommand().register(dispatcher);
         new ListHomesCommand().register(dispatcher);
@@ -181,6 +185,7 @@ public class Seam implements ModInitializer {
         new TPACommand().register(dispatcher);
         new TPAHereCommand().register(dispatcher);
         new TPAcceptCommand().register(dispatcher);
+        new TPACancelCommand().register(dispatcher);
         new TPDenyCommand().register(dispatcher);
         new TPOfflineCommand().register(dispatcher);
 
@@ -190,7 +195,9 @@ public class Seam implements ModInitializer {
         new ClearInventoryCommand().register(dispatcher);
         new FeedCommand().register(dispatcher);
         new HealCommand().register(dispatcher);
+        new NearCommand().register(dispatcher);
         new RepairCommand().register(dispatcher);
+        new SeenCommand().register(dispatcher);
     }
 
     /**

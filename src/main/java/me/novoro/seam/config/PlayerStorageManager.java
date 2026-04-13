@@ -68,4 +68,28 @@ public class PlayerStorageManager {
     public static void remove(UUID uuid) {
         PLAYER_DATA.remove(uuid);
     }
+    
+    public static PlayerData findbyUsername(String username) {
+        for (PlayerData data : PLAYER_DATA.values()) {
+            if (data.getUsername().equalsIgnoreCase(username)) return data;
+        }
+        File playersDir = new File(Seam.inst().getDataFolder(), "players");
+        if (!playersDir.exists()) return null;
+        File[] files = playersDir.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) return null;
+        for (File file : files) {
+            try {
+                Configuration config = YamlConfiguration.loadConfiguration(file);
+                String usernameFromConfig = config.getString("username");
+                if (username.equalsIgnoreCase(usernameFromConfig)) {
+                    UUID uuid = UUID.fromString(file.getName().replace(".yml", ""));
+                    return PlayerData.fromConfiguration(uuid, config);
+                }
+            } catch (IOException | IllegalArgumentException e) {
+                SeamLogger.error("Failed to load player data for " + file.getName() + ".");
+                SeamLogger.printStackTrace(e);
+            }
+        }
+        return null;
+    }
 }

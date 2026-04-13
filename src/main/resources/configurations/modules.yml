@@ -39,8 +39,8 @@ Commands:
   home: true
   homeother: true
   sethome: true
-  delhome: true
-  homes: true
+  deletehome: true
+  listhomes: true
   # Teleportation Commands
   ascend: true
   back: true
@@ -68,7 +68,9 @@ Commands:
   enchant: true
   feed: true
   heal: true
+  near: true
   repair: true
+  seen: true
  
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0
