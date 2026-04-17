@@ -3,21 +3,25 @@ package me.novoro.seam.config;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.api.configuration.VersionedConfig;
 import me.novoro.seam.utils.LocationUtil;
+import me.novoro.seam.utils.randomteleport.RTPSettings;
+import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Seam's teleport config settings.
  */
 public class TeleportationConfig extends VersionedConfig {
-    // Block IDs of blocks that are unsafe to teleport on top of.
-    private static final List<String> UNSAFE_BLOCKS = new ArrayList<>();
-    // Block IDs of blocks that Seam will count as air.
-    private static final List<String> AIR_BLOCKS = new ArrayList<>();
+    // Blocks that are unsafe to teleport on top of.
+    private static final Set<Block> UNSAFE_BLOCKS = new HashSet<>();
+    // Blocks that Seam counts as air.
+    private static final Set<Block> AIR_BLOCKS = new HashSet<>();
     // The highest Y value that ascend and top can teleport to.
     private static final Map<String, Integer> ASCEND_MAX_Y_VALUES = new HashMap<>();
 
@@ -25,9 +29,13 @@ public class TeleportationConfig extends VersionedConfig {
     protected void reload(Configuration config) {
         super.reload(config);
         TeleportationConfig.UNSAFE_BLOCKS.clear();
-        TeleportationConfig.UNSAFE_BLOCKS.addAll(config.getStringList("Unsafe-Blocks"));
+        for (String id : config.getStringList("Unsafe-Blocks")) {
+            Registries.BLOCK.getOrEmpty(Identifier.of(id)).ifPresent(TeleportationConfig.UNSAFE_BLOCKS::add);
+        }
         TeleportationConfig.AIR_BLOCKS.clear();
-        TeleportationConfig.AIR_BLOCKS.addAll(config.getStringList("Air-Blocks"));
+        for (String id : config.getStringList("Air-Blocks")) {
+            Registries.BLOCK.getOrEmpty(Identifier.of(id)).ifPresent(TeleportationConfig.AIR_BLOCKS::add);
+        }
         TeleportationConfig.ASCEND_MAX_Y_VALUES.clear();
         Configuration ascendMaxYSection = config.getSection("Ascend-Max-Y-Values");
         if (ascendMaxYSection != null) {
@@ -36,16 +44,16 @@ public class TeleportationConfig extends VersionedConfig {
             }
         }
 
-
+        RTPSettings.reload(config);
 
     }
 
-    public static boolean isBlockSafe(String blockID) {
-        return !TeleportationConfig.UNSAFE_BLOCKS.contains(blockID);
+    public static boolean isBlockSafe(Block block) {
+        return !TeleportationConfig.UNSAFE_BLOCKS.contains(block);
     }
 
-    public static boolean isAirBlock(String blockID) {
-        return TeleportationConfig.AIR_BLOCKS.contains(blockID);
+    public static boolean isAirBlock(Block block) {
+        return TeleportationConfig.AIR_BLOCKS.contains(block);
     }
 
     public static int getHighestAscendY(ServerWorld world) {

@@ -102,6 +102,15 @@ Lang:
   Repair-All-Success-Message: "<gold>You have repaired all valid items in your inventory!"
   Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
 
+  # RTP
+  RTP-Cooldown-Message: "<red>You can't RTP in this world for another {cooldown} seconds!"
+  RTP-Queued-Message: "<gold>Please hold as we find a suitable location to teleport you to."
+  RTP-Already-Queued-Message: "<red>You already have an active RTP request. Please wait for that to finish."
+  RTP-Location-Not-Found: "<red>Couldn't find a safe location within {attempts} attempts. Please try again."
+  RTP-World-Blacklisted: "<red>You can't RTP in this world!"
+  RTP-Success-Message: "<green>Successfully teleported to {x}, {y}, {z}."
+
+
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
   Smite-Player-Message: "<green>Successfully summoned lightning on {player}!"

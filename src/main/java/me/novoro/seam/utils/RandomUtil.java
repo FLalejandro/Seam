@@ -1,12 +1,19 @@
 package me.novoro.seam.utils;
 
-import java.util.*;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtil {
-    private static final Random RANDOM = new Random();
-
     public static <T> T getRandomValue(List<T> list) {
         if (list.isEmpty()) return null;
-        return list.get(RandomUtil.RANDOM.nextInt(list.size()));
+        return list.get(ThreadLocalRandom.current().nextInt(list.size()));
+    }
+
+    public static int randomIntBetween(int low, int high) {
+        return ThreadLocalRandom.current().nextInt(low, high + 1);
+    }
+
+    public static boolean randomBoolean() {
+        return ThreadLocalRandom.current().nextBoolean();
     }
 }

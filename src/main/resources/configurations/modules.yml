@@ -39,6 +39,7 @@ Commands:
   ascend: true
   back: true
   descend: true
+  randomteleport: true
   top: true
   tpa: true
   tpahere: true
