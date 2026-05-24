@@ -168,6 +168,7 @@ public class Seam implements ModInitializer {
         new ListWarpsCommand().register(dispatcher);
         new RTPCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
+        new RTPCommand().register(dispatcher);
         new TPHereCommand().register(dispatcher);
         new TPACommand().register(dispatcher);
         new TPAHereCommand().register(dispatcher);

@@ -1,5 +1,5 @@
 package me.novoro.seam.utils.randomteleport;
- 
+
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.utils.LocationUtil;
 import me.novoro.seam.utils.RandomUtil;
@@ -14,7 +14,7 @@ public class RTPWorldSettings {
     private final int maxDistance;
     private final boolean allowCaveTeleports;
     private final int highestY;
-    
+
     public RTPWorldSettings(String worldName, Configuration config) {
         this.worldName = worldName;
         this.permission = config.getString("Permission", "seam.rtp");
@@ -25,51 +25,45 @@ public class RTPWorldSettings {
         this.allowCaveTeleports = config.getBoolean("Allow-Cave-Teleports", false);
         this.highestY = config.getInt("Highest-Y", 320);
     }
-    
+
     public int getRandomIntInBounds() {
         int offset = RandomUtil.randomIntBetween(this.minDistance, this.maxDistance);
         return RandomUtil.randomBoolean() ? offset : -offset;
     }
-    
-    public String getWorldName() { 
-        return worldName; 
+
+    public String getWorldName() {
+        return worldName;
     }
 
-    public String getPermission() { 
-        return permission; 
+    public String getPermission() {
+        return permission;
     }
 
-    public int getCenterX() { 
-        return centerX; 
-    }
-    
-    public int getCenterZ() { 
-        return centerZ; 
-    }
-    
-    public int getMinDistance() { 
-        return minDistance; 
-    }
-    
-    public int getHighestY() { 
-        return highestY; 
+    public int getCenterX() {
+        return centerX;
     }
 
-    public int getMaxDistance() { 
-        return maxDistance; 
+    public int getCenterZ() {
+        return centerZ;
     }
-    public boolean isAllowCaveTeleports() { 
-        return allowCaveTeleports; 
+
+    public int getMinDistance() {
+        return minDistance;
+    }
+
+    public int getMaxDistance() {
+        return maxDistance;
+    }
+
+    public boolean isAllowCaveTeleports() {
+        return allowCaveTeleports;
+    }
+
+    public int getHighestY() {
+        return highestY;
     }
 
     public ServerWorld getWorld() {
         return LocationUtil.getWorld(this.worldName);
     }
-
-    public boolean isInBounds(int x, int z) {
-        x = Math.abs(x);
-        z = Math.abs(z);
-        return x >= minDistance && x <= maxDistance && z >= minDistance && z <= maxDistance;
-    }
-
 }

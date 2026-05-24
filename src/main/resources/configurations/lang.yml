@@ -130,6 +130,14 @@ Lang:
   WaterBreathing-Other-Disabled-Message: "<gold>Water Breathing has been disabled for <red>{player}."
   WaterBreathing-All-Message: "<gold>You have toggled Water Breathing for <red>{amount} <gold>players."
 
+  # Random Teleport
+  RTP-Queued-Message: "<gold>Finding a safe location, please wait..."
+  RTP-Success-Message: "<green>Teleported to <gold>{x}, {y}, {z} <green>in <gold>{world}<green>."
+  RTP-Location-Not-Found: "<red>Could not find a safe location after <dark_red>{attempts} <red>attempts. Try again later."
+  RTP-Already-Queued-Message: "<red>You are already queued for a random teleport!"
+  RTP-No-Permission: "<red>You do not have permission to use RTP in this world."
+  RTP-World-Blacklisted: "<red>Random teleport is not available in this world."
+
   # Top
   Top-Unsafe-Message: "<red>The surface was not safe to ascend to!"
   Top-Unsafe-Message-Other: "<red>{target}{s} surface was not safe to ascend to!"

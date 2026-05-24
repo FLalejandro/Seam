@@ -3,6 +3,7 @@ package me.novoro.seam.config;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.api.configuration.VersionedConfig;
 import me.novoro.seam.utils.LocationUtil;
+import me.novoro.seam.utils.SeamLogger;
 import me.novoro.seam.utils.randomteleport.RTPSettings;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
@@ -20,7 +21,7 @@ import java.util.Set;
 public class TeleportationConfig extends VersionedConfig {
     // Blocks that are unsafe to teleport on top of.
     private static final Set<Block> UNSAFE_BLOCKS = new HashSet<>();
-    // Blocks that Seam counts as air.
+    // Blocks that Seam will count as air.
     private static final Set<Block> AIR_BLOCKS = new HashSet<>();
     // The highest Y value that ascend and top can teleport to.
     private static final Map<String, Integer> ASCEND_MAX_Y_VALUES = new HashMap<>();
@@ -28,38 +29,46 @@ public class TeleportationConfig extends VersionedConfig {
     @Override
     protected void reload(Configuration config) {
         super.reload(config);
-        TeleportationConfig.UNSAFE_BLOCKS.clear();
+        UNSAFE_BLOCKS.clear();
         for (String id : config.getStringList("Unsafe-Blocks")) {
-            Registries.BLOCK.getOrEmpty(Identifier.of(id)).ifPresent(TeleportationConfig.UNSAFE_BLOCKS::add);
+            Identifier blockId = Identifier.of(id);
+            if (Registries.BLOCK.containsId(blockId)) {
+                UNSAFE_BLOCKS.add(Registries.BLOCK.get(blockId));
+            } else {
+                SeamLogger.warn("Unknown block ID in Unsafe-Blocks: " + id);
+            }
         }
-        TeleportationConfig.AIR_BLOCKS.clear();
+        AIR_BLOCKS.clear();
         for (String id : config.getStringList("Air-Blocks")) {
-            Registries.BLOCK.getOrEmpty(Identifier.of(id)).ifPresent(TeleportationConfig.AIR_BLOCKS::add);
+            Identifier blockId = Identifier.of(id);
+            if (Registries.BLOCK.containsId(blockId)) {
+                AIR_BLOCKS.add(Registries.BLOCK.get(blockId));
+            } else {
+                SeamLogger.warn("Unknown block ID in Air-Blocks: " + id);
+            }
         }
-        TeleportationConfig.ASCEND_MAX_Y_VALUES.clear();
+        ASCEND_MAX_Y_VALUES.clear();
         Configuration ascendMaxYSection = config.getSection("Ascend-Max-Y-Values");
         if (ascendMaxYSection != null) {
             for (String key : ascendMaxYSection.getKeys()) {
-                TeleportationConfig.ASCEND_MAX_Y_VALUES.put(key, ascendMaxYSection.getInt(key, 320));
+                ASCEND_MAX_Y_VALUES.put(key, ascendMaxYSection.getInt(key, 320));
             }
         }
-
         RTPSettings.reload(config);
-
     }
 
     public static boolean isBlockSafe(Block block) {
-        return !TeleportationConfig.UNSAFE_BLOCKS.contains(block);
+        return !UNSAFE_BLOCKS.contains(block);
     }
 
     public static boolean isAirBlock(Block block) {
-        return TeleportationConfig.AIR_BLOCKS.contains(block);
+        return AIR_BLOCKS.contains(block);
     }
 
     public static int getHighestAscendY(ServerWorld world) {
         String worldID = LocationUtil.getWorldName(world);
-        return TeleportationConfig.ASCEND_MAX_Y_VALUES.computeIfAbsent(worldID,
-                __ -> TeleportationConfig.ASCEND_MAX_Y_VALUES.getOrDefault("default", 320));
+        return ASCEND_MAX_Y_VALUES.getOrDefault(worldID,
+                ASCEND_MAX_Y_VALUES.getOrDefault("default", 320));
     }
 
     @Override

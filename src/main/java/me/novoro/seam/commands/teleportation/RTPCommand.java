@@ -1,5 +1,5 @@
 package me.novoro.seam.commands.teleportation;
- 
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -10,10 +10,11 @@ import me.novoro.seam.commands.CommandBase;
 import me.novoro.seam.config.LangManager;
 import me.novoro.seam.utils.LocationUtil;
 import me.novoro.seam.utils.RandomUtil;
+import me.novoro.seam.utils.SeamLogger;
 import me.novoro.seam.utils.randomteleport.RTPSettings;
 import me.novoro.seam.utils.randomteleport.RTPWorldSettings;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.command.CommandSource;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 
 import java.util.*;
+
 import static me.novoro.seam.Seam.getServer;
 
 public class RTPCommand extends CommandBase {
@@ -73,6 +75,7 @@ public class RTPCommand extends CommandBase {
         SeamExecutorManager.getDefaultExecutor().<Location>runAsync(() -> findLocation(settings))
                 .whenComplete((location, err) -> ServerScheduler.runSync(getServer(), () -> {
                     queued.remove(player.getUuid());
+                    if (err != null) SeamLogger.warn("RTP failed for " + player.getName().getString() + ": " + err.getMessage());
                     if (player.isDisconnected()) return;
 
                     if (location != null) {
@@ -94,11 +97,13 @@ public class RTPCommand extends CommandBase {
         if (world == null) return null;
 
         int max = RTPSettings.getMaxAttempts();
+        BlockPos.Mutable biomePos = new BlockPos.Mutable();
         for (int i = 0; i < max; i++) {
             int x = settings.getCenterX() + settings.getRandomIntInBounds();
             int z = settings.getCenterZ() + settings.getRandomIntInBounds();
 
-            Optional<RegistryKey<Biome>> biome = world.getBiome(new BlockPos(x, world.getSeaLevel(), z)).getKey();
+            biomePos.set(x, world.getSeaLevel(), z);
+            Optional<RegistryKey<Biome>> biome = world.getBiome(biomePos).getKey();
             if (biome.isEmpty() || RTPSettings.isBiomeBlacklisted(biome.get().getValue())) continue;
 
             int startY = settings.isAllowCaveTeleports()

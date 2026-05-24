@@ -1,7 +1,5 @@
 package me.novoro.seam.utils;
 
-import org.jetbrains.annotations.Nullable;
-
 import me.novoro.seam.Seam;
 import me.novoro.seam.api.Location;
 import me.novoro.seam.config.TeleportationConfig;
@@ -11,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
@@ -50,33 +49,6 @@ public final class LocationUtil {
     }
 
     /**
-     * Finds a safe landing location in an XZ column, caching the chunk to avoid repeated chunk lookups.
-     * @param allowCaveSpawns If false, returns null on the first solid block that isn't preceded by 2 air blocks (surface-only).
-     *                        If true, keeps scanning downward through all cave layers.
-     */
-    public static @Nullable Location findSafeRTPLocation(ServerWorld world, int x, int startY, int z, boolean allowCaveSpawns) {
-        WorldChunk chunk = world.getWorldChunk(new BlockPos(x, startY, z));
-        int bottomY = world.getBottomY();
-        boolean air1 = false, air2 = false;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (int y = startY; y > bottomY; y--) {
-            mutablePos.set(x, y, z);
-            Block block = chunk.getBlockState(mutablePos).getBlock();
-            if (TeleportationConfig.isAirBlock(block)) {
-                if (air1) air2 = true;
-                air1 = true;
-            } else {
-                if (air1 && air2 && TeleportationConfig.isBlockSafe(block)) {
-                    return new Location(world, x + 0.5, y + 1.0, z + 0.5);
-                }
-                if (!allowCaveSpawns) return null;
-                air1 = air2 = false;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Gets the next safe {@link Location} below the player.
      */
     public static Location getNextSafeBelow(Location location, boolean highestOnly) {
@@ -103,18 +75,42 @@ public final class LocationUtil {
      * Gets the next safe {@link Location} above the player.
      */
     public static Location getNextSafeAbove(Location location) {
-        boolean block = false, air = false;
+        boolean isBlock = false, isAir = false;
         int worldHeight = location.getWorld().getHeight();
         Location copy = location.copy().shifted(0, 1, 0);
         while (copy.getY() < worldHeight) {
-            boolean isAirBlock = TeleportationConfig.isAirBlock(copy.getBlockState().getBlock());
-            if (block && air && isAirBlock) {
+            Block b = copy.getBlockState().getBlock();
+            boolean airBlock = TeleportationConfig.isAirBlock(b);
+            if (isBlock && isAir && airBlock) {
                 return copy.shifted(0, -1, 0);
-            } else if (!isAirBlock) {
-                block = true;
-                air = false;
-            } else if (block) air = true;
+            } else if (!airBlock) {
+                isBlock = true;
+                isAir = false;
+            } else if (isBlock) isAir = true;
             copy.shift(0, 1, 0);
+        }
+        return null;
+    }
+
+    /**
+     * Scans downward from startY to find a safe {@link Location} for RTP.
+     */
+    public static Location findSafeRTPLocation(ServerWorld world, int x, int startY, int z, boolean allowCaves) {
+        BlockPos.Mutable pos = new BlockPos.Mutable(x, startY, z);
+        WorldChunk chunk = world.getWorldChunk(pos);
+        int scanFrom = allowCaves ? startY
+                : chunk.getHeightmap(Heightmap.Type.MOTION_BLOCKING).get(x & 15, z & 15);
+        for (int y = scanFrom; y > world.getBottomY() + 1; y--) {
+            pos.setY(y);
+            Block feet = chunk.getBlockState(pos).getBlock();
+            if (!TeleportationConfig.isAirBlock(feet)) continue;
+            pos.setY(y + 1);
+            Block head = chunk.getBlockState(pos).getBlock();
+            if (!TeleportationConfig.isAirBlock(head)) continue;
+            pos.setY(y - 1);
+            Block floor = chunk.getBlockState(pos).getBlock();
+            if (TeleportationConfig.isAirBlock(floor) || !TeleportationConfig.isBlockSafe(floor)) continue;
+            return new Location(world, x + 0.5, y, z + 0.5);
         }
         return null;
     }

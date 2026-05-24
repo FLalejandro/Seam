@@ -1,12 +1,12 @@
 package me.novoro.seam.utils.randomteleport;
- 
+
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.utils.SeamLogger;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
- 
+
 public final class RTPSettings {
     private RTPSettings() {}
 
@@ -19,13 +19,13 @@ public final class RTPSettings {
         worldSettings.clear();
         nonRedirectedWorlds.clear();
         blacklistedBiomes.clear();
-        
+
         Configuration rtpSection = config.getSection("Random-Teleport");
         if (rtpSection == null) {
             SeamLogger.warn("Random-Teleport section not found in config, using defaults");
             return;
         }
-        
+
         maxAttempts = rtpSection.getInt("Max-Attempts", 10);
 
         Configuration worldsConfig = rtpSection.getSection("Worlds");
@@ -38,7 +38,7 @@ public final class RTPSettings {
         for (String worldName : worldsConfig.getKeys()) {
             Configuration worldConfig = worldsConfig.getSection(worldName);
             if (worldConfig == null) continue;
-            if(!worldConfig.contains("Redirect-To")) {
+            if (!worldConfig.contains("Redirect-To")) {
                 worldSettings.put(worldName, new RTPWorldSettings(worldName, worldConfig));
                 nonRedirectedWorlds.add(worldName);
             } else {
@@ -51,11 +51,9 @@ public final class RTPSettings {
             if (target != null) worldSettings.put(redirect.getKey(), target);
         }
 
-        blacklistedBiomes = new HashSet<>();
         for (String id : rtpSection.getStringList("Blacklisted-Biomes")) {
             blacklistedBiomes.add(Identifier.of(id));
         }
-        
     }
 
     public static int getMaxAttempts() {
@@ -63,23 +61,22 @@ public final class RTPSettings {
     }
 
     public static List<String> getNonRedirectedWorlds() {
-        return nonRedirectedWorlds;
+        return Collections.unmodifiableList(nonRedirectedWorlds);
     }
 
     public static Set<Identifier> getBlacklistedBiomes() {
-        return blacklistedBiomes;
+        return Collections.unmodifiableSet(blacklistedBiomes);
     }
 
     public static boolean isBiomeBlacklisted(Identifier biomeId) {
         return blacklistedBiomes.contains(biomeId);
     }
-    
+
     public static RTPWorldSettings getWorldSettings(ServerWorld world) {
         return getWorldSettings(world.getRegistryKey().getValue().toString());
     }
-    
+
     public static RTPWorldSettings getWorldSettings(String worldName) {
         return worldSettings.get(worldName);
     }
-
 }
