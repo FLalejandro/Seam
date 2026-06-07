@@ -48,7 +48,11 @@ public final class RTPSettings {
 
         for (Map.Entry<String, String> redirect : redirectedWorlds.entrySet()) {
             RTPWorldSettings target = worldSettings.get(redirect.getValue());
-            if (target != null) worldSettings.put(redirect.getKey(), target);
+            if (target != null) {
+                worldSettings.put(redirect.getKey(), target);
+            } else {
+                SeamLogger.warn("RTP redirect for '" + redirect.getKey() + "' points to non-existent or blacklisted world '" + redirect.getValue() + "'. That world will be treated as blacklisted.");
+            }
         }
 
         for (String id : rtpSection.getStringList("Blacklisted-Biomes")) {

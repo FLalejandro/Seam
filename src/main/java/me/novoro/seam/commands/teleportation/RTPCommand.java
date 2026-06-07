@@ -15,6 +15,7 @@ import me.novoro.seam.utils.randomteleport.RTPSettings;
 import me.novoro.seam.utils.randomteleport.RTPWorldSettings;
 import net.minecraft.command.CommandSource;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -22,11 +23,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import static me.novoro.seam.Seam.getServer;
 
 public class RTPCommand extends CommandBase {
     private static final Set<UUID> queued = Collections.synchronizedSet(new HashSet<>());
+    private static final Map<UUID, Long> cooldowns = new HashMap<>();
 
     public RTPCommand() {
         super("randomteleport", "seam.rtp", 2, "rtp");
@@ -70,15 +73,26 @@ public class RTPCommand extends CommandBase {
             return 0;
         }
 
+        long remaining = getCooldownRemaining(player.getUuid(), settings);
+        if (remaining > 0) {
+            queued.remove(player.getUuid());
+            Map<String, String> replacements = Map.of("{cooldown}", String.valueOf(remaining));
+            LangManager.sendLang(player, "RTP-Cooldown-Message", replacements);
+            return 0;
+        }
+
         LangManager.sendLang(player, "RTP-Queued-Message");
 
-        SeamExecutorManager.getDefaultExecutor().<Location>runAsync(() -> findLocation(settings))
-                .whenComplete((location, err) -> ServerScheduler.runSync(getServer(), () -> {
+        MinecraftServer server = getServer();
+        generateCandidatesAsync(settings)
+                .thenCompose(candidates -> evaluateCandidatesSync(server, settings, candidates, 0))
+                .whenComplete((location, err) -> ServerScheduler.runSync(server, () -> {
                     queued.remove(player.getUuid());
                     if (err != null) SeamLogger.warn("RTP failed for " + player.getName().getString() + ": " + err.getMessage());
                     if (player.isDisconnected()) return;
 
                     if (location != null) {
+                        cooldowns.put(player.getUuid(), System.currentTimeMillis());
                         Map<String, String> replacements = new HashMap<>();
                         location.addReplacements(replacements);
                         location.teleport(player);
@@ -92,27 +106,60 @@ public class RTPCommand extends CommandBase {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static Location findLocation(RTPWorldSettings settings) {
+    private static long getCooldownRemaining(UUID playerId, RTPWorldSettings settings) {
+        long cooldownMs = settings.getCooldown() * 1000L;
+        if (cooldownMs <= 0) return 0;
+        Long lastUse = cooldowns.get(playerId);
+        if (lastUse == null) return 0;
+        long elapsed = System.currentTimeMillis() - lastUse;
+        long remaining = cooldownMs - elapsed;
+        return remaining > 0 ? (remaining + 999) / 1000 : 0;
+    }
+
+    private static CompletableFuture<List<int[]>> generateCandidatesAsync(RTPWorldSettings settings) {
+        return SeamExecutorManager.getDefaultExecutor().runAsync(() -> {
+            int max = RTPSettings.getMaxAttempts();
+            List<int[]> candidates = new ArrayList<>(max);
+            for (int i = 0; i < max; i++) {
+                int[] offset = settings.getRandomOffset();
+                candidates.add(new int[]{
+                        settings.getCenterX() + offset[0],
+                        settings.getCenterZ() + offset[1]
+                });
+            }
+            return candidates;
+        });
+    }
+
+    private static CompletableFuture<Location> evaluateCandidatesSync(MinecraftServer server, RTPWorldSettings settings, List<int[]> candidates, int index) {
+        if (index >= candidates.size()) return CompletableFuture.completedFuture(null);
+        int[] c = candidates.get(index);
+        return ServerScheduler.runSync(server, () -> checkCandidate(settings, c[0], c[1]))
+                .thenCompose(candidate -> candidate != null
+                        ? CompletableFuture.completedFuture(candidate)
+                        : evaluateCandidatesSync(server, settings, candidates, index + 1));
+    }
+
+    private static Location checkCandidate(RTPWorldSettings settings, int x, int z) {
         ServerWorld world = settings.getWorld();
         if (world == null) return null;
 
-        int max = RTPSettings.getMaxAttempts();
         BlockPos.Mutable biomePos = new BlockPos.Mutable();
-        for (int i = 0; i < max; i++) {
-            int x = settings.getCenterX() + settings.getRandomIntInBounds();
-            int z = settings.getCenterZ() + settings.getRandomIntInBounds();
+        biomePos.set(x, world.getSeaLevel(), z);
+        Optional<RegistryKey<Biome>> biome = world.getBiome(biomePos).getKey();
+        if (biome.isEmpty() || RTPSettings.isBiomeBlacklisted(biome.get().getValue())) return null;
 
-            biomePos.set(x, world.getSeaLevel(), z);
-            Optional<RegistryKey<Biome>> biome = world.getBiome(biomePos).getKey();
-            if (biome.isEmpty() || RTPSettings.isBiomeBlacklisted(biome.get().getValue())) continue;
+        int startY = settings.isAllowCaveTeleports()
+                ? RandomUtil.randomIntBetween(world.getBottomY(), settings.getHighestY())
+                : settings.getHighestY();
 
-            int startY = settings.isAllowCaveTeleports()
-                    ? RandomUtil.randomIntBetween(world.getBottomY(), settings.getHighestY())
-                    : settings.getHighestY();
+        Location candidate = LocationUtil.findSafeRTPLocation(world, x, startY, z, settings.isAllowCaveTeleports());
+        if (candidate == null) return null;
 
-            Location candidate = LocationUtil.findSafeRTPLocation(world, x, startY, z, settings.isAllowCaveTeleports());
-            if (candidate != null) return candidate;
-        }
-        return null;
+        biomePos.set(x, (int) candidate.getY(), z);
+        Optional<RegistryKey<Biome>> landingBiome = world.getBiome(biomePos).getKey();
+        if (landingBiome.isPresent() && RTPSettings.isBiomeBlacklisted(landingBiome.get().getValue())) return null;
+
+        return candidate;
     }
 }

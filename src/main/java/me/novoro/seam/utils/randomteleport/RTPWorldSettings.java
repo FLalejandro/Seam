@@ -3,7 +3,10 @@ package me.novoro.seam.utils.randomteleport;
 import me.novoro.seam.api.configuration.Configuration;
 import me.novoro.seam.utils.LocationUtil;
 import me.novoro.seam.utils.RandomUtil;
+import me.novoro.seam.utils.SeamLogger;
 import net.minecraft.server.world.ServerWorld;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RTPWorldSettings {
     private final String worldName;
@@ -14,21 +17,43 @@ public class RTPWorldSettings {
     private final int maxDistance;
     private final boolean allowCaveTeleports;
     private final int highestY;
+    private final int cooldown;
 
     public RTPWorldSettings(String worldName, Configuration config) {
         this.worldName = worldName;
         this.permission = config.getString("Permission", "seam.rtp");
         this.centerX = config.getInt("Center-X", 0);
         this.centerZ = config.getInt("Center-Z", 0);
-        this.minDistance = config.getInt("Min-Distance", 250);
-        this.maxDistance = config.getInt("Max-Distance", 5000);
+        int min = config.getInt("Min-Distance", 250);
+        int max = config.getInt("Max-Distance", 5000);
+        if (min > max) {
+            SeamLogger.warn("RTP world '" + worldName + "' has Min-Distance (" + min + ") > Max-Distance (" + max + "). Swapping values.");
+            int tmp = min;
+            min = max;
+            max = tmp;
+        }
+        this.minDistance = min;
+        this.maxDistance = max;
         this.allowCaveTeleports = config.getBoolean("Allow-Cave-Teleports", false);
-        this.highestY = config.getInt("Highest-Y", 320);
+        this.cooldown = config.getInt("Cooldown", 60);
+        int highest = config.getInt("Highest-Y", 320);
+        ServerWorld world = LocationUtil.getWorld(worldName);
+        if (world != null && highest > world.getHeight()) {
+            highest = world.getHeight();
+        }
+        this.highestY = highest;
     }
 
-    public int getRandomIntInBounds() {
-        int offset = RandomUtil.randomIntBetween(this.minDistance, this.maxDistance);
-        return RandomUtil.randomBoolean() ? offset : -offset;
+    /**
+     * Returns a random XZ offset within the configured min/max distance ring.
+     * Uses polar coordinates for a circular (radial) distribution.
+     */
+    public int[] getRandomOffset() {
+        double angle = ThreadLocalRandom.current().nextDouble() * 2 * Math.PI;
+        int radius = RandomUtil.randomIntBetween(this.minDistance, this.maxDistance);
+        int dx = (int) Math.round(Math.cos(angle) * radius);
+        int dz = (int) Math.round(Math.sin(angle) * radius);
+        return new int[]{dx, dz};
     }
 
     public String getWorldName() {
@@ -61,6 +86,10 @@ public class RTPWorldSettings {
 
     public int getHighestY() {
         return highestY;
+    }
+
+    public int getCooldown() {
+        return cooldown;
     }
 
     public ServerWorld getWorld() {

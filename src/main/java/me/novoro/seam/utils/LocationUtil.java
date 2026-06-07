@@ -10,6 +10,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
@@ -94,11 +95,15 @@ public final class LocationUtil {
 
     /**
      * Scans downward from startY to find a safe {@link Location} for RTP.
+     * Does not force chunk generation. Ceiling dimensions fall back to cave scanning.
      */
     public static Location findSafeRTPLocation(ServerWorld world, int x, int startY, int z, boolean allowCaves) {
         BlockPos.Mutable pos = new BlockPos.Mutable(x, startY, z);
-        WorldChunk chunk = world.getWorldChunk(pos);
-        int scanFrom = allowCaves ? startY
+        WorldChunk chunk = (WorldChunk) world.getChunkManager().getChunk(x >> 4, z >> 4, ChunkStatus.EMPTY, false);
+        if (chunk == null) return null;
+
+        boolean useCaveScan = allowCaves || world.getDimension().hasCeiling();
+        int scanFrom = useCaveScan ? startY
                 : chunk.getHeightmap(Heightmap.Type.MOTION_BLOCKING).get(x & 15, z & 15);
         for (int y = scanFrom; y > world.getBottomY() + 1; y--) {
             pos.setY(y);

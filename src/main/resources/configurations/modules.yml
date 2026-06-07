@@ -36,7 +36,6 @@ Commands:
   workbench: true
   enderchest: true
   # Teleportation Commands
-  randomteleport: true
   ascend: true
   back: true
   descend: true

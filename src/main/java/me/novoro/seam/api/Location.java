@@ -176,9 +176,9 @@ public class Location {
     }
 
     public void addReplacements(Map<String, String> replacements) {
-        replacements.put("{x}", String.valueOf(this.x));
-        replacements.put("{y}", String.valueOf(this.y));
-        replacements.put("{z}", String.valueOf(this.z));
+        replacements.put("{x}", String.valueOf((int) Math.floor(this.x)));
+        replacements.put("{y}", String.valueOf((int) Math.floor(this.y)));
+        replacements.put("{z}", String.valueOf((int) Math.floor(this.z)));
         replacements.put("{pitch}", (this.pitch != null) ? String.valueOf(this.pitch) : "~");
         replacements.put("{yaw}", (this.yaw != null) ? String.valueOf(this.yaw) : "~");
         replacements.put("{world}", (this.world != null) ? this.world.getRegistryKey().getValue().toString() : "~");
