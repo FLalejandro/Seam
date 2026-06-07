@@ -1,6 +1,6 @@
 # In this config, you can disable modules and commands in Seam individually.
 # This config is only read on startup, therefore any changes to this config require a restart.
-
+ 
 # Modules are settings that have additional logic. Disabling a module disables all associated logic and related commands.
 Modules:
   afk: true
@@ -8,7 +8,7 @@ Modules:
   spawn: true #reviewer note: includes /spawn, /setspawn, /delspawn
   warps: true #reviewer note: includes /warp, /setwarp, /delwarp
   tpa: true #reviewer note: includes tpa, tpahere, tpdeny, tpaccept, tpacancel.
-
+ 
 # You can stop individual commands and command groups from being registered below.
 Commands:
   # Ability Commands
@@ -35,6 +35,12 @@ Commands:
   stonecutter: true
   workbench: true
   enderchest: true
+  # Home Commands
+  home: true
+  homeother: true
+  sethome: true
+  deletehome: true
+  listhomes: true
   # Teleportation Commands
   ascend: true
   back: true
@@ -62,7 +68,9 @@ Commands:
   enchant: true
   feed: true
   heal: true
+  near: true
   repair: true
-
+  seen: true
+ 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 1.0

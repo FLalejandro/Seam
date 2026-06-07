@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
+//TODO: this has a bad glitch where viewing offline inventories wipes the enderchest. 
+//future me use encoding
 public class EnderchestCommand extends CommandBase {
     public EnderchestCommand() {
         super("enderchest", "seam.enderchest", 2, "ec");

@@ -80,6 +80,24 @@ Lang:
   Heal-Other-Message: "<gold>Healed <red>{player}."
   Heal-All-Message: "<gold>You have healed <red>{amount} <gold>players."
 
+  # Homes
+  Home-Teleport: "<gold>Teleporting to home <red>{home}<gold>."
+  Home-Invalid: "<red>'<dark_red>{home}<red>' is not a valid home!"
+  Home-Set: "<gold>Home <red>{home} <gold>set at <red>{x}, {y}, {z} <gold>in world <red>{world}<gold>."
+  Home-Set-Overwrite: "<gold>Home <red>{home} <gold>has been updated to <red>{x}, {y}, {z} <gold>in world <red>{world}<gold>."
+  Home-Deleted: "<red>Successfully deleted home: <dark_red>{home}<red>."
+  Home-Delete-Invalid: "<red>You don't have a home named '<dark_red>{home}<red>'!"
+  Home-List: "<gold>Homes: <white>{homes}"
+  Home-List-Empty: "<red>You don't have any homes set."
+  Home-Limit-Reached: "<red>You have reached your maximum number of homes (<dark_red>{max}<red>)!"
+  Home-Other-Teleport: "<gold>Teleporting to <red>{player}'s <gold>home <red>{home}<gold>."
+  Home-Other-List: "<gold>{player}'s homes: <white>{homes}"
+  Home-Other-List-Empty: "<red>{player} doesn't have any homes set."
+
+  # Near
+  Near-Players: "<gold>Players within <red>{radius} <gold>blocks: <white>{players}"
+  Near-None: "<red>No players found within <dark_red>{radius} <red>blocks."
+
   # Night Vision
   NightVision-Enabled-Message: "<gold>Night Vision has been enabled."
   NightVision-Disabled-Message: "<gold>Night Vision has been disabled."
@@ -101,6 +119,12 @@ Lang:
   Repair-Success-Message: "<gold>You have repaired your <red>{item}<gold>!"
   Repair-All-Success-Message: "<gold>You have repaired all valid items in your inventory!"
   Repair-Hand-Empty-Message: "<red>You have nothing in your hand!"
+
+  # Seen
+  Seen-Online: "<gold>{player} <green>[Online]\n<gold>First Joined: <red>{first-join}\n<gold>Last Seen: <red>{last-seen}"
+  Seen-Offline: "<gold>{player} <red>[Offline]\n<gold>First Joined: <red>{first-join}\n<gold>Last Seen: <red>{last-seen} <gold>ago"
+  Seen-Online-IP: "<gold>IP Address: <red>{ip}"
+  Seen-Unknown: "<red>No data found for <dark_red>{player}<red>."
 
   # Smite
   Smite-Message: "<green>Successfully summoned lightning!"
