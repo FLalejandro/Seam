@@ -1,11 +1,16 @@
 package me.novoro.seam.utils;
 
 import me.novoro.seam.config.LangManager;
+
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.time.format.DateTimeFormatter;
 
 public final class TimeUtil {
     private static final String TIME_REGEX = "(([0-9]+)-?h(ours?)?)?-?(([0-9]+)-?m(inutes?)?)?-?(([0-9]+)-?s(econds?)?)?";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
 
     public static long parseSeconds(String input) {
         try {
@@ -136,5 +141,10 @@ public final class TimeUtil {
 
     private static String cleanTime(long time) {
         return (time > 9) ? String.valueOf(time) : "0" + time;
+    }
+
+    public static String formatDate(long ms) {
+        if (ms == 0) return "Unknown";
+        return DATE_FORMAT.format(Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()));
     }
 }

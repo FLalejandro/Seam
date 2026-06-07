@@ -16,6 +16,7 @@ import me.novoro.seam.commands.ability.gamemode.SurvivalCommand;
 import me.novoro.seam.commands.fun.*;
 import me.novoro.seam.commands.inventory.*;
 import me.novoro.seam.commands.teleportation.*;
+import me.novoro.seam.commands.teleportation.homes.*;
 import me.novoro.seam.commands.teleportation.waypoints.*;
 import me.novoro.seam.commands.utility.*;
 import me.novoro.seam.config.*;
@@ -72,6 +73,9 @@ public class Seam implements ModInitializer {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             PlayerData data = PlayerStorageManager.get(handler.player.getUuid());
             data.username = handler.player.getName().getString();
+            long now = System.currentTimeMillis();
+            if (data.firstJoin == 0L) data.firstJoin = now;
+            data.lastSeen = now;
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -154,23 +158,34 @@ public class Seam implements ModInitializer {
         // Teleportation Commands
         //TODO: put all TPA commands into their own module
         //TODO: Put all Warp commands into their own module (and spawn).
+        //TODO: Put all Home commands into their own module
         new BackCommand().register(dispatcher);
         new AscendCommand().register(dispatcher);
         new DescendCommand().register(dispatcher);
+
         new SpawnCommand().register(dispatcher);
         new DeleteSpawnCommand().register(dispatcher);
         new SetSpawnCommand().register(dispatcher);
+        new ListSpawnsCommand().register(dispatcher);
+
         new WarpCommand().register(dispatcher);
         new DeleteWarpCommand().register(dispatcher);
         new SetWarpCommand().register(dispatcher);
-        new ListSpawnsCommand().register(dispatcher);
         new ListWarpsCommand().register(dispatcher);
+
+        new HomeCommand().register(dispatcher);
+        new HomeOtherCommand().register(dispatcher);
+        new DeleteHomeCommand().register(dispatcher);
+        new SetHomeCommand().register(dispatcher);
+        new ListHomesCommand().register(dispatcher);
+
         new RTPCommand().register(dispatcher);
         new TopCommand().register(dispatcher);
         new TPHereCommand().register(dispatcher);
         new TPACommand().register(dispatcher);
         new TPAHereCommand().register(dispatcher);
         new TPAcceptCommand().register(dispatcher);
+        new TPACancelCommand().register(dispatcher);
         new TPDenyCommand().register(dispatcher);
         new TPOfflineCommand().register(dispatcher);
 
@@ -180,7 +195,9 @@ public class Seam implements ModInitializer {
         new ClearInventoryCommand().register(dispatcher);
         new FeedCommand().register(dispatcher);
         new HealCommand().register(dispatcher);
+        new NearCommand().register(dispatcher);
         new RepairCommand().register(dispatcher);
+        new SeenCommand().register(dispatcher);
     }
 
     /**

@@ -32,7 +32,7 @@ public class WarpCommand extends CommandBase {
                             Waypoint warp = WaypointManager.getWarp(warpName);
 
                             if (warp == null) {
-                                LangManager.sendLang(player, "Warp-Invalid-Point", Map.of("{warp}", warpName));
+                                LangManager.sendLang(player, "Warp-Invalid-Point", Map.of("{input}", warpName));
                                 return 0;
                             }
 
